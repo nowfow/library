@@ -1,0 +1,105 @@
+---
+alwaysApply: true
+---
+<a name="3"></a>
+
+
+## 3. Описание таблиц
+
+### Таблица `categories`
+| Поле   | Тип     | Описание                |
+|--------|---------|-------------------------|
+| id     | INTEGER | PRIMARY KEY AUTOINCREMENT|
+| name   | TEXT    | Название категории      |
+### Таблица `subcategories`
+| Поле        | Тип     | Описание                |
+|-------------|---------|-------------------------|
+| id          | INTEGER | PRIMARY KEY AUTOINCREMENT|
+| name        | TEXT    | Название подкатегории   |
+| category_id | INTEGER | Внешний ключ на category|
+### Таблица `composers`
+| Поле   | Тип     | Описание                |
+|--------|---------|-------------------------|
+| id     | INTEGER | PRIMARY KEY AUTOINCREMENT|
+| name   | TEXT    | Имя композитора         |
+### Таблица `works`
+| Поле        | Тип     | Описание                |
+|-------------|---------|-------------------------|
+| id          | INTEGER | PRIMARY KEY AUTOINCREMENT|
+| name        | TEXT    | Название произведения   |
+| composer_id | INTEGER | Внешний ключ на composer|
+### Таблица `files` (FTS5)
+| Поле          | Тип     | Описание                |
+|---------------|---------|-------------------------|
+| path          | TEXT    | Путь к файлу на WebDAV  |
+| category_id   | INTEGER | Внешний ключ на category|
+| subcategory_id| INTEGER | Внешний ключ на subcat. |
+| composer_id   | INTEGER | Внешний ключ на composer|
+| work_id       | INTEGER | Внешний ключ на work    |
+| file_type     | TEXT    | Расширение файла (pdf/mp3)|
+### Таблица `terms`
+| Поле       | Тип     | Описание                |
+|------------|---------|-------------------------|
+| id         | INTEGER | PRIMARY KEY AUTOINCREMENT|
+| term       | TEXT    | Музыкальный термин      |
+| description| TEXT    | Описание термина        |
+### Таблица `thumbnails`
+| Поле        | Тип     | Описание                |
+|-------------|---------|-------------------------|
+| pdf_path    | TEXT    | Путь к PDF-файлу на WebDAV|
+| thumbnail_path| TEXT    | Путь к миниатюре на WebDAV|
+---
+<a name="4"></a>
+
+
+## 4. Примеры SQL-запросов
+
+### Получить все категории
+```sql
+SELECT * FROM categories;
+```
+### Найти все произведения определённого композитора
+```sql
+SELECT w.name FROM works w
+JOIN composers c ON w.composer_id = c.id
+WHERE c.name = 'Beethoven';
+```
+### Найти все файлы определённой категории
+```sql
+SELECT f.path FROM files f
+JOIN categories c ON f.category_id = c.id
+WHERE c.name = 'Jazz';
+```
+### Поиск по термину (например, найти описание термина "Adagio")
+```sql
+SELECT description FROM terms WHERE term LIKE '%Adagio%';
+```
+### Полнотекстовый поиск по файлам (например, все файлы с "Mozart" в пути)
+```sql
+SELECT path FROM files WHERE files MATCH 'Mozart';
+```
+### Получить все термины и их описания
+```sql
+SELECT term, description FROM terms ORDER BY term;
+```
+### Получить все произведения композитора из всех категорий
+```sql
+SELECT w.name
+FROM works w
+JOIN composers c ON w.composer_id = c.id
+WHERE c.name = 'Beethoven';
+```
+Этот запрос вернёт все произведения композитора (например, Бетховена) вне зависимости от категории.
+### Получить все произведения композитора в определённой категории
+```sql
+SELECT w.name, cat.name AS category
+FROM works w
+JOIN composers c ON w.composer_id = c.id
+JOIN files f ON f.work_id = w.id
+JOIN categories cat ON f.category_id = cat.id
+WHERE c.name = 'Beethoven' AND cat.name = 'Пьесы';
+```
+Этот запрос вернёт только те произведения композитора, которые встречаются в указанной категории.
+---
+
+
