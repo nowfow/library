@@ -1,6 +1,0 @@
-pymysql
-PyPDF2
-eyed3
-webdavclient3 
-pillow
-pymupdf

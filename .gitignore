@@ -8,5 +8,5 @@ passwords.mdc
 /dist
 package-lock.json
 package-lock.json
-script/
-/script
+scripts/
+/scripts
