@@ -33,6 +33,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+const apiUrl = import.meta.env.VITE_API_URL || '';
 
 const files = ref([]);
 const isLoading = ref(true);
@@ -83,7 +84,7 @@ async function fetchFiles() {
   isLoading.value = true;
   hasError.value = false;
   try {
-    const res = await fetch(`/api/files/cloud/list?path=${encodeURIComponent(currentPath.value)}`);
+    const res = await fetch(`${apiUrl}/api/files/cloud/list?path=${encodeURIComponent(currentPath.value)}`);
     if (!res.ok) throw new Error('Ошибка загрузки: ' + res.status);
     files.value = await res.json();
     console.log('FILES:', files.value, 'currentPath:', currentPath.value);
@@ -110,7 +111,7 @@ function goToCrumb(idx) {
 }
 async function downloadFile(file) {
   const filePath = (currentPath.value === '/' ? '' : currentPath.value + '/') + (file.basename || file.filename);
-  const url = `/api/files/pdf?pdf_path=${encodeURIComponent(filePath)}`;
+  const url = `${apiUrl}/api/files/pdf?pdf_path=${encodeURIComponent(filePath)}`;
   window.open(url, '_blank');
 }
 

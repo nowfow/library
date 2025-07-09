@@ -22,13 +22,14 @@ const query = ref('');
 const terms = ref([]);
 const loading = ref(false);
 const error = ref('');
+const apiUrl = import.meta.env.VITE_API_URL || '';
 
 async function fetchTerms() {
   loading.value = true;
   error.value = '';
   terms.value = [];
   try {
-    const res = await fetch(`http://localhost:3001/api/terms/search?q=${encodeURIComponent(query.value)}`);
+    const res = await fetch(`${apiUrl}/api/terms/search?q=${encodeURIComponent(query.value)}`);
     if (!res.ok) throw new Error('Ошибка запроса: ' + res.status);
     terms.value = await res.json();
   } catch (e) {

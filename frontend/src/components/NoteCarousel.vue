@@ -23,7 +23,7 @@
     <div v-else class="flex gap-4 overflow-x-auto py-2">
       <div v-for="work in works" :key="work.title" class="bg-white rounded shadow p-2 min-w-[200px] flex flex-col items-center">
         <img
-          :src="`http://localhost:3001/api/files/thumbnail?pdf_path=${encodeURIComponent(getApiPath(work.pdf_path))}`"
+          :src="`${apiUrl}/api/files/thumbnail?pdf_path=${encodeURIComponent(getApiPath(work.pdf_path))}`"
           alt="Миниатюра ноты"
           class="w-32 h-40 object-cover mb-2"
           loading="lazy"
@@ -31,7 +31,7 @@
         <div class="font-bold">{{ work.title }}</div>
         <div class="text-sm text-gray-600">{{ work.composer }}</div>
         <a
-          :href="`http://localhost:3001/api/files/pdf?pdf_path=${encodeURIComponent(getApiPath(work.pdf_path))}`"
+          :href="`${apiUrl}/api/files/pdf?pdf_path=${encodeURIComponent(getApiPath(work.pdf_path))}`"
           target="_blank"
           class="mt-2 text-blue-600 underline"
         >Открыть PDF</a>
@@ -47,6 +47,7 @@ const works = ref([]);
 const loading = ref(false);
 const error = ref('');
 const advanced = ref(false);
+const apiUrl = import.meta.env.VITE_API_URL || '';
 
 function getApiPath(fullPath) {
   // Удаляем домен, все ведущие слэши, добавляем один
@@ -60,9 +61,9 @@ async function fetchWorks() {
   try {
     let url = '';
     if (advanced.value) {
-      url = `http://localhost:3001/api/works?composer=${encodeURIComponent(composer.value)}&work=${encodeURIComponent(work.value)}`;
+      url = `${apiUrl}/api/works?composer=${encodeURIComponent(composer.value)}&work=${encodeURIComponent(work.value)}`;
     } else {
-      url = `http://localhost:3001/api/works?composer=${encodeURIComponent(composer.value)}`;
+      url = `${apiUrl}/api/works?composer=${encodeURIComponent(composer.value)}`;
     }
     const res = await fetch(url);
     if (!res.ok) throw new Error('Ошибка запроса: ' + res.status);
