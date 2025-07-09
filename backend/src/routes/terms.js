@@ -21,8 +21,8 @@ router.get('/search', async (req, res) => {
     const likeQuery = `%${q}%`;
     const [rows] = await pool.query(
       `SELECT term, description FROM terms 
-       WHERE term LIKE ? OR description LIKE ?`,
-      [likeQuery, likeQuery]
+       WHERE term LIKE ?`,
+      [likeQuery]
     );
     res.json(rows);
   } catch (err) {
