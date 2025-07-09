@@ -1,6 +1,3 @@
----
-alwaysApply: true
----
 <a name="3"></a>
 
 
@@ -28,7 +25,7 @@ alwaysApply: true
 | id          | INTEGER | PRIMARY KEY AUTOINCREMENT|
 | name        | TEXT    | Название произведения   |
 | composer_id | INTEGER | Внешний ключ на composer|
-### Таблица `files` (FTS5)
+### Таблица `files`
 | Поле          | Тип     | Описание                |
 |---------------|---------|-------------------------|
 | path          | TEXT    | Путь к файлу на WebDAV  |
@@ -74,9 +71,9 @@ WHERE c.name = 'Jazz';
 ```sql
 SELECT description FROM terms WHERE term LIKE '%Adagio%';
 ```
-### Полнотекстовый поиск по файлам (например, все файлы с "Mozart" в пути)
+### Поиск по файлам (например, все файлы с "Mozart" в пути)
 ```sql
-SELECT path FROM files WHERE files MATCH 'Mozart';
+SELECT path FROM files WHERE path LIKE '%Mozart%';
 ```
 ### Получить все термины и их описания
 ```sql
@@ -101,5 +98,8 @@ WHERE c.name = 'Beethoven' AND cat.name = 'Пьесы';
 ```
 Этот запрос вернёт только те произведения композитора, которые встречаются в указанной категории.
 ---
+
+
+
 
 

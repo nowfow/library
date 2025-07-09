@@ -1,4 +1,5 @@
 node_modules/
+terms & thumbnails/
 .env
 dist/
 *.log
@@ -7,3 +8,5 @@ passwords.mdc
 /dist
 package-lock.json
 package-lock.json
+script/
+/script

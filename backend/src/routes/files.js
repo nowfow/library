@@ -1,6 +1,8 @@
 import express from 'express';
 import { downloadFile, listFiles } from '../webdav-client.js';
 import { pool } from '../db.js';
+import path from 'path';
+import mime from 'mime-types'; // npm install mime-types
 
 const router = express.Router();
 
@@ -26,7 +28,7 @@ router.get('/thumbnail', async (req, res) => {
   }
 });
 
-// Получить PDF-файл по pdf_path
+// Получить файл по pdf_path (универсально для pdf, mp3, sib, mus и др.)
 router.get('/pdf', async (req, res) => {
   const { pdf_path } = req.query;
   if (!pdf_path) {
@@ -34,11 +36,13 @@ router.get('/pdf', async (req, res) => {
   }
   try {
     let decodedPath = decodeURIComponent(pdf_path);
-    decodedPath = '/' + decodedPath.replace(/^\/+/, '');
+    decodedPath = '/' + decodedPath.replace(/^\/+/,'');
+    const filename = decodeURIComponent(path.basename(decodedPath));
+    const contentType = mime.lookup(filename) || 'application/octet-stream';
     try {
       const fileBuffer = await downloadFile(decodedPath);
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', 'attachment; filename="score.pdf"');
+      res.setHeader('Content-Type', contentType);
+      res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(filename)}`);
       return res.send(fileBuffer);
     } catch (err1) {
       // Если 403, пробуем без ведущего слэша
@@ -46,18 +50,18 @@ router.get('/pdf', async (req, res) => {
         const altPath = decodedPath.replace(/^\//, '');
         try {
           const fileBuffer = await downloadFile(altPath);
-          res.setHeader('Content-Type', 'application/pdf');
-          res.setHeader('Content-Disposition', 'attachment; filename="score.pdf"');
+          res.setHeader('Content-Type', contentType);
+          res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(filename)}`);
           return res.send(fileBuffer);
         } catch (err2) {
-          return res.status(500).json({ error: 'Ошибка получения PDF-файла', details: err2.message, tried: [decodedPath, altPath] });
+          return res.status(500).json({ error: 'Ошибка получения файла', details: err2.message, tried: [decodedPath, altPath] });
         }
       } else {
         throw err1;
       }
     }
   } catch (err) {
-    res.status(500).json({ error: 'Ошибка получения PDF-файла', details: err.message });
+    res.status(500).json({ error: 'Ошибка получения файла', details: err.message });
   }
 });
 

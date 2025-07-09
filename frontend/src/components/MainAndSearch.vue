@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pl-2 md:pl-0 mt-4 md:mt-8 md:ml-56">
     <h2 class="text-xl font-semibold mb-4">Поиск</h2>
     <div class="mb-2 flex gap-4 items-center">
       <label class="flex items-center gap-2">
@@ -22,25 +22,30 @@
     <div v-else-if="works.length === 0" class="text-gray-400">Нет данных</div>
     <div v-else class="flex gap-4 overflow-x-auto py-2">
       <div v-for="work in works" :key="work.title" class="bg-white rounded shadow p-2 min-w-[200px] flex flex-col items-center">
-        <img
-          :src="`${apiUrl}/api/files/thumbnail?pdf_path=${encodeURIComponent(getApiPath(work.pdf_path))}`"
+        <LazyThumbnail
+          :api-url="apiUrl"
+          :pdf-path="getApiPath(work.pdf_path)"
+          endpoint="/api/files/thumbnail"
           alt="Миниатюра ноты"
-          class="w-32 h-40 object-cover mb-2"
-          loading="lazy"
         />
         <div class="font-bold">{{ work.title }}</div>
         <div class="text-sm text-gray-600">{{ work.composer }}</div>
-        <a
-          :href="`${apiUrl}/api/files/pdf?pdf_path=${encodeURIComponent(getApiPath(work.pdf_path))}`"
-          target="_blank"
+        <div v-if="work.category || work.subcategory || work.subsubcategory" class="text-xs text-gray-500 mt-1 text-center">
+          <span v-if="work.category">{{ work.category }}</span>
+          <span v-if="work.subcategory"> &rarr; {{ work.subcategory }}</span>
+          <span v-if="work.subsubcategory"> &rarr; {{ work.subsubcategory }}</span>
+        </div>
+        <router-link
+          :to="{ name: 'WorkDetails', params: { composer: work.composer, work: work.title } }"
           class="mt-2 text-blue-600 underline"
-        >Открыть PDF</a>
+        >Открыть карточку</router-link>
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import { ref } from 'vue';
+import LazyThumbnail from './LazyThumbnail.vue';
 const composer = ref('Mozart');
 const work = ref('');
 const works = ref([]);

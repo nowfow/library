@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="md:ml-56 mt-4 md:mt-8">
     <h2 class="text-xl font-semibold mb-4">Музыкальные термины</h2>
     <form @submit.prevent="fetchTerms" class="mb-4 flex gap-2">
       <input v-model="query" placeholder="Поиск по термину..." class="border px-2 py-1 rounded w-64" />
