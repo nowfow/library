@@ -18,11 +18,11 @@ router.get('/search', async (req, res) => {
   const { q } = req.query;
   if (!q) return res.status(400).json({ error: 'Не указан поисковый запрос' });
   try {
-    // FTS-поиск только по term
+    const likeQuery = `%${q}%`;
     const [rows] = await pool.query(
       `SELECT term, description FROM terms 
-       WHERE MATCH(term) AGAINST (? IN NATURAL LANGUAGE MODE)`,
-      [q]
+       WHERE term LIKE ? OR description LIKE ?`,
+      [likeQuery, likeQuery]
     );
     res.json(rows);
   } catch (err) {

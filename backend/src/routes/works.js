@@ -10,28 +10,12 @@ router.get('/', async (req, res) => {
     let query = 'SELECT w.name AS title, c.name AS composer, f.path AS pdf_path FROM works w JOIN composers c ON w.composer_id = c.id JOIN files f ON f.work_id = w.id WHERE 1=1';
     const params = [];
     if (composer) {
-      const latinA = composer.replace(/^./, 'A');
-      const cyrillicA = composer.replace(/^./, 'А');
-      const latinLowerA = composer.replace(/^./, 'a');
-      const cyrillicLowerA = composer.replace(/^./, 'а');
-      query += ' AND (' +
-        'c.name LIKE ? COLLATE utf8mb4_unicode_ci OR ' +
-        'c.name LIKE ? COLLATE utf8mb4_unicode_ci OR ' +
-        'c.name LIKE ? COLLATE utf8mb4_unicode_ci OR ' +
-        'c.name LIKE ? COLLATE utf8mb4_unicode_ci)';
-      params.push(`%${latinA}%`, `%${cyrillicA}%`, `%${latinLowerA}%`, `%${cyrillicLowerA}%`);
+      query += ' AND c.name LIKE ? COLLATE utf8mb4_unicode_ci';
+      params.push(`%${composer}%`);
     }
     if (work) {
-      const latinA = work.replace(/^./, 'A');
-      const cyrillicA = work.replace(/^./, 'А');
-      const latinLowerA = work.replace(/^./, 'a');
-      const cyrillicLowerA = work.replace(/^./, 'а');
-      query += ' AND (' +
-        'w.name LIKE ? COLLATE utf8mb4_unicode_ci OR ' +
-        'w.name LIKE ? COLLATE utf8mb4_unicode_ci OR ' +
-        'w.name LIKE ? COLLATE utf8mb4_unicode_ci OR ' +
-        'w.name LIKE ? COLLATE utf8mb4_unicode_ci)';
-      params.push(`%${latinA}%`, `%${cyrillicA}%`, `%${latinLowerA}%`, `%${cyrillicLowerA}%`);
+      query += ' AND w.name LIKE ? COLLATE utf8mb4_unicode_ci';
+      params.push(`%${work}%`);
     }
     query += ' ORDER BY c.name, w.name';
     const [rows] = await pool.query(query, params);
