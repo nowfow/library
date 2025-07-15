@@ -7,6 +7,10 @@ import MainAndSearch from './components/MainAndSearch.vue';
 import WorkDetails from './components/WorkDetails.vue';
 import TermsPage from './components/TermsPage.vue';
 import CloudFiles from './components/CloudFiles.vue';
+import LoginRegister from './components/LoginRegister.vue';
+import CollectionsPage from './components/CollectionsPage.vue';
+import CollectionItems from './components/CollectionItems.vue';
+import { isAuthenticated } from './services/auth.js';
 
 const routes = [
   {
@@ -28,12 +32,38 @@ const routes = [
     path: '/cloud',
     name: 'CloudFiles',
     component: CloudFiles
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginRegister
+  },
+  {
+    path: '/collections',
+    name: 'Collections',
+    component: CollectionsPage,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/collections/:id',
+    name: 'CollectionItems',
+    component: CollectionItems,
+    meta: { requiresAuth: true },
+    props: route => ({ collection: { id: Number(route.params.id), name: '' } })
   }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !isAuthenticated()) {
+    next({ name: 'Login' });
+  } else {
+    next();
+  }
 });
 
 const app = createApp(App);

@@ -1,5 +1,5 @@
 import express from 'express';
-import { pool } from '../db.js';
+import pool from '../db.js';
 import { downloadFile } from '../webdav-client.js';
 import axios from 'axios';
 import fs from 'fs';
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
   try {
     // ВРЕМЕННОЕ ЛОГИРОВАНИЕ
     console.log('[API /api/works] params:', { composer, work });
-    let query = `SELECT w.name AS title, c.name AS composer, f.path AS pdf_path,
+    let query = `SELECT w.id AS work_id, w.name AS title, c.name AS composer, f.path AS pdf_path,
       categories.name AS category,
       subcategories.name AS subcategory,
       subsubcategories.name AS subsubcategory

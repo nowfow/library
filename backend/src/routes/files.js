@@ -1,6 +1,6 @@
 import express from 'express';
 import { downloadFile, listFiles } from '../webdav-client.js';
-import { pool } from '../db.js';
+import pool from '../db.js';
 import path from 'path';
 import mime from 'mime-types'; // npm install mime-types
 

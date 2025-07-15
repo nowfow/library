@@ -1,24 +1,49 @@
 <template>
-  <nav class="hidden md:flex flex-col w-48 h-screen bg-white border-r shadow-md py-6 px-2 fixed top-0 left-0 z-40">
-    <router-link to="/" class="flex items-center gap-3 px-3 py-2 rounded mb-2" :class="isActive('/')">
-      <span class="text-2xl">🎼</span>
-      <span class="font-medium">Поиск</span>
-    </router-link>
-    <router-link to="/terms" class="flex items-center gap-3 px-3 py-2 rounded mb-2" :class="isActive('/terms')">
-      <span class="text-2xl">📖</span>
-      <span class="font-medium">Термины</span>
-    </router-link>
-    <router-link to="/cloud" class="flex items-center gap-3 px-3 py-2 rounded mb-2" :class="isActive('/cloud')">
-      <span class="text-2xl">☁️</span>
-      <span class="font-medium">Хранилище</span>
-    </router-link>
+  <nav class="fixed left-0 top-0 h-full w-48 bg-gray-100 p-4 flex flex-col gap-4 shadow">
+    <router-link to="/">Поиск нот</router-link>
+    <router-link to="/terms">Термины</router-link>
+    <router-link to="/cloud">Файлы</router-link>
+    <router-link v-if="isAuth" to="/collections">Мои коллекции</router-link>
+    <div v-if="isAuth" class="text-xs text-gray-500 mb-2">{{ userEmail }}</div>
+    <button v-if="isAuth" @click="logoutAndGo" class="text-red-600 text-left">Выйти</button>
+    <router-link v-else to="/login">Вход / Регистрация</router-link>
   </nav>
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
-const route = useRoute();
-function isActive(path) {
-  return route.path === path ? 'bg-blue-50 text-blue-700 font-bold' : 'text-gray-700 hover:bg-gray-100';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { isAuthenticated, logout, getToken } from '../services/auth.js';
+
+function parseJwt(token) {
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch {
+    return {};
+  }
+}
+
+const router = useRouter();
+const isAuth = ref(isAuthenticated());
+const userEmail = ref('');
+
+function updateUser() {
+  isAuth.value = isAuthenticated();
+  if (isAuth.value) {
+    const token = getToken();
+    const payload = parseJwt(token);
+    userEmail.value = payload.email || '';
+  } else {
+    userEmail.value = '';
+  }
+}
+
+router.afterEach(updateUser);
+updateUser();
+
+function logoutAndGo() {
+  logout();
+  updateUser();
+  router.push('/login');
 }
 </script> 

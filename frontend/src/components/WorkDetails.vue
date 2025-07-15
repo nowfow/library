@@ -5,6 +5,7 @@
       Назад
     </button>
     <h1 class="text-2xl font-bold mb-2">{{ workTitle }}<span v-if="composer"> — {{ composer }}</span></h1>
+    <button v-if="isAuthenticated()" class="mb-4 btn" @click="openAddModal">Добавить в коллекцию</button>
     <div v-if="isSingleFile">
       <div class="flex items-center justify-between py-4">
         <span class="truncate max-w-xs">{{ workTitle }}</span>
@@ -47,14 +48,33 @@
         <div v-if="files.length === 0" class="text-gray-500 mt-4">Нет файлов нот для этого произведения.</div>
       </div>
     </template>
+    <!-- Модалка выбора коллекции -->
+    <div v-if="showAddModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+      <div class="bg-white rounded shadow p-6 w-full max-w-xs relative">
+        <button class="absolute top-2 right-2 text-gray-400 hover:text-black" @click="showAddModal = false">✕</button>
+        <h3 class="text-lg font-bold mb-2">Добавить в коллекцию</h3>
+        <div v-if="collections.length === 0" class="text-gray-500 mb-2">Нет коллекций</div>
+        <div v-else>
+          <select v-model="selectedCollectionId" class="input w-full mb-2">
+            <option disabled value="">Выберите коллекцию</option>
+            <option v-for="col in collections" :key="col.id" :value="col.id">{{ col.name }}</option>
+          </select>
+          <button class="btn w-full" :disabled="!selectedCollectionId || addLoading" @click="addToCollection">Добавить</button>
+        </div>
+        <div v-if="addError" class="text-red-500 mt-2">{{ addError }}</div>
+        <div v-if="addSuccess" class="text-green-600 mt-2">{{ addSuccess }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import LazyThumbnail from './LazyThumbnail.vue';
+import { isAuthenticated } from '../services/auth.js';
+import { getCollections, addItemToCollection } from '../services/collections.js';
 
 const apiUrl = import.meta.env.VITE_API_URL || '';
 
@@ -66,6 +86,14 @@ const workTitle = route.params.work;
 const files = ref([]);
 const isLoading = ref(true);
 const error = ref('');
+
+const showAddModal = ref(false);
+const collections = ref([]);
+const addError = ref('');
+const addSuccess = ref('');
+const addLoading = ref(false);
+const selectedCollectionId = ref(null);
+const showToast = inject('showToast');
 
 const isSingleFile = computed(() => workTitle && workTitle.toLowerCase().endsWith('.pdf'));
 
@@ -79,6 +107,43 @@ function goBack() {
   router.back();
 }
 
+function openAddModal() {
+  showAddModal.value = true;
+  addError.value = '';
+  addSuccess.value = '';
+  selectedCollectionId.value = null;
+  loadCollections();
+}
+
+async function loadCollections() {
+  try {
+    const res = await getCollections();
+    collections.value = res.data;
+  } catch (e) {
+    collections.value = [];
+  }
+}
+
+async function addToCollection() {
+  if (!selectedCollectionId.value) return;
+  addLoading.value = true;
+  addError.value = '';
+  addSuccess.value = '';
+  try {
+    const workId = files.value[0]?.work_id;
+    if (!workId) throw new Error('work_id не найден');
+    await addItemToCollection(selectedCollectionId.value, workId);
+    addSuccess.value = 'Добавлено!';
+    showToast && showToast('Добавлено в коллекцию!');
+    setTimeout(() => { showAddModal.value = false; }, 1000);
+  } catch (e) {
+    addError.value = e.response?.data?.message || 'Ошибка';
+    showToast && showToast(addError.value, 3000);
+  } finally {
+    addLoading.value = false;
+  }
+}
+
 onMounted(async () => {
   if (isSingleFile.value) {
     isLoading.value = false;
@@ -90,13 +155,10 @@ onMounted(async () => {
     const { data } = await axios.get(`${apiUrl}/api/works/files`, {
       params: { composer, work: workTitle }
     });
-    console.log('API /api/works/files data:', data);
     files.value = data;
-    // Не показываем ошибку, если просто нет файлов
   } catch (e) {
     error.value = 'Ошибка загрузки данных о произведении или файлах.';
     files.value = [];
-    console.error('API /api/works/files error:', e);
   } finally {
     isLoading.value = false;
   }
@@ -108,5 +170,11 @@ onMounted(async () => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.btn {
+  @apply bg-blue-600 text-white rounded px-4 py-2 font-bold hover:bg-blue-700 transition;
+}
+.input {
+  @apply border rounded px-3 py-2;
 }
 </style> 

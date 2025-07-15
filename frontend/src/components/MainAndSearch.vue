@@ -39,13 +39,40 @@
           :to="{ name: 'WorkDetails', params: { composer: work.composer, work: work.title } }"
           class="mt-2 text-blue-600 underline"
         >Открыть карточку</router-link>
+        <button
+          v-if="isAuthenticated()"
+          class="mt-2 btn"
+          @click="openAddModal(work)"
+        >Добавить в коллекцию</button>
       </div>
     </div>
   </div>
+
+  <!-- Модалка выбора коллекции -->
+  <div v-if="showAddModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+    <div class="bg-white rounded shadow p-6 w-full max-w-xs relative">
+      <button class="absolute top-2 right-2 text-gray-400 hover:text-black" @click="showAddModal = false">✕</button>
+      <h3 class="text-lg font-bold mb-2">Добавить в коллекцию</h3>
+      <div v-if="collections.length === 0" class="text-gray-500 mb-2">Нет коллекций</div>
+      <div v-else>
+        <select v-model="selectedCollectionId" class="input w-full mb-2">
+          <option disabled value="">Выберите коллекцию</option>
+          <option v-for="col in collections" :key="col.id" :value="col.id">{{ col.name }}</option>
+        </select>
+        <button class="btn w-full" :disabled="!selectedCollectionId || addLoading" @click="addToCollection">Добавить</button>
+      </div>
+      <div v-if="addError" class="text-red-500 mt-2">{{ addError }}</div>
+      <div v-if="addSuccess" class="text-green-600 mt-2">{{ addSuccess }}</div>
+    </div>
+  </div>
 </template>
+
 <script setup>
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import LazyThumbnail from './LazyThumbnail.vue';
+import { isAuthenticated } from '../services/auth.js';
+import { getCollections, addItemToCollection } from '../services/collections.js';
+
 const composer = ref('Mozart');
 const work = ref('');
 const works = ref([]);
@@ -54,8 +81,16 @@ const error = ref('');
 const advanced = ref(false);
 const apiUrl = import.meta.env.VITE_API_URL || '';
 
+const showAddModal = ref(false);
+const selectedWork = ref(null);
+const collections = ref([]);
+const addError = ref('');
+const addSuccess = ref('');
+const addLoading = ref(false);
+const selectedCollectionId = ref(null);
+const showToast = inject('showToast');
+
 function getApiPath(fullPath) {
-  // Удаляем домен, все ведущие слэши, добавляем один
   return '/' + fullPath.replace(/^https?:\/\/[^/]+/, '').replace(/^\/+/, '');
 }
 
@@ -79,4 +114,49 @@ async function fetchWorks() {
     loading.value = false;
   }
 }
-</script> 
+
+function openAddModal(work) {
+  selectedWork.value = work;
+  showAddModal.value = true;
+  addError.value = '';
+  addSuccess.value = '';
+  selectedCollectionId.value = null;
+  loadCollections();
+}
+
+async function loadCollections() {
+  try {
+    const res = await getCollections();
+    collections.value = res.data;
+  } catch (e) {
+    collections.value = [];
+  }
+}
+
+async function addToCollection() {
+  if (!selectedCollectionId.value) return;
+  addLoading.value = true;
+  addError.value = '';
+  addSuccess.value = '';
+  try {
+    await addItemToCollection(selectedCollectionId.value, selectedWork.value.work_id);
+    addSuccess.value = 'Добавлено!';
+    showToast && showToast('Добавлено в коллекцию!');
+    setTimeout(() => { showAddModal.value = false; }, 1000);
+  } catch (e) {
+    addError.value = e.response?.data?.message || 'Ошибка';
+    showToast && showToast(addError.value, 3000);
+  } finally {
+    addLoading.value = false;
+  }
+}
+</script>
+
+<style scoped>
+.input {
+  @apply border rounded px-3 py-2;
+}
+.btn {
+  @apply bg-blue-600 text-white rounded px-4 py-2 font-bold hover:bg-blue-700 transition;
+}
+</style> 
