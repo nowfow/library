@@ -34,10 +34,11 @@ async function handleSubmit() {
   try {
     if (isLogin.value) {
       await login(email.value, password.value);
-      emit('auth-success');
+      window.location.reload(); // Перезагрузка страницы после входа
     } else {
       await register(email.value, password.value);
       isLogin.value = true;
+      window.location.reload(); // Перезагрузка после регистрации
     }
   } catch (e) {
     error.value = e.response?.data?.message || 'Ошибка';
