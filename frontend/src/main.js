@@ -97,6 +97,12 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+// Пинг для предотвращения засыпания backend
+const apiUrl = import.meta.env.VITE_API_URL || '';
+setInterval(() => {
+  fetch(`${apiUrl}/api/terms`).catch(() => {});
+}, 60000);
+
 const app = createApp(App);
 app.use(router);
 app.use(vuetify);
