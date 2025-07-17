@@ -10,7 +10,11 @@
     </router-link>
     <router-link to="/cloud" class="flex flex-col items-center flex-1 py-1" :class="isActive('/cloud')">
       <span class="text-xl">☁️</span>
-      <span class="text-xs block">Хранилище</span>
+      <span class="text-xs block">Файлы</span>
+    </router-link>
+    <router-link to="/collections" class="flex flex-col items-center flex-1 py-1" :class="isActive('/collections')">
+      <span class="text-xl">📚</span>
+      <span class="text-xs block">Коллекции</span>
     </router-link>
   </nav>
 </template>

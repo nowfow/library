@@ -12,6 +12,37 @@ import CollectionsPage from './components/CollectionsPage.vue';
 import CollectionItems from './components/CollectionItems.vue';
 import { isAuthenticated } from './services/auth.js';
 
+// Vuetify
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
+import '@mdi/font/css/materialdesignicons.css';
+
+const vuetify = createVuetify({
+  components,
+  directives,
+  theme: {
+    defaultTheme: 'myTheme',
+    themes: {
+      myTheme: {
+        dark: false,
+        colors: {
+          primary: '#2563eb',
+          secondary: '#f3f4f6',
+          surface: '#fff',
+          background: '#f3f4f6',
+          error: '#b00020',
+          success: '#4caf50',
+        },
+      },
+    },
+  },
+  icons: {
+    defaultSet: 'mdi',
+  },
+});
+
 const routes = [
   {
     path: '/',
@@ -68,4 +99,5 @@ router.beforeEach((to, from, next) => {
 
 const app = createApp(App);
 app.use(router);
+app.use(vuetify);
 app.mount('#app'); 

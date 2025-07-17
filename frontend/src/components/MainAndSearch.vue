@@ -150,7 +150,7 @@ async function addToCollection() {
     addLoading.value = false;
   }
 }
-</script>
+</script> 
 
 <style scoped>
 .input {

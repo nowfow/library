@@ -2,7 +2,9 @@
   <div class="md:pl-48">
     <SideNav />
     <router-view />
-    <BottomNav />
+    <div class="md:hidden">
+      <BottomNav />
+    </div>
   </div>
 </template>
 

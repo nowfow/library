@@ -23,7 +23,7 @@ fi
 echo "✅ Node.js и npm найдены"
 
 # Функция для очистки при выходе
-cleanup() {
+cleanup() {1.
     echo ""
     echo "🛑 Остановка всех процессов..."
     kill $FRONTEND_PID $BACKEND_PID 2>/dev/null || true
