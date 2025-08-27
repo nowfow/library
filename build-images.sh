@@ -11,7 +11,7 @@ cd ..
 # Сборка frontend образа
 echo "Building frontend image..."
 cd frontend
-docker build -t library-frontend:latest .
+docker build --no-cache -t library-frontend:latest .
 cd ..
 
 echo "All images built successfully!"
