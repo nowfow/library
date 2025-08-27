@@ -10,7 +10,7 @@
       <div class="flex items-center justify-between py-4">
         <span class="truncate max-w-xs">{{ workTitle }}</span>
         <a
-          :href="`${apiUrl}/api/works/download?path=${encodeURIComponent(workTitle)}`"
+          :href="`/api/works/download?path=${encodeURIComponent(workTitle)}`"
           class="text-blue-600 hover:underline px-2 py-1 rounded hover:bg-blue-50 transition"
           download
         >
@@ -24,7 +24,6 @@
       <div v-else-if="!isLoading">
         <div v-if="files.length > 0" class="mb-4 flex justify-center">
           <LazyThumbnail
-            :api-url="apiUrl"
             :pdf-path="files[0].pdf_path"
             endpoint="/api/works/thumbnail"
             alt="Миниатюра"
@@ -37,7 +36,7 @@
               <span class="truncate max-w-xs">{{ getFileName(file.pdf_path) }}</span>
             </div>
             <a
-              :href="`${apiUrl}/api/works/download?path=${encodeURIComponent(file.pdf_path)}`"
+              :href="`/api/works/download?path=${encodeURIComponent(file.pdf_path)}`"
               class="text-blue-600 hover:underline px-2 py-1 rounded hover:bg-blue-50 transition"
               download
             >
@@ -75,8 +74,6 @@ import axios from 'axios';
 import LazyThumbnail from './LazyThumbnail.vue';
 import { isAuthenticated } from '../services/auth.js';
 import { getCollections, addItemToCollection } from '../services/collections.js';
-
-const apiUrl = import.meta.env.VITE_API_URL || '';
 
 const route = useRoute();
 const router = useRouter();
@@ -152,7 +149,7 @@ onMounted(async () => {
   isLoading.value = true;
   error.value = '';
   try {
-    const { data } = await axios.get(`${apiUrl}/api/works/files`, {
+    const { data } = await axios.get(`/api/works/files`, {
       params: { composer, work: workTitle }
     });
     files.value = data;
@@ -176,5 +173,4 @@ onMounted(async () => {
 }
 .input {
   @apply border rounded px-3 py-2;
-}
-</style> 
+}</style> 
