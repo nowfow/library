@@ -3,8 +3,9 @@
 echo "Starting Docker containers..."
 
 # Создаем сеть для контейнеров
-echo "Creating Docker network..."
-docker network create library-network 2>/dev/null || echo "Network already exists"
+echo "Ensuring Docker network 'library-network' is ready..."
+docker network rm library-network 2>/dev/null || true # Удаляем сеть, если она существует, игнорируем ошибки
+docker network create library-network # Создаем сеть
 
 # Запускаем backend контейнер
 echo "Starting backend container..."
