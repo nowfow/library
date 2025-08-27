@@ -19,6 +19,7 @@ import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import axios from 'axios';
 
 const props = defineProps({
+  apiUrl: { type: String, required: true },
   pdfPath: { type: String, required: true },
   alt: { type: String, default: 'Миниатюра' },
   endpoint: { type: String, default: '/api/files/thumbnail' }, // или /api/works/thumbnail
@@ -34,7 +35,7 @@ let observer = null;
 function fetchThumbnail() {
   isLoading.value = true;
   error.value = '';
-  axios.get(props.endpoint, {
+  axios.get(`${props.apiUrl}${props.endpoint}`, {
     params: { pdf_path: props.pdfPath },
     responseType: 'blob'
   })

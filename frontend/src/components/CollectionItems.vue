@@ -6,6 +6,7 @@
     <div v-else class="grid gap-4 grid-cols-1 md:grid-cols-2">
       <div v-for="item in items" :key="item.id" class="bg-white rounded shadow p-2 flex flex-col items-center relative">
         <LazyThumbnail
+          :api-url="apiUrl"
           :pdf-path="item.pdf_path"
           endpoint="/api/files/thumbnail"
           alt="Миниатюра ноты"
@@ -49,7 +50,7 @@ async function load() {
     // Для каждого item получаем pdf_path и категории через API /api/works?composer=...&work=...
     const enriched = await Promise.all(res.data.map(async (item) => {
       try {
-        const { data } = await axios.get(`/api/works`, {
+        const { data } = await axios.get('/api/works', {
           params: { composer: item.composer, work: item.title }
         });
         // Берём первый результат (точное совпадение)

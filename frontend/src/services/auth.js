@@ -1,28 +1,18 @@
 import axios from 'axios';
 
+const apiUrl = import.meta.env.VITE_API_URL || '';
 const TOKEN_KEY = 'auth_token';
 
 export async function register(email, password) {
-  try {
-    const response = await axios.post('/api/auth/register', { email, password });
-    return response.data;
-  } catch (error) {
-    console.error('Error during registration:', error);
-    throw error;
-  }
+  return axios.post(`${apiUrl}/api/auth/register`, { email, password });
 }
 
 export async function login(email, password) {
-  try {
-    const res = await axios.post('/api/auth/login', { email, password });
-    if (res.data.token) {
-      localStorage.setItem(TOKEN_KEY, res.data.token);
-    }
-    return res.data;
-  } catch (error) {
-    console.error('Error during login:', error);
-    throw error;
+  const res = await axios.post(`${apiUrl}/api/auth/login`, { email, password });
+  if (res.data.token) {
+    localStorage.setItem(TOKEN_KEY, res.data.token);
   }
+  return res;
 }
 
 export function logout() {

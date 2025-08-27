@@ -23,7 +23,8 @@
     <div v-else class="flex gap-4 overflow-x-auto py-2">
       <div v-for="work in works" :key="work.title" class="bg-white rounded shadow p-2 min-w-[200px] flex flex-col items-center">
         <LazyThumbnail
-          :pdf-path="work.pdf_path"
+          :api-url="apiUrl"
+          :pdf-path="getApiPath(work.pdf_path)"
           endpoint="/api/files/thumbnail"
           alt="Миниатюра ноты"
         />
@@ -78,6 +79,7 @@ const works = ref([]);
 const loading = ref(false);
 const error = ref('');
 const advanced = ref(false);
+const apiUrl = import.meta.env.VITE_API_URL || '';
 
 const showAddModal = ref(false);
 const selectedWork = ref(null);
@@ -88,6 +90,10 @@ const addLoading = ref(false);
 const selectedCollectionId = ref(null);
 const showToast = inject('showToast');
 
+function getApiPath(fullPath) {
+  return '/' + fullPath.replace(/^https?:\/\/[^/]+/, '').replace(/^\/+/, '');
+}
+
 async function fetchWorks() {
   loading.value = true;
   error.value = '';
@@ -95,9 +101,9 @@ async function fetchWorks() {
   try {
     let url = '';
     if (advanced.value) {
-      url = `/api/works?composer=${encodeURIComponent(composer.value)}&work=${encodeURIComponent(work.value)}`;
+      url = `${apiUrl}/api/works?composer=${encodeURIComponent(composer.value)}&work=${encodeURIComponent(work.value)}`;
     } else {
-      url = `/api/works?composer=${encodeURIComponent(composer.value)}`;
+      url = `${apiUrl}/api/works?composer=${encodeURIComponent(composer.value)}`;
     }
     const res = await fetch(url);
     if (!res.ok) throw new Error('Ошибка запроса: ' + res.status);
@@ -144,7 +150,7 @@ async function addToCollection() {
     addLoading.value = false;
   }
 }
-</script>
+</script> 
 
 <style scoped>
 .input {

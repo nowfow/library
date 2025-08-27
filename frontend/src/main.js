@@ -97,9 +97,6 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-// Пинг для предотвращения засыпания backend
-// Удален, так как backend и frontend теперь в Docker и проксируется Nginx.
-
 const app = createApp(App);
 app.use(router);
 app.use(vuetify);
