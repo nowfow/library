@@ -14,7 +14,7 @@ docker run -d \
   --network library-network \
   --restart unless-stopped \
   -p 3000:3000 \
-  -e NODE_ENV=production \
+  --env-file ./backend/.env \
   library-backend:latest
 
 # Запускаем frontend контейнер
