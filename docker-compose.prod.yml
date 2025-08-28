@@ -1,0 +1,70 @@
+version: '3.8'
+
+# Production overrides for Music Library
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  backend:
+    environment:
+      NODE_ENV: production
+      DB_PASSWORD_FILE: /run/secrets/db_password
+      WEBDAV_PASSWORD_FILE: /run/secrets/webdav_password
+    secrets:
+      - db_password
+      - webdav_password
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+  frontend:
+    ports:
+      - "443:443"  # HTTPS support
+    volumes:
+      - ./ssl:/etc/nginx/ssl:ro  # SSL certificates
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.25'
+
+  telegram-bot:
+    environment:
+      NODE_ENV: production
+      BOT_TOKEN_FILE: /run/secrets/bot_token
+      DB_PASSWORD_FILE: /run/secrets/db_password
+      WEBDAV_PASSWORD_FILE: /run/secrets/webdav_password
+    secrets:
+      - bot_token
+      - db_password
+      - webdav_password
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.25'
+        reservations:
+          memory: 128M
+          cpus: '0.1'
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+  webdav_password:
+    file: ./secrets/webdav_password.txt
+  bot_token:
+    file: ./secrets/bot_token.txt
