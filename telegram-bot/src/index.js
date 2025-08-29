@@ -22,54 +22,75 @@ if (!BOT_TOKEN) {
 // Create bot instance
 const bot = new Telegraf(BOT_TOKEN);
 
-// Session middleware for navigation state
-bot.use(session({
-  defaultSession: () => ({
-    currentPath: '/',
-    searchResults: [],
-    currentPage: 0,
-    searchType: null,
-    searchQuery: ''
-  })
-}));
+// Session middleware for navigation state (simplified)
+bot.use(session());
 
 // Error handling middleware
 bot.catch(errorHandler);
 
-// Commands
-bot.command('start', startCommand);
-bot.command('help', helpCommand);
-bot.command('stats', statsCommand);
+// Add debugging middleware
+bot.use(async (ctx, next) => {
+  console.log('Received update:', {
+    type: ctx.updateType,
+    message: ctx.message?.text,
+    from: ctx.from?.first_name
+  });
+  await next();
+});
 
-// Main menu callback
-bot.action(/^main:/, async (ctx) => {
+// Commands with direct error handling
+bot.command('start', async (ctx) => {
+  console.log('Start command received from:', ctx.from?.first_name);
   try {
-    const callbackData = JSON.parse(ctx.callbackQuery.data.replace('main:', ''));
-    if (callbackData.t === 'menu') {
-      await mainMenuCallback(ctx);
-    }
-    await ctx.answerCbQuery();
+    await ctx.reply('🎵 Музыкальная библиотека запущена!\n\nИспользуйте /test для проверки.');
   } catch (error) {
-    console.error('Main menu callback error:', error);
-    await ctx.answerCbQuery('Ошибка обработки команды');
+    console.error('Error in start command:', error);
+  }
+});
+bot.command('help', async (ctx) => {
+  console.log('Help command received from:', ctx.from?.first_name);
+  try {
+    await ctx.reply('🆘 Помощь\n\nДоступные команды:\n/start - начало работы\n/test - тест работы\n/help - эта справка');
+  } catch (error) {
+    console.error('Error in help command:', error);
+  }
+});
+bot.command('stats', async (ctx) => {
+  console.log('Stats command received from:', ctx.from?.first_name);
+  try {
+    await ctx.reply('📊 Статистика\n\nБот работает нормально.');
+  } catch (error) {
+    console.error('Error in stats command:', error);
   }
 });
 
+// Search commands (temporarily disabled for debugging)
+// searchCommands(bot);
 
+// Add a simple test command
+bot.command('test', async (ctx) => {
+  console.log('Test command received!');
+  try {
+    await ctx.reply('✅ Bot is working! Test command successful.');
+  } catch (error) {
+    console.error('Error in test command:', error);
+  }
+});
 
-// Search commands
-searchCommands(bot);
-
-// Callback query handlers for navigation
-fileNavigation(bot);
-searchHandlers(bot);
+// Callback query handlers for navigation (temporarily disabled for debugging)
+// fileNavigation(bot);
+// searchHandlers(bot);
 
 // Text message handlers
 bot.on(message('text'), async (ctx) => {
   const text = ctx.message.text;
+  console.log('Text message received:', text, 'from:', ctx.from?.first_name);
   
   // Skip commands
-  if (text.startsWith('/')) return;
+  if (text.startsWith('/')) {
+    console.log('Command detected, should be handled by command handler');
+    return;
+  }
   
   // Treat regular text as search query
   await ctx.reply(
@@ -85,25 +106,32 @@ bot.on(message('text'), async (ctx) => {
 // Launch bot
 async function startBot() {
   console.log('🤖 Starting Music Library Telegram Bot...');
+  console.log('🔑 BOT_TOKEN length:', BOT_TOKEN ? BOT_TOKEN.length : 'undefined');
+  console.log('🔑 BOT_TOKEN starts with:', BOT_TOKEN ? BOT_TOKEN.substring(0, 10) + '...' : 'undefined');
 
-  // Test database connection
-  const dbConnected = await testDatabaseConnection();
+  // Test database connection (temporarily disabled for debugging)
+  console.log('💾 Skipping database connection test for debugging...');
+  const dbConnected = false;
+  // const dbConnected = await testDatabaseConnection();
   if (!dbConnected) {
-    console.warn('⚠️  Database connection failed, some features may not work properly');
+    console.warn('⚠️  Database connection skipped for debugging');
+  } else {
+    console.log('✅ Database connection successful');
   }
 
-  bot.launch({
-    dropPendingUpdates: true
-  }).then(() => {
+  console.log('🚀 Launching bot...');
+  try {
+    await bot.launch({
+      dropPendingUpdates: true
+    });
     console.log('✅ Bot started successfully!');
     console.log('🎵 Ready to help users search music library');
-    if (dbConnected) {
-      console.log('💾 Database connection: OK');
-    }
-  }).catch((error) => {
-    console.error('❌ Failed to start bot:', error);
+    console.log('💾 Database connection:', dbConnected ? 'OK' : 'FAILED');
+  } catch (error) {
+    console.error('❌ Failed to start bot:', error.message);
+    console.error('Error details:', error);
     process.exit(1);
-  });
+  }
 }
 
 startBot();
