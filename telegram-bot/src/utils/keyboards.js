@@ -68,13 +68,10 @@ export function createSearchResultsKeyboard(results, pagination, actionPrefix) {
   results.forEach((result, index) => {
     const globalIndex = pagination.currentPage * 10 + index;
     keyboard.push([
-      Markup.button.callback(
-        `${globalIndex + 1}. ${truncateForButton(result.title || result.term || result.name)}`,
-        createCallbackData(actionPrefix, 'select', { 
-          index: globalIndex,
-          id: result.work_id || result.id || index 
-        })
-      )
+      {
+        text: `${globalIndex + 1}. ${truncateForButton(result.title || result.term || result.name)}`,
+        callback_data: `{"a":"${actionPrefix}","t":"select","index":${globalIndex},"id":${result.work_id || result.id || index}}`
+      }
     ]);
   });
   
@@ -83,28 +80,22 @@ export function createSearchResultsKeyboard(results, pagination, actionPrefix) {
     const navButtons = [];
     
     if (pagination.hasPrev) {
-      navButtons.push(
-        Markup.button.callback(
-          '⬅️ Пред.',
-          createCallbackData(actionPrefix, 'page', { page: pagination.currentPage - 1 })
-        )
-      );
+      navButtons.push({
+        text: '⬅️ Пред.',
+        callback_data: `{"a":"${actionPrefix}","t":"page","page":${pagination.currentPage - 1}}`
+      });
     }
     
-    navButtons.push(
-      Markup.button.callback(
-        `${pagination.currentPage + 1}/${pagination.totalPages}`,
-        createCallbackData(actionPrefix, 'noop', {})
-      )
-    );
+    navButtons.push({
+      text: `${pagination.currentPage + 1}/${pagination.totalPages}`,
+      callback_data: `{"a":"${actionPrefix}","t":"noop"}`
+    });
     
     if (pagination.hasNext) {
-      navButtons.push(
-        Markup.button.callback(
-          'След. ➡️',
-          createCallbackData(actionPrefix, 'page', { page: pagination.currentPage + 1 })
-        )
-      );
+      navButtons.push({
+        text: 'След. ➡️',
+        callback_data: `{"a":"${actionPrefix}","t":"page","page":${pagination.currentPage + 1}}`
+      });
     }
     
     keyboard.push(navButtons);
@@ -112,10 +103,10 @@ export function createSearchResultsKeyboard(results, pagination, actionPrefix) {
   
   // Back to search button
   keyboard.push([
-    Markup.button.callback('🔍 Новый поиск', createCallbackData('search', 'menu', {}))
+    { text: '🔍 Новый поиск', callback_data: '{"a":"search","t":"menu"}' }
   ]);
   
-  return Markup.inlineKeyboard(keyboard);
+  return { inline_keyboard: keyboard };
 }
 
 /**
@@ -132,10 +123,10 @@ export function createFileBrowserKeyboard(files, pagination, currentPath) {
   if (currentPath !== '/') {
     const parentPath = getParentPath(currentPath);
     keyboard.push([
-      Markup.button.callback(
-        '⬆️ Назад',
-        createCallbackData('browse', 'navigate', { path: parentPath })
-      )
+      {
+        text: '⬆️ Назад',
+        callback_data: `{"a":"browse","t":"navigate","path":"${parentPath}"}`
+      }
     ]);
   }
   
@@ -145,15 +136,15 @@ export function createFileBrowserKeyboard(files, pagination, currentPath) {
     const icon = file.type === 'directory' ? '📁' : getFileIcon(file);
     const name = truncateForButton(file.basename || file.name);
     
+    const callbackData = file.type === 'directory' 
+      ? `{"a":"browse","t":"navigate","path":"${file.filename}"}` 
+      : `{"a":"browse","t":"download","path":"${file.filename}","name":"${file.basename || file.name}"}`;
+    
     keyboard.push([
-      Markup.button.callback(
-        `${icon} ${name}`,
-        createCallbackData('browse', file.type === 'directory' ? 'navigate' : 'download', {
-          path: file.filename,
-          name: file.basename || file.name,
-          index: globalIndex
-        })
-      )
+      {
+        text: `${icon} ${name}`,
+        callback_data: callbackData
+      }
     ]);
   });
   
@@ -162,34 +153,22 @@ export function createFileBrowserKeyboard(files, pagination, currentPath) {
     const navButtons = [];
     
     if (pagination.hasPrev) {
-      navButtons.push(
-        Markup.button.callback(
-          '⬅️ Пред.',
-          createCallbackData('browse', 'page', { 
-            path: currentPath, 
-            page: pagination.currentPage - 1 
-          })
-        )
-      );
+      navButtons.push({
+        text: '⬅️ Пред.',
+        callback_data: `{"a":"browse","t":"page","path":"${currentPath}","page":${pagination.currentPage - 1}}`
+      });
     }
     
-    navButtons.push(
-      Markup.button.callback(
-        `${pagination.currentPage + 1}/${pagination.totalPages}`,
-        createCallbackData('browse', 'noop', {})
-      )
-    );
+    navButtons.push({
+      text: `${pagination.currentPage + 1}/${pagination.totalPages}`,
+      callback_data: `{"a":"browse","t":"noop"}`
+    });
     
     if (pagination.hasNext) {
-      navButtons.push(
-        Markup.button.callback(
-          'След. ➡️',
-          createCallbackData('browse', 'page', { 
-            path: currentPath, 
-            page: pagination.currentPage + 1 
-          })
-        )
-      );
+      navButtons.push({
+        text: 'След. ➡️',
+        callback_data: `{"a":"browse","t":"page","path":"${currentPath}","page":${pagination.currentPage + 1}}`
+      });
     }
     
     keyboard.push(navButtons);
@@ -197,10 +176,13 @@ export function createFileBrowserKeyboard(files, pagination, currentPath) {
   
   // Main menu button
   keyboard.push([
-    Markup.button.callback('🏠 Главное меню', createCallbackData('main', 'menu', {}))
+    {
+      text: '🏠 Главное меню',
+      callback_data: '{"a":"main","t":"menu"}'
+    }
   ]);
   
-  return Markup.inlineKeyboard(keyboard);
+  return { inline_keyboard: keyboard };
 }
 
 /**
@@ -208,16 +190,18 @@ export function createFileBrowserKeyboard(files, pagination, currentPath) {
  * @returns {Object} Inline keyboard markup
  */
 export function createMainMenuKeyboard() {
-  return Markup.inlineKeyboard([
-    [
-      Markup.button.callback('🔍 Поиск по композитору', createCallbackData('search', 'composer', {})),
-      Markup.button.callback('🎼 Поиск по произведению', createCallbackData('search', 'work', {}))
-    ],
-    [
-      Markup.button.callback('📚 Поиск терминов', createCallbackData('search', 'terms', {})),
-      Markup.button.callback('📁 Просмотр файлов', createCallbackData('browse', 'start', {}))
+  return {
+    inline_keyboard: [
+      [
+        { text: '🎵 По композитору', callback_data: '{"a":"search","t":"composer"}' },
+        { text: '🎼 По произведению', callback_data: '{"a":"search","t":"work"}' }
+      ],
+      [
+        { text: '📚 Музыкальные термины', callback_data: '{"a":"search","t":"terms"}' },
+        { text: '📁 Просмотр файлов', callback_data: '{"a":"browse","t":"start"}' }
+      ]
     ]
-  ]);
+  };
 }
 
 /**
@@ -234,24 +218,20 @@ export function createWorkDetailsKeyboard(work, files = []) {
     files.forEach((file, index) => {
       const fileName = truncateForButton(file.pdf_path?.split('/').pop() || `Файл ${index + 1}`);
       keyboard.push([
-        Markup.button.callback(
-          `📄 ${fileName}`,
-          createCallbackData('download', 'file', { 
-            path: file.pdf_path,
-            composer: work.composer,
-            work: work.title 
-          })
-        )
+        {
+          text: `📄 ${fileName}`,
+          callback_data: `{"a":"download","t":"file","path":"${file.pdf_path}","composer":"${work.composer}","work":"${work.title}"}`
+        }
       ]);
     });
   }
   
   // Back button
   keyboard.push([
-    Markup.button.callback('⬅️ К результатам поиска', createCallbackData('search', 'back', {}))
+    { text: '⬅️ К результатам поиска', callback_data: '{"a":"search","t":"back"}' }
   ]);
   
-  return Markup.inlineKeyboard(keyboard);
+  return { inline_keyboard: keyboard };
 }
 
 /**

@@ -17,10 +17,16 @@ export function searchHandlers(bot) {
 /**
  * Handle search-related callbacks
  */
-const searchCallbackHandler = asyncHandler(async (ctx) => {
-  const callbackData = parseCallbackData(ctx.callbackQuery.data.replace('search:', ''));
+export const searchCallbackHandler = asyncHandler(async (ctx, callbackData) => {
+  // Handle both direct callback data objects and string parsing
+  let data = callbackData;
+  if (typeof callbackData === 'string') {
+    data = parseCallbackData(callbackData.replace('search:', ''));
+  }
   
-  switch (callbackData.t) {
+  console.log('Search callback handler called with data:', data);
+  
+  switch (data.t) {
     case 'composer':
       await handleSearchTypeCallback(ctx, 'composer');
       break;
@@ -31,10 +37,10 @@ const searchCallbackHandler = asyncHandler(async (ctx) => {
       await handleSearchTypeCallback(ctx, 'terms');
       break;
     case 'page':
-      await handleSearchPageCallback(ctx, callbackData);
+      await handleSearchPageCallback(ctx, data);
       break;
     case 'select':
-      await handleSearchSelectCallback(ctx, callbackData);
+      await handleSearchSelectCallback(ctx, data);
       break;
     case 'menu':
       await handleSearchMenuCallback(ctx);
@@ -46,6 +52,7 @@ const searchCallbackHandler = asyncHandler(async (ctx) => {
       await ctx.answerCbQuery();
       break;
     default:
+      console.log('Unknown search action:', data.t);
       await ctx.answerCbQuery('Неизвестная команда');
   }
 });
@@ -190,11 +197,11 @@ async function handleSearchMenuCallback(ctx) {
   const keyboard = {
     inline_keyboard: [
       [
-        { text: '🎵 По композитору', callback_data: 'search:{"a":"search","t":"composer"}' },
-        { text: '🎼 По произведению', callback_data: 'search:{"a":"search","t":"work"}' }
+        { text: '🎵 По композитору', callback_data: '{"a":"search","t":"composer"}' },
+        { text: '🎼 По произведению', callback_data: '{"a":"search","t":"work"}' }
       ],
       [
-        { text: '📚 Музыкальные термины', callback_data: 'search:{"a":"search","t":"terms"}' },
+        { text: '📚 Музыкальные термины', callback_data: '{"a":"search","t":"terms"}' },
         { text: '📁 Просмотр файлов', callback_data: '{"a":"browse","t":"start"}' }
       ],
       [
@@ -243,10 +250,10 @@ ${term.description}`;
   const keyboard = {
     inline_keyboard: [
       [
-        { text: '⬅️ К результатам поиска', callback_data: 'terms:{"a":"terms","t":"back"}' }
+        { text: '⬅️ К результатам поиска', callback_data: '{"a":"terms","t":"back"}' }
       ],
       [
-        { text: '🔍 Новый поиск', callback_data: 'search:{"a":"search","t":"menu"}' }
+        { text: '🔍 Новый поиск', callback_data: '{"a":"search","t":"menu"}' }
       ]
     ]
   };

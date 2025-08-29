@@ -43,18 +43,62 @@ bot.command('stats', statsCommand);
 
 // Main menu callback
 bot.action(/^main:/, async (ctx) => {
-  const callbackData = JSON.parse(ctx.callbackQuery.data.replace('main:', ''));
-  if (callbackData.t === 'menu') {
-    await mainMenuCallback(ctx);
+  try {
+    const callbackData = JSON.parse(ctx.callbackQuery.data.replace('main:', ''));
+    if (callbackData.t === 'menu') {
+      await mainMenuCallback(ctx);
+    }
+    await ctx.answerCbQuery();
+  } catch (error) {
+    console.error('Main menu callback error:', error);
+    await ctx.answerCbQuery('Ошибка обработки команды');
   }
 });
+
+// Generic callback handler for JSON-based callbacks
+bot.action(/^{/, async (ctx) => {
+  try {
+    const callbackData = JSON.parse(ctx.callbackQuery.data);
+    
+    switch (callbackData.a) {
+      case 'browse':
+        await handleBrowseCallback(ctx, callbackData);
+        break;
+      case 'search':
+        await handleSearchCallback(ctx, callbackData);
+        break;
+      case 'main':
+        if (callbackData.t === 'menu') {
+          await mainMenuCallback(ctx);
+        }
+        break;
+      default:
+        await ctx.answerCbQuery('Неизвестная команда');
+    }
+  } catch (error) {
+    console.error('Callback parsing error:', error);
+    await ctx.answerCbQuery('Ошибка обработки команды');
+  }
+});
+
+// Handle browse callbacks
+async function handleBrowseCallback(ctx, callbackData) {
+  const { fileNavigationHandler } = await import('./handlers/fileNavigation.js');
+  await fileNavigationHandler(ctx, callbackData);
+}
+
+// Handle search callbacks  
+async function handleSearchCallback(ctx, callbackData) {
+  const { searchCallbackHandler } = await import('./handlers/searchHandlers.js');
+  await searchCallbackHandler(ctx, callbackData);
+}
 
 // Search commands
 searchCommands(bot);
 
-// Callback query handlers for navigation
-fileNavigation(bot);
-searchHandlers(bot);
+// Remove old callback query handlers since we're using generic handler
+// fileNavigation(bot);
+// searchHandlers(bot);
 
 // Text message handlers
 bot.on(message('text'), async (ctx) => {

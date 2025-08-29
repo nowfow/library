@@ -25,6 +25,8 @@ export const fileNavigationHandler = asyncHandler(async (ctx, callbackData) => {
     data = parseCallbackData(callbackData.replace('browse:', ''));
   }
   
+  console.log('File navigation handler called with data:', data);
+  
   switch (data.t) {
     case 'start':
       await handleBrowseStart(ctx);
@@ -42,6 +44,7 @@ export const fileNavigationHandler = asyncHandler(async (ctx, callbackData) => {
       await ctx.answerCbQuery();
       break;
     default:
+      console.log('Unknown file navigation action:', data.t);
       await ctx.answerCbQuery('Неизвестная команда');
   }
 });
@@ -166,10 +169,10 @@ ${italic('Нажмите на ссылку выше для скачивания 
     const keyboard = {
       inline_keyboard: [
         [
-          { text: '⬅️ Назад к файлам', callback_data: `browse:{"a":"browse","t":"navigate","path":"${ctx.session.currentPath || '/'}"}` }
+          { text: '⬅️ Назад к файлам', callback_data: `{"a":"browse","t":"navigate","path":"${ctx.session.currentPath || '/'}"}` }
         ],
         [
-          { text: '🏠 Главное меню', callback_data: 'main:{"a":"main","t":"menu"}' }
+          { text: '🏠 Главное меню', callback_data: '{"a":"main","t":"menu"}' }
         ]
       ]
     };
@@ -212,8 +215,8 @@ ${createBreadcrumb(path)}
 
     const keyboard = {
       inline_keyboard: [
-        path !== '/' ? [{ text: '⬆️ Назад', callback_data: `browse:{"a":"browse","t":"navigate","path":"${getParentPath(path)}"}` }] : [],
-        [{ text: '🏠 Главное меню', callback_data: 'main:{"a":"main","t":"menu"}' }]
+        path !== '/' ? [{ text: '⬆️ Назад', callback_data: `{"a":"browse","t":"navigate","path":"${getParentPath(path)}"}` }] : [],
+        [{ text: '🏠 Главное меню', callback_data: '{"a":"main","t":"menu"}' }]
       ].filter(row => row.length > 0)
     };
 
