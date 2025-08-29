@@ -1,4 +1,4 @@
-FROM node:18-alpine as base
+FROM node:18-alpine AS base
 
 WORKDIR /app
 
@@ -6,7 +6,7 @@ WORKDIR /app
 RUN apk add --no-cache dumb-init
 
 # Development stage
-FROM base as development
+FROM base AS development
 
 # Install nodemon globally for development
 RUN npm install -g nodemon
@@ -27,7 +27,7 @@ EXPOSE 3001
 CMD ["npm", "run", "dev"]
 
 # Production stage (reuse from main Dockerfile)
-FROM base as production
+FROM base AS production
 
 # Create user for security
 RUN addgroup -g 1001 -S nodejs && \
