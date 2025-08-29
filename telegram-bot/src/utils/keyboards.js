@@ -125,7 +125,7 @@ export function createFileBrowserKeyboard(files, pagination, currentPath) {
     keyboard.push([
       {
         text: '⬆️ Назад',
-        callback_data: `{"a":"browse","t":"navigate","path":"${parentPath}"}`
+        callback_data: createCallbackData('browse', 'navigate', { path: parentPath })
       }
     ]);
   }
@@ -136,9 +136,13 @@ export function createFileBrowserKeyboard(files, pagination, currentPath) {
     const icon = file.type === 'directory' ? '📁' : getFileIcon(file);
     const name = truncateForButton(file.basename || file.name);
     
+    // Create shorter callback data to avoid 64-byte limit
     const callbackData = file.type === 'directory' 
-      ? `{"a":"browse","t":"navigate","path":"${file.filename}"}` 
-      : `{"a":"browse","t":"download","path":"${file.filename}","name":"${file.basename || file.name}"}`;
+      ? createCallbackData('browse', 'navigate', { path: file.filename })
+      : createCallbackData('browse', 'download', { 
+          path: file.filename,
+          name: file.basename || file.name
+        });
     
     keyboard.push([
       {
@@ -155,19 +159,25 @@ export function createFileBrowserKeyboard(files, pagination, currentPath) {
     if (pagination.hasPrev) {
       navButtons.push({
         text: '⬅️ Пред.',
-        callback_data: `{"a":"browse","t":"page","path":"${currentPath}","page":${pagination.currentPage - 1}}`
+        callback_data: createCallbackData('browse', 'page', {
+          path: currentPath,
+          page: pagination.currentPage - 1
+        })
       });
     }
     
     navButtons.push({
       text: `${pagination.currentPage + 1}/${pagination.totalPages}`,
-      callback_data: `{"a":"browse","t":"noop"}`
+      callback_data: createCallbackData('browse', 'noop', {})
     });
     
     if (pagination.hasNext) {
       navButtons.push({
         text: 'След. ➡️',
-        callback_data: `{"a":"browse","t":"page","path":"${currentPath}","page":${pagination.currentPage + 1}}`
+        callback_data: createCallbackData('browse', 'page', {
+          path: currentPath,
+          page: pagination.currentPage + 1
+        })
       });
     }
     
@@ -217,10 +227,16 @@ export function createWorkDetailsKeyboard(work, files = []) {
   if (files.length > 0) {
     files.forEach((file, index) => {
       const fileName = truncateForButton(file.pdf_path?.split('/').pop() || `Файл ${index + 1}`);
+      const callbackData = createCallbackData('download', 'file', {
+        path: file.pdf_path,
+        composer: work.composer.substring(0, 15), // Truncate to save space
+        work: work.title.substring(0, 15) // Truncate to save space
+      });
+      
       keyboard.push([
         {
           text: `📄 ${fileName}`,
-          callback_data: `{"a":"download","t":"file","path":"${file.pdf_path}","composer":"${work.composer}","work":"${work.title}"}`
+          callback_data: callbackData
         }
       ]);
     });
@@ -235,7 +251,7 @@ export function createWorkDetailsKeyboard(work, files = []) {
 }
 
 /**
- * Create callback data string
+ * Create callback data string with proper length handling
  * @param {string} action - Action type
  * @param {string} type - Action subtype
  * @param {Object} data - Additional data
@@ -248,13 +264,32 @@ export function createCallbackData(action, type, data = {}) {
     ...data
   };
   
-  const jsonString = JSON.stringify(callbackData);
+  let jsonString = JSON.stringify(callbackData);
   
   // Telegram callback data limit is 64 bytes
   if (jsonString.length > 64) {
-    console.warn('Callback data too long, truncating:', jsonString);
-    // Create simplified version
-    return JSON.stringify({ a: action, t: type });
+    console.warn('Callback data too long:', jsonString.length, 'bytes, truncating');
+    
+    // Try to shorten by truncating long paths
+    if (data.path && data.path.length > 20) {
+      const shortenedData = {
+        ...callbackData,
+        path: data.path.length > 30 ? '...' + data.path.slice(-25) : data.path
+      };
+      
+      // Remove name if still too long
+      if (JSON.stringify(shortenedData).length > 64 && shortenedData.name) {
+        delete shortenedData.name;
+      }
+      
+      jsonString = JSON.stringify(shortenedData);
+    }
+    
+    // Final fallback: minimal data
+    if (jsonString.length > 64) {
+      console.warn('Still too long, using minimal callback data');
+      return JSON.stringify({ a: action, t: type });
+    }
   }
   
   return jsonString;

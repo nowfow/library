@@ -18,6 +18,10 @@ export function fileNavigation(bot) {
     const callbackData = JSON.parse(ctx.callbackQuery.data);
     return fileNavigationHandler(ctx, callbackData);
   });
+  bot.action(/^{.*"a":"download"/, (ctx) => {
+    const callbackData = JSON.parse(ctx.callbackQuery.data);
+    return downloadHandler(ctx, callbackData);
+  });
   bot.action(/^{.*"a":"main"/, (ctx) => {
     const callbackData = JSON.parse(ctx.callbackQuery.data);
     return mainHandler(ctx, callbackData);
@@ -61,9 +65,19 @@ export const fileNavigationHandler = asyncHandler(async (ctx, callbackData) => {
 /**
  * Handle download callbacks
  */
-const downloadHandler = asyncHandler(async (ctx) => {
-  const callbackData = parseCallbackData(ctx.callbackQuery.data.replace('download:', ''));
-  await handleFileDownload(ctx, callbackData);
+const downloadHandler = asyncHandler(async (ctx, callbackData = null) => {
+  let data = callbackData;
+  if (!data) {
+    data = parseCallbackData(ctx.callbackQuery.data.replace('download:', ''));
+  }
+  
+  switch (data.t) {
+    case 'file':
+      await handleFileDownload(ctx, data);
+      break;
+    default:
+      await handleFileDownload(ctx, data);
+  }
 });
 
 /**
@@ -87,7 +101,7 @@ async function handleBrowseStart(ctx) {
   ctx.session.currentPath = '/';
   ctx.session.currentPage = 0;
   
-  const loadingMsg = fmt`📁 ${bold('Загрузка файлов...')}`;
+  const loadingMsg = `📁 **Загрузка файлов...**`;
   
   let messageId;
   if (ctx.callbackQuery) {
@@ -106,9 +120,11 @@ async function handleBrowseStart(ctx) {
       ctx.chat.id,
       messageId,
       undefined,
-      fmt`❌ ${bold('Ошибка загрузки файлов')}
-${error.message}`,
-      createMainMenuKeyboard()
+      `❌ **Ошибка загрузки файлов**\n${error.message}`,
+      {
+        reply_markup: createMainMenuKeyboard().inline_keyboard,
+        parse_mode: 'Markdown'
+      }
     );
   }
 }
@@ -121,7 +137,7 @@ async function handleNavigate(ctx, callbackData) {
   ctx.session.currentPath = path;
   ctx.session.currentPage = 0;
   
-  const loadingMsg = fmt`📁 ${bold('Загрузка...')}`;
+  const loadingMsg = `📁 **Загрузка...**`;
   await ctx.editMessageText(loadingMsg);
   
   try {
@@ -129,9 +145,11 @@ async function handleNavigate(ctx, callbackData) {
     await ctx.answerCbQuery();
   } catch (error) {
     await ctx.editMessageText(
-      fmt`❌ ${bold('Ошибка загрузки директории')}
-${error.message}`,
-      createMainMenuKeyboard()
+      `❌ **Ошибка загрузки директории**\n${error.message}`,
+      {
+        reply_markup: createMainMenuKeyboard().inline_keyboard,
+        parse_mode: 'Markdown'
+      }
     );
     await ctx.answerCbQuery('Ошибка загрузки');
   }
@@ -169,14 +187,7 @@ async function handleFileDownload(ctx, callbackData) {
   try {
     const downloadUrl = getFileDownloadUrl(filePath);
     
-    const message = fmt`📄 ${bold('Скачивание файла')}
-
-${italic('Файл:')} ${fileName}
-${italic('Путь:')} ${filePath}
-
-${link('📥 Скачать файл', downloadUrl)}
-
-${italic('Нажмите на ссылку выше для скачивания файла')}`;
+    const message = `📄 **Скачивание файла**\n\n*Файл:* ${fileName}\n*Путь:* ${filePath}\n\n[📥 Скачать файл](${downloadUrl})\n\n*Нажмите на ссылку выше для скачивания файла*`;
 
     const keyboard = {
       inline_keyboard: [
@@ -191,13 +202,25 @@ ${italic('Нажмите на ссылку выше для скачивания 
 
     await ctx.editMessageText(message, { 
       reply_markup: keyboard,
-      parse_mode: 'MarkdownV2',
+      parse_mode: 'Markdown',
       disable_web_page_preview: false
     });
     await ctx.answerCbQuery('Ссылка для скачивания готова');
     
   } catch (error) {
-    await ctx.answerCbQuery('Ошибка создания ссылки для скачивания');
+    console.error('Download error:', error);
+    await ctx.editMessageText(
+      `❌ **Ошибка скачивания**\n${error.message}`,
+      {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: '⬅️ Назад', callback_data: '{"a":"browse","t":"navigate","path":"/"}' }]
+          ]
+        },
+        parse_mode: 'Markdown'
+      }
+    );
+    await ctx.answerCbQuery('Ошибка скачивания');
   }
 }
 

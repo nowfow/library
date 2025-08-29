@@ -98,44 +98,23 @@ async function handleSearchTypeCallback(ctx, searchType) {
   
   switch (searchType) {
     case 'composer':
-      message = fmt`🔍 ${bold('Поиск по композитору')}
-
-Отправьте имя композитора для поиска.
-
-${italic('Примеры:')}
-• Бах
-• Mozart  
-• Чайковский
-• Rachmaninoff`;
+      message = `🔍 **Поиск по композитору**\n\nОтправьте имя композитора для поиска.\n\n*Примеры:*\n• Бах\n• Mozart\n• Чайковский\n• Rachmaninoff`;
       break;
     case 'work':
-      message = fmt`🎼 ${bold('Поиск по произведению')}
-
-Отправьте название произведения для поиска.
-
-${italic('Примеры:')}
-• Соната
-• Этюд
-• Симфония
-• Концерт`;
+      message = `🎼 **Поиск по произведению**\n\nОтправьте название произведения для поиска.\n\n*Примеры:*\n• Соната\n• Этюд\n• Симфония\n• Концерт`;
       break;
     case 'terms':
-      message = fmt`📚 ${bold('Поиск музыкальных терминов')}
-
-Отправьте музыкальный термин для поиска.
-
-${italic('Примеры:')}
-• аккорд
-• темп
-• модуляция
-• форте`;
+      message = `📚 **Поиск музыкальных терминов**\n\nОтправьте музыкальный термин для поиска.\n\n*Примеры:*\n• аккорд\n• темп\n• модуляция\n• форте`;
       break;
   }
   
   // Set waiting state
   ctx.session.waitingForSearch = searchType;
   
-  await ctx.editMessageText(message, createMainMenuKeyboard());
+  await ctx.editMessageText(message, {
+    reply_markup: createMainMenuKeyboard().inline_keyboard,
+    parse_mode: 'Markdown'
+  });
   await ctx.answerCbQuery();
 }
 
@@ -161,27 +140,65 @@ async function handleSearchSelectCallback(ctx, callbackData) {
   }
   
   const loadingMsg = await ctx.editMessageText(
-    fmt`🔍 Загрузка информации о произведении...`
+    `🔍 Загрузка информации о произведении...`
   );
   
   try {
     // Get files for this work
     const files = await getWorkFiles(work.composer, work.title);
     
-    const message = fmt`🎼 ${bold(work.title)}
-${italic('Композитор:')} ${work.composer}
-
-${files.length > 0 ? bold('📁 Доступные файлы:') : bold('❌ Файлы не найдены')}`;
-
-    const keyboard = createWorkDetailsKeyboard(work, files);
-    
-    await ctx.telegram.editMessageText(
-      ctx.chat.id,
-      loadingMsg.message_id,
-      undefined,
-      message,
-      keyboard
-    );
+    if (files.length === 0) {
+      const message = `🎼 **${work.title}**\n*Композитор:* ${work.composer}\n\n❌ **Файлы не найдены**`;
+      const keyboard = {
+        inline_keyboard: [
+          [{ text: '⬅️ К результатам поиска', callback_data: '{"a":"search","t":"back"}' }]
+        ]
+      };
+      await ctx.telegram.editMessageText(
+        ctx.chat.id,
+        loadingMsg.message_id,
+        undefined,
+        message,
+        { reply_markup: keyboard, parse_mode: 'Markdown' }
+      );
+    } else if (files.length === 1) {
+      // Single file: send directly
+      const file = files[0];
+      const downloadUrl = getFileDownloadUrl(file.pdf_path);
+      const fileName = file.pdf_path?.split('/').pop() || 'file';
+      
+      const message = `🎼 **${work.title}**\n*Композитор:* ${work.composer}\n\n📄 **Файл:** ${fileName}\n\n[📅 Скачать файл](${downloadUrl})\n\n*Нажмите на ссылку выше для скачивания*`;
+      
+      const keyboard = {
+        inline_keyboard: [
+          [{ text: '⬅️ К результатам поиска', callback_data: '{"a":"search","t":"back"}' }]
+        ]
+      };
+      
+      await ctx.telegram.editMessageText(
+        ctx.chat.id,
+        loadingMsg.message_id,
+        undefined,
+        message,
+        {
+          reply_markup: keyboard,
+          parse_mode: 'Markdown',
+          disable_web_page_preview: false
+        }
+      );
+    } else {
+      // Multiple files: show selection buttons
+      const message = `🎼 **${work.title}**\n*Композитор:* ${work.composer}\n\n📁 **Доступные файлы (${files.length}):**`;
+      const keyboard = createWorkDetailsKeyboard(work, files);
+      
+      await ctx.telegram.editMessageText(
+        ctx.chat.id,
+        loadingMsg.message_id,
+        undefined,
+        message,
+        { reply_markup: keyboard, parse_mode: 'Markdown' }
+      );
+    }
     
     await ctx.answerCbQuery();
     
@@ -190,9 +207,8 @@ ${files.length > 0 ? bold('📁 Доступные файлы:') : bold('❌ Ф�
       ctx.chat.id,
       loadingMsg.message_id,
       undefined,
-      fmt`❌ ${bold('Ошибка загрузки файлов')}
-${error.message}`,
-      createMainMenuKeyboard()
+      `❌ **Ошибка загрузки файлов**\n${error.message}`,
+      { reply_markup: createMainMenuKeyboard(), parse_mode: 'Markdown' }
     );
     await ctx.answerCbQuery('Ошибка загрузки');
   }
@@ -202,9 +218,7 @@ ${error.message}`,
  * Handle back to search menu
  */
 async function handleSearchMenuCallback(ctx) {
-  const message = fmt`🔍 ${bold('Поиск в музыкальной библиотеке')}
-
-Выберите тип поиска:`;
+  const message = `🔍 **Поиск в музыкальной библиотеке**\n\nВыберите тип поиска:`;
 
   const keyboard = {
     inline_keyboard: [
@@ -222,7 +236,10 @@ async function handleSearchMenuCallback(ctx) {
     ]
   };
 
-  await ctx.editMessageText(message, { reply_markup: keyboard });
+  await ctx.editMessageText(message, { 
+    reply_markup: keyboard,
+    parse_mode: 'Markdown'
+  });
   await ctx.answerCbQuery();
 }
 
@@ -255,9 +272,7 @@ async function handleTermSelectCallback(ctx, callbackData) {
     return;
   }
   
-  const message = fmt`📚 ${bold(term.term)}
-
-${term.description}`;
+  const message = `📚 **${term.term}**\n\n${term.description}`;
 
   const keyboard = {
     inline_keyboard: [
@@ -270,7 +285,10 @@ ${term.description}`;
     ]
   };
 
-  await ctx.editMessageText(message, { reply_markup: keyboard });
+  await ctx.editMessageText(message, { 
+    reply_markup: keyboard,
+    parse_mode: 'Markdown'
+  });
   await ctx.answerCbQuery();
 }
 
