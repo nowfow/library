@@ -90,7 +90,27 @@ cp .env.example .env
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
-### Option 3: Local Development
+### Option 3: Docker Standalone (Alternative to Docker Compose)
+
+```bash
+# Clone and setup
+git clone <repository-url>
+cd music-library
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your settings
+
+# Start everything with individual Docker containers
+./docker-standalone.sh start
+
+# Access the application
+# Web: http://localhost
+# API: http://localhost:3000
+# Bot: Active in Telegram
+```
+
+### Option 4: Local Development
 
 ```bash
 # Start all services locally
@@ -139,7 +159,8 @@ music-library/
 │   ├── docker-compose.yml       # Main compose file
 │   ├── docker-compose.dev.yml   # Development overrides
 │   ├── docker-compose.prod.yml  # Production overrides
-│   └── docker-manager.sh        # Management script
+│   ├── docker-manager.sh        # Compose management script
+│   └── docker-standalone.sh     # Standalone Docker script
 │
 ├── 📜 Configuration
 │   ├── .env.example            # Environment template
@@ -237,6 +258,40 @@ COMPOSE_PROJECT_NAME=music-library
 ```bash
 # Quick production start
 ./docker-manager.sh start production
+
+# Manual production deployment
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+# View status
+./docker-manager.sh status
+```
+
+### Docker Standalone Deployment (Alternative)
+
+```bash
+# Alternative to Docker Compose - individual containers
+./docker-standalone.sh start
+
+# View container status
+./docker-standalone.sh status
+
+# View logs for specific service
+./docker-standalone.sh logs backend
+./docker-standalone.sh logs frontend
+./docker-standalone.sh logs bot
+
+# Stop all containers
+./docker-standalone.sh stop
+
+# Restart all services
+./docker-standalone.sh restart
+
+# Clean up containers and network
+./docker-standalone.sh cleanup
+
+# Clean up everything including images
+./docker-standalone.sh cleanup --remove-images
+```
 
 # Manual production deployment
 docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
