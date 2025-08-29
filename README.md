@@ -70,7 +70,7 @@ cp .env.example .env
 ./docker-manager.sh start development
 
 # Or manually:
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
 ### Option 3: Local Development
@@ -222,7 +222,7 @@ COMPOSE_PROJECT_NAME=music-library
 ./docker-manager.sh start production
 
 # Manual production deployment
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 # View status
 ./docker-manager.sh status

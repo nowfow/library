@@ -40,10 +40,11 @@ if ! docker info &> /dev/null; then
     exit 1
 fi
 
-# Check Docker Compose
-if ! command -v docker-compose &> /dev/null; then
-    log_error "Docker Compose is not installed. Please install Docker Compose first:"
+# Check Docker Compose v2
+if ! docker compose version &> /dev/null; then
+    log_error "Docker Compose v2 is not available. Please install Docker Compose v2:"
     log_info "https://docs.docker.com/compose/install/"
+    log_info "Note: Use 'docker compose' (with space) instead of 'docker-compose' (with hyphen)"
     exit 1
 fi
 

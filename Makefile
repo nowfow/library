@@ -110,23 +110,23 @@ update:
 # Docker-specific commands
 docker-build:
 	@echo "🐳 Building Docker images..."
-	docker-compose build
+	docker compose build
 
 docker-up:
 	@echo "🐳 Starting with Docker Compose..."
-	docker-compose up -d
+	docker compose up -d
 
 docker-up-dev:
 	@echo "🐳 Starting development environment..."
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+	docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
 docker-down:
 	@echo "🐳 Stopping Docker services..."
-	docker-compose down
+	docker compose down
 
 docker-logs:
 	@echo "🐳 Showing Docker logs..."
-	docker-compose logs -f
+	docker compose logs -f
 
 # Install dependencies locally
 install:
@@ -178,7 +178,7 @@ health:
 	@echo "🏥 Checking service health..."
 	@curl -s http://localhost:3000/api/terms > /dev/null && echo "✅ Backend: OK" || echo "❌ Backend: Failed"
 	@curl -s http://localhost > /dev/null && echo "✅ Frontend: OK" || echo "❌ Frontend: Failed"
-	@docker-compose ps | grep -q "Up" && echo "✅ Docker: OK" || echo "❌ Docker: Failed"
+	@docker compose ps | grep -q "Up" && echo "✅ Docker: OK" || echo "❌ Docker: Failed"
 
 # Show environment info
 info:
@@ -210,14 +210,14 @@ tree:
 # Container shell access
 shell-backend:
 	@echo "🔧 Opening backend container shell..."
-	docker-compose exec backend sh
+	docker compose exec backend sh
 
 shell-frontend:
 	@echo "🌐 Opening frontend container shell..."
-	docker-compose exec frontend sh
+	docker compose exec frontend sh
 
 shell-bot:
 	@echo "🤖 Opening bot container shell..."
-	docker-compose exec telegram-bot sh
+	docker compose exec telegram-bot sh
 
 # Note: Database is external - use your database provider's tools for access

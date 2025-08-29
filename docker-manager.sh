@@ -51,13 +51,13 @@ build_images() {
     log_header "Building Docker Images"
     
     log_info "Building backend image..."
-    docker-compose build backend
+    docker compose build backend
     
     log_info "Building frontend image..."
-    docker-compose build frontend
+    docker compose build frontend
     
     log_info "Building telegram-bot image..."
-    docker-compose build telegram-bot
+    docker compose build telegram-bot
     
     log_success "All images built successfully"
 }
@@ -70,13 +70,13 @@ start_services() {
     
     if [ "$mode" = "development" ]; then
         log_info "Starting in development mode with hot reloading..."
-        docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+        docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
     elif [ "$mode" = "production" ]; then
         log_info "Starting in production mode..."
-        docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+        docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
     else
         log_info "Starting with default configuration..."
-        docker-compose up -d
+        docker compose up -d
     fi
     
     log_success "Services started successfully"
@@ -87,7 +87,7 @@ start_services() {
 stop_services() {
     log_header "Stopping Music Library Services"
     
-    docker-compose down
+    docker compose down
     
     log_success "All services stopped"
 }
@@ -107,7 +107,7 @@ show_status() {
     log_header "Service Status"
     
     echo ""
-    docker-compose ps
+    docker compose ps
     
     echo ""
     log_info "Service URLs:"
@@ -118,9 +118,9 @@ show_status() {
     
     echo ""
     log_info "Useful Commands:"
-    echo "  docker-compose logs -f [service]     # View logs"
-    echo "  docker-compose exec [service] sh    # Access container shell"
-    echo "  docker-compose restart [service]    # Restart specific service"
+    echo "  docker compose logs -f [service]     # View logs"
+    echo "  docker compose exec [service] sh    # Access container shell"
+    echo "  docker compose restart [service]    # Restart specific service"
 }
 
 # Function to show logs
@@ -129,10 +129,10 @@ show_logs() {
     
     if [ -z "$service" ]; then
         log_info "Showing logs for all services (use Ctrl+C to exit)"
-        docker-compose logs -f
+        docker compose logs -f
     else
         log_info "Showing logs for $service (use Ctrl+C to exit)"
-        docker-compose logs -f "$service"
+        docker compose logs -f "$service"
     fi
 }
 
@@ -141,7 +141,7 @@ cleanup() {
     log_header "Cleaning Up Docker Resources"
     
     log_info "Stopping and removing containers..."
-    docker-compose down -v
+    docker compose down -v
     
     log_info "Removing unused images..."
     docker image prune -f
@@ -160,7 +160,7 @@ update_services() {
     log_header "Updating Music Library Services"
     
     log_info "Pulling latest base images..."
-    docker-compose pull
+    docker compose pull
     
     log_info "Rebuilding images..."
     build_images
