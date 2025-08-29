@@ -69,7 +69,7 @@ export const searchCallbackHandler = asyncHandler(async (ctx, callbackData = nul
 /**
  * Handle terms-related callbacks
  */
-const termsCallbackHandler = asyncHandler(async (ctx, callbackData = null) => {
+export const termsCallbackHandler = asyncHandler(async (ctx, callbackData = null) => {
   let data = callbackData;
   if (!data) {
     data = parseCallbackData(ctx.callbackQuery.data.replace('terms:', ''));
@@ -274,4 +274,3 @@ ${term.description}`;
   await ctx.answerCbQuery();
 }
 
-export { searchCallbackHandler, termsCallbackHandler };
