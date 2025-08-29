@@ -5,11 +5,6 @@ services:
   backend:
     environment:
       NODE_ENV: production
-      DB_PASSWORD_FILE: /run/secrets/db_password
-      WEBDAV_PASSWORD_FILE: /run/secrets/webdav_password
-    secrets:
-      - db_password
-      - webdav_password
     logging:
       driver: "json-file"
       options:
@@ -38,13 +33,6 @@ services:
   telegram-bot:
     environment:
       NODE_ENV: production
-      BOT_TOKEN_FILE: /run/secrets/bot_token
-      DB_PASSWORD_FILE: /run/secrets/db_password
-      WEBDAV_PASSWORD_FILE: /run/secrets/webdav_password
-    secrets:
-      - bot_token
-      - db_password
-      - webdav_password
     logging:
       driver: "json-file"
       options:
@@ -58,11 +46,3 @@ services:
         reservations:
           memory: 128M
           cpus: '0.1'
-
-secrets:
-  db_password:
-    file: ./secrets/db_password.txt
-  webdav_password:
-    file: ./secrets/webdav_password.txt
-  bot_token:
-    file: ./secrets/bot_token.txt
