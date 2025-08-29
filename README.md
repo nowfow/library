@@ -43,7 +43,24 @@ A comprehensive full-stack music library management system with web interface, R
 
 ## 🚀 Quick Start
 
-### Option 1: Docker Compose (Recommended)
+### Option 1: Ubuntu 22.04 Server Deployment (Recommended for Production)
+
+```bash
+# 1. Initial server setup (run as root)
+sudo ./deploy-server.sh install
+
+# 2. Configure environment
+cp .env.production .env
+# Edit .env with your actual configuration
+
+# 3. Deploy application
+./deploy-server.sh deploy
+
+# 4. Monitor health
+./monitor.sh report
+```
+
+### Option 2: Docker Compose (Development/Testing)
 
 ```bash
 # Clone and setup

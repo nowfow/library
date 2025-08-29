@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Music Library Docker Management Script
-# Unified management for all services: frontend, backend, telegram-bot, database
+# Music Library Docker Management Script - Ubuntu 22.04 Optimized
+# Unified management for all services: frontend, backend, telegram-bot
 
-set -e  # Exit on any error
+set -euo pipefail  # Enhanced error handling
 
 # Colors for output
 RED='\033[0;31m'
@@ -14,6 +14,11 @@ PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
+# Configuration
+DOCKER_COMPOSE_FILES="docker-compose.yml"
+PROJECT_NAME="music-library"
+LOG_MAX_LINES=100
+
 # Function to print colored output
 log_info() { echo -e "${BLUE}ℹ️  $1${NC}"; }
 log_success() { echo -e "${GREEN}✅ $1${NC}"; }
@@ -21,12 +26,66 @@ log_warning() { echo -e "${YELLOW}⚠️  $1${NC}"; }
 log_error() { echo -e "${RED}❌ $1${NC}"; }
 log_header() { echo -e "${PURPLE}🎵 $1${NC}"; }
 
+# Function to check system requirements
+check_system() {
+    local issues=0
+    
+    # Check OS
+    if ! grep -q "Ubuntu 22.04" /etc/os-release 2>/dev/null; then
+        log_warning "This script is optimized for Ubuntu 22.04"
+    fi
+    
+    # Check available memory
+    local mem_gb=$(free -g | awk 'NR==2{printf "%.1f", $2}')
+    if (( $(echo "$mem_gb < 2.0" | bc -l) )); then
+        log_warning "Low memory detected: ${mem_gb}GB. Recommended: 2GB+"
+        ((issues++))
+    fi
+    
+    # Check disk space
+    local disk_gb=$(df -BG . | awk 'NR==2 {print $4}' | sed 's/G//')
+    if (( disk_gb < 5 )); then
+        log_warning "Low disk space: ${disk_gb}GB. Recommended: 5GB+"
+        ((issues++))
+    fi
+    
+    if (( issues == 0 )); then
+        log_success "System check passed"
+    fi
+    
+    return $issues
+}
+
 # Function to check if Docker is running
 check_docker() {
-    if ! docker info > /dev/null 2>&1; then
-        log_error "Docker is not running. Please start Docker first."
+    if ! command -v docker &> /dev/null; then
+        log_error "Docker is not installed. Install with:"
+        echo "  sudo apt update && sudo apt install -y docker.io docker-compose-plugin"
         exit 1
     fi
+    
+    if ! docker info > /dev/null 2>&1; then
+        log_error "Docker is not running. Start with:"
+        echo "  sudo systemctl start docker"
+        echo "  sudo systemctl enable docker"
+        exit 1
+    fi
+    
+    # Check Docker Compose v2
+    if ! docker compose version &> /dev/null; then
+        log_error "Docker Compose v2 not available. Install with:"
+        echo "  sudo apt install -y docker-compose-plugin"
+        exit 1
+    fi
+    
+    # Check if user is in docker group
+    if ! groups | grep -q docker && [[ $EUID -ne 0 ]]; then
+        log_warning "User not in docker group. Add with:"
+        echo "  sudo usermod -aG docker $USER"
+        echo "  newgrp docker"
+    fi
+    
+    log_success "Docker environment OK"
 }
 
 # Function to check if .env file exists
