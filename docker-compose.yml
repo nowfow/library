@@ -24,7 +24,7 @@ services:
     networks:
       - music-library-network
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/terms", "||", "exit", "1"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health", "||", "exit", "1"]
       interval: 30s
       timeout: 10s
       retries: 3

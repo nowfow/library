@@ -182,6 +182,23 @@ backup_database() {
     return 0
 }
 
+# Function to run diagnostics
+run_diagnostics() {
+    log_header "Running Diagnostics"
+    
+    if [ -f "./diagnose.sh" ]; then
+        chmod +x ./diagnose.sh
+        ./diagnose.sh
+    else
+        log_warning "diagnose.sh script not found"
+        log_info "Manual diagnostic steps:"
+        echo "  1. Check .env file exists and is configured"
+        echo "  2. Check container logs: docker compose logs backend"
+        echo "  3. Test database connectivity from host"
+        echo "  4. Verify WebDAV credentials"
+    fi
+}
+
 # Function to show help
 show_help() {
     echo "Music Library Docker Management Script"
@@ -198,6 +215,7 @@ show_help() {
     echo "  cleanup            Clean up Docker resources"
     echo "  update             Update and restart services"
     echo "  backup             Create database backup"
+    echo "  diagnose           Run diagnostic checks"
     echo "  help               Show this help message"
     echo ""
     echo "Examples:"
@@ -242,6 +260,9 @@ main() {
             ;;
         backup)
             backup_database
+            ;;
+        diagnose)
+            run_diagnostics
             ;;
         help)
             show_help
