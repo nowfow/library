@@ -31,8 +31,7 @@ export function formatWork(work, index) {
   const title = truncateText(work.title, 40);
   const composer = truncateText(work.composer, 30);
   
-  return fmt`${bold(`${index + 1}.`)} ${bold(escapeMarkdown(title))}
-${italic('Композитор:')} ${escapeMarkdown(composer)}`;
+  return `**${index + 1}.** **${escapeMarkdown(title)}**\n*Композитор:* ${escapeMarkdown(composer)}`;
 }
 
 /**
@@ -43,8 +42,7 @@ ${italic('Композитор:')} ${escapeMarkdown(composer)}`;
 export function formatTerm(term) {
   const description = truncateText(term.description, 100);
   
-  return fmt`${bold(escapeMarkdown(term.term))}
-${escapeMarkdown(description)}`;
+  return `**${escapeMarkdown(term.term)}**\n${escapeMarkdown(description)}`;
 }
 
 /**
@@ -58,7 +56,7 @@ export function formatFile(file, index) {
   const size = file.size ? formatFileSize(file.size) : '';
   const icon = getFileIcon(file);
   
-  return fmt`${icon} ${bold(`${index + 1}.`)} ${escapeMarkdown(name)}${size ? ` (${size})` : ''}`;
+  return `${icon} **${index + 1}.** ${escapeMarkdown(name)}${size ? ` (${size})` : ''}`;
 }
 
 /**
@@ -110,7 +108,7 @@ export function formatFileSize(bytes) {
  * @returns {string} Pagination info
  */
 export function createPaginationInfo(currentPage, totalPages, totalItems) {
-  return fmt`Страница ${bold(String(currentPage + 1))} из ${bold(String(totalPages))} (всего: ${totalItems})`;
+  return `Страница **${currentPage + 1}** из **${totalPages}** (всего: ${totalItems})`;
 }
 
 /**

@@ -239,20 +239,15 @@ async function displaySearchResults(ctx, messageId) {
   const { searchResults, searchType, searchQuery, currentPage } = ctx.session;
   const pagination = paginate(searchResults, currentPage, 10);
   
+  const paginationInfo = createPaginationInfo(pagination.currentPage, pagination.totalPages, pagination.totalItems);
+  const formattedWorks = pagination.items.map((work, index) => formatWork(work, pagination.currentPage * 10 + index)).join('\n\n');
+  
   let messageText;
   
   if (searchType === 'composer') {
-    messageText = fmt`🔍 ${bold('Произведения композитора:')} ${italic(searchQuery)}
-
-${createPaginationInfo(pagination.currentPage, pagination.totalPages, pagination.totalItems)}
-
-${pagination.items.map((work, index) => formatWork(work, pagination.currentPage * 10 + index)).join('\n\n')}`;
+    messageText = `🔍 **Произведения композитора:** *${searchQuery}*\n\n${paginationInfo}\n\n${formattedWorks}`;
   } else {
-    messageText = fmt`🔍 ${bold('Поиск произведения:')} ${italic(searchQuery)}
-
-${createPaginationInfo(pagination.currentPage, pagination.totalPages, pagination.totalItems)}
-
-${pagination.items.map((work, index) => formatWork(work, pagination.currentPage * 10 + index)).join('\n\n')}`;
+    messageText = `🔍 **Поиск произведения:** *${searchQuery}*\n\n${paginationInfo}\n\n${formattedWorks}`;
   }
 
   const keyboard = createSearchResultsKeyboard(pagination.items, pagination, 'search');
@@ -263,10 +258,16 @@ ${pagination.items.map((work, index) => formatWork(work, pagination.currentPage 
       messageId,
       undefined,
       messageText,
-      keyboard
+      { 
+        reply_markup: keyboard.inline_keyboard ? keyboard : keyboard.reply_markup,
+        parse_mode: 'Markdown'
+      }
     );
   } else {
-    await ctx.reply(messageText, keyboard);
+    await ctx.reply(messageText, { 
+      ...keyboard, 
+      parse_mode: 'Markdown' 
+    });
   }
 }
 
@@ -279,11 +280,10 @@ async function displayTermResults(ctx, messageId) {
   const { searchResults, searchQuery, currentPage } = ctx.session;
   const pagination = paginate(searchResults, currentPage, 5); // Fewer terms per page due to descriptions
   
-  const messageText = fmt`📚 ${bold('Музыкальные термины:')} ${italic(searchQuery)}
-
-${createPaginationInfo(pagination.currentPage, pagination.totalPages, pagination.totalItems)}
-
-${pagination.items.map(formatTerm).join('\n\n')}`;
+  const paginationInfo = createPaginationInfo(pagination.currentPage, pagination.totalPages, pagination.totalItems);
+  const formattedTerms = pagination.items.map(formatTerm).join('\n\n');
+  
+  const messageText = `📚 **Музыкальные термины:** *${searchQuery}*\n\n${paginationInfo}\n\n${formattedTerms}`;
 
   const keyboard = createSearchResultsKeyboard(pagination.items, pagination, 'terms');
 
@@ -293,10 +293,16 @@ ${pagination.items.map(formatTerm).join('\n\n')}`;
       messageId,
       undefined,
       messageText,
-      keyboard
+      { 
+        reply_markup: keyboard.inline_keyboard ? keyboard : keyboard.reply_markup,
+        parse_mode: 'Markdown'
+      }
     );
   } else {
-    await ctx.reply(messageText, keyboard);
+    await ctx.reply(messageText, { 
+      ...keyboard, 
+      parse_mode: 'Markdown' 
+    });
   }
 }
 

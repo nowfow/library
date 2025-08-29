@@ -219,11 +219,8 @@ async function displayDirectoryContents(ctx, path, messageId) {
     });
 
   if (sortedFiles.length === 0) {
-    const message = fmt`📁 ${bold('Пустая директория')}
-
-${createBreadcrumb(path)}
-
-Эта папка не содержит файлов.`;
+    const breadcrumb = createBreadcrumb(path);
+    const message = `📁 **Пустая директория**\n\n${breadcrumb}\n\nЭта папка не содержит файлов.`;
 
     const keyboard = {
       inline_keyboard: [
@@ -237,7 +234,10 @@ ${createBreadcrumb(path)}
       messageId,
       undefined,
       message,
-      { reply_markup: keyboard }
+      { 
+        reply_markup: keyboard,
+        parse_mode: 'Markdown'
+      }
     );
     return;
   }
@@ -247,23 +247,20 @@ ${createBreadcrumb(path)}
   const pagination = paginate(sortedFiles, currentPage, 10);
   
   // Create message
-  let message = fmt`📁 ${bold('Просмотр файлов')}
-
-${createBreadcrumb(path)}
-
-${createPaginationInfo(pagination.currentPage, pagination.totalPages, pagination.totalItems)}
-
-`;
-
+  const breadcrumb = createBreadcrumb(path);
+  const paginationInfo = createPaginationInfo(pagination.currentPage, pagination.totalPages, pagination.totalItems);
+  
   // Add file list
-  pagination.items.forEach((file, index) => {
+  const fileList = pagination.items.map((file, index) => {
     const icon = getFileIcon(file);
     const name = file.basename || file.name || 'Неизвестный файл';
     const size = file.size ? ` (${formatFileSize(file.size)})` : '';
     const globalIndex = pagination.currentPage * 10 + index + 1;
     
-    message += fmt`${icon} ${bold(`${globalIndex}.`)} ${name}${size}\n`;
-  });
+    return `${icon} **${globalIndex}.** ${name}${size}`;
+  }).join('\n');
+  
+  const message = `📁 **Просмотр файлов**\n\n${breadcrumb}\n\n${paginationInfo}\n\n${fileList}`;
 
   const keyboard = createFileBrowserKeyboard(pagination.items, pagination, path);
 
@@ -272,7 +269,10 @@ ${createPaginationInfo(pagination.currentPage, pagination.totalPages, pagination
     messageId,
     undefined,
     message,
-    keyboard
+    {
+      reply_markup: keyboard.inline_keyboard ? keyboard : keyboard.reply_markup,
+      parse_mode: 'Markdown'
+    }
   );
 }
 
