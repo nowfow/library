@@ -13,6 +13,15 @@ export function fileNavigation(bot) {
   bot.action(/^browse:/, fileNavigationHandler);
   bot.action(/^download:/, downloadHandler);
   bot.action(/^main:/, mainHandler);
+  // Add handler for new JSON format
+  bot.action(/^{.*"a":"browse"/, (ctx) => {
+    const callbackData = JSON.parse(ctx.callbackQuery.data);
+    return fileNavigationHandler(ctx, callbackData);
+  });
+  bot.action(/^{.*"a":"main"/, (ctx) => {
+    const callbackData = JSON.parse(ctx.callbackQuery.data);
+    return mainHandler(ctx, callbackData);
+  });
 }
 
 /**
@@ -60,10 +69,13 @@ const downloadHandler = asyncHandler(async (ctx) => {
 /**
  * Handle main menu callbacks
  */
-const mainHandler = asyncHandler(async (ctx) => {
-  const callbackData = parseCallbackData(ctx.callbackQuery.data.replace('main:', ''));
+const mainHandler = asyncHandler(async (ctx, callbackData = null) => {
+  let data = callbackData;
+  if (!data) {
+    data = parseCallbackData(ctx.callbackQuery.data.replace('main:', ''));
+  }
   
-  if (callbackData.t === 'menu') {
+  if (data.t === 'menu') {
     await mainMenuCallback(ctx);
   }
 });

@@ -12,16 +12,25 @@ import { formatWork, paginate } from '../utils/formatting.js';
 export function searchHandlers(bot) {
   bot.action(/^search:/, searchCallbackHandler);
   bot.action(/^terms:/, termsCallbackHandler);
+  // Add handlers for new JSON format
+  bot.action(/^{.*"a":"search"/, (ctx) => {
+    const callbackData = JSON.parse(ctx.callbackQuery.data);
+    return searchCallbackHandler(ctx, callbackData);
+  });
+  bot.action(/^{.*"a":"terms"/, (ctx) => {
+    const callbackData = JSON.parse(ctx.callbackQuery.data);
+    return termsCallbackHandler(ctx, callbackData);
+  });
 }
 
 /**
  * Handle search-related callbacks
  */
-export const searchCallbackHandler = asyncHandler(async (ctx, callbackData) => {
+export const searchCallbackHandler = asyncHandler(async (ctx, callbackData = null) => {
   // Handle both direct callback data objects and string parsing
   let data = callbackData;
-  if (typeof callbackData === 'string') {
-    data = parseCallbackData(callbackData.replace('search:', ''));
+  if (!data) {
+    data = parseCallbackData(ctx.callbackQuery.data.replace('search:', ''));
   }
   
   console.log('Search callback handler called with data:', data);
@@ -60,15 +69,18 @@ export const searchCallbackHandler = asyncHandler(async (ctx, callbackData) => {
 /**
  * Handle terms-related callbacks
  */
-const termsCallbackHandler = asyncHandler(async (ctx) => {
-  const callbackData = parseCallbackData(ctx.callbackQuery.data.replace('terms:', ''));
+const termsCallbackHandler = asyncHandler(async (ctx, callbackData = null) => {
+  let data = callbackData;
+  if (!data) {
+    data = parseCallbackData(ctx.callbackQuery.data.replace('terms:', ''));
+  }
   
-  switch (callbackData.t) {
+  switch (data.t) {
     case 'page':
-      await handleTermsPageCallback(ctx, callbackData);
+      await handleTermsPageCallback(ctx, data);
       break;
     case 'select':
-      await handleTermSelectCallback(ctx, callbackData);
+      await handleTermSelectCallback(ctx, data);
       break;
     case 'noop':
       await ctx.answerCbQuery();
