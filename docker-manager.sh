@@ -241,6 +241,43 @@ backup_database() {
     return 0
 }
 
+# Function to troubleshoot backend issues
+troubleshoot_backend() {
+    log_header "Backend Troubleshooting"
+    
+    # Check if backend container exists
+    if docker compose ps | grep -q backend; then
+        log_info "Backend container status:"
+        docker compose ps backend
+        
+        echo ""
+        log_info "Backend logs (last 20 lines):"
+        docker compose logs --tail=20 backend
+        
+        echo ""
+        log_info "Backend health check:"
+        if docker compose exec backend wget -qO- http://localhost:3000/health 2>/dev/null; then
+            log_success "Health endpoint accessible"
+        else
+            log_error "Health endpoint not accessible"
+        fi
+        
+        echo ""
+        log_info "Container resource usage:"
+        docker stats --no-stream backend 2>/dev/null || log_warning "Cannot get stats"
+        
+    else
+        log_error "Backend container not found"
+    fi
+    
+    echo ""
+    log_info "Quick fixes to try:"
+    echo "  1. Restart backend: docker compose restart backend"
+    echo "  2. Rebuild backend: docker compose build backend"
+    echo "  3. Check logs: docker compose logs -f backend"
+    echo "  4. Check .env configuration"
+}
+
 # Function to run diagnostics
 run_diagnostics() {
     log_header "Running Diagnostics"
@@ -275,6 +312,7 @@ show_help() {
     echo "  update             Update and restart services"
     echo "  backup             Create database backup"
     echo "  diagnose           Run diagnostic checks"
+    echo "  troubleshoot       Troubleshoot backend issues"
     echo "  help               Show this help message"
     echo ""
     echo "Examples:"
@@ -322,6 +360,9 @@ main() {
             ;;
         diagnose)
             run_diagnostics
+            ;;
+        troubleshoot)
+            troubleshoot_backend
             ;;
         help)
             show_help

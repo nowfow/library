@@ -1,7 +1,7 @@
 # Production-optimized Dockerfile for Music Library Backend
 FROM node:18-alpine AS builder
 
-WORKDIV /app
+WORKDIR /app
 
 # Install build dependencies
 RUN apk add --no-cache python3 make g++
@@ -16,7 +16,7 @@ RUN npm ci --only=production --no-audit --no-fund && \
 # Production stage
 FROM node:18-alpine AS production
 
-WORKDIV /app
+WORKDIR /app
 
 # Install runtime dependencies for health checks and security
 RUN apk add --no-cache \
