@@ -1,6 +1,6 @@
-# 🎵 Music Library - Complete Digital Music Management System
+# 🎵 Music Library
 
-A comprehensive full-stack music library management system with web interface, REST API, and Telegram bot integration. Perfect for managing personal music collections with advanced search, file browsing, and multi-platform access.
+Система управления персональной коллекцией музыки с веб-интерфейсом, PWA и Telegram-ботом.
 
 ## 🏗️ System Architecture
 
@@ -43,82 +43,46 @@ A comprehensive full-stack music library management system with web interface, R
 
 ## 🚀 Quick Start
 
-### Option 1: Ubuntu 22.04 Server Deployment (Recommended for Production)
+### Prerequisites
 
-```bash
-# 1. Initial server setup (run as root)
-sudo ./deploy-server.sh install
+```
+# Required
+Node.js 18+
+MySQL Database (external)
+WebDAV storage account
 
-# 2. Configure environment
-cp .env.production .env
-# Edit .env with your actual configuration
-
-# 3. Deploy application
-./deploy-server.sh deploy
-
-# 4. Monitor health
-./monitor.sh report
+# Optional  
+Telegram account (for bot)
 ```
 
-### Option 2: Docker Compose (Development/Testing)
+### Option 1: Local Development
 
 ```bash
-# Clone and setup
+# Clone repository
 git clone <repository-url>
 cd music-library
 
-# Configure environment
+# Setup environment
 cp .env.example .env
-# Edit .env with your settings
+# Edit .env with your configuration
 
-# Start everything with Docker
-./docker-manager.sh start production
+# Install dependencies
+make install
 
-# Access the application
-# Web: http://localhost
-# API: http://localhost:3000
-# Bot: Active in Telegram
+# Start all services
+make start-local
 ```
 
-### Option 2: Development Mode
+### Option 2: Individual Services
 
 ```bash
-# Start with hot reloading
-./docker-manager.sh start development
-
-# Or manually:
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up
-```
-
-### Option 3: Docker Standalone (Alternative to Docker Compose)
-
-```bash
-# Clone and setup
-git clone <repository-url>
-cd music-library
-
-# Configure environment
-cp .env.example .env
-# Edit .env with your settings
-
-# Start everything with individual Docker containers
-./docker-standalone.sh start
-
-# Access the application
-# Web: http://localhost
-# API: http://localhost:3000
-# Bot: Active in Telegram
-```
-
-### Option 4: Local Development
-
-```bash
-# Start all services locally
-./start.sh
-
-# Or individual services:
+# Start backend only
 cd backend && npm run dev
-cd frontend && npm run dev  
+
+# Start frontend only  
+cd frontend && npm run dev
+
+# Start bot only
 cd telegram-bot && npm run dev
 ```
 
@@ -132,8 +96,6 @@ music-library/
 │   │   ├── services/          # API integration
 │   │   └── App.vue           # Main app component
 │   ├── public/               # Static assets & PWA
-│   ├── Dockerfile           # Production container
-│   ├── Dockerfile.dev       # Development container
 │   └── package.json
 │
 ├── 🔧 backend/                  # Node.js API Server
@@ -142,7 +104,6 @@ music-library/
 │   │   ├── middleware/       # Auth & validation
 │   │   ├── db.js            # Database connection
 │   │   └── webdav-client.js # File storage
-│   ├── Dockerfile
 │   └── package.json
 │
 ├── 🤖 telegram-bot/             # Telegram Bot
@@ -151,26 +112,17 @@ music-library/
 │   │   ├── handlers/         # Callback handlers
 │   │   ├── services/         # API integration
 │   │   └── utils/           # Utilities & keyboards
-│   ├── Dockerfile
-│   ├── Dockerfile.dev
 │   └── package.json
-│
-├── 🐳 Docker Configuration
-│   ├── docker-compose.yml       # Main compose file
-│   ├── docker-compose.dev.yml   # Development overrides
-│   ├── docker-compose.prod.yml  # Production overrides
-│   ├── docker-manager.sh        # Compose management script
-│   └── docker-standalone.sh     # Standalone Docker script
 │
 ├── 📜 Configuration
 │   ├── .env.example            # Environment template
 │   ├── start.sh               # Local startup script
 │   ├── stop.sh                # Local stop script
+│   ├── Makefile               # Build automation
 │   └── README.md              # This file
 │
 └── 📚 Documentation
-    ├── telegram-bot/README.md  # Bot documentation
-    └── DOCKER_README.md        # Docker guide
+    └── telegram-bot/README.md  # Bot documentation
 ```
 
 ## 🔧 Configuration
@@ -255,78 +207,8 @@ COMPOSE_PROJECT_NAME=music-library
 
 ### Production Deployment
 
-```bash
-# Quick production start
-./docker-manager.sh start production
-
-# Manual production deployment
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-
-# View status
-./docker-manager.sh status
 ```
 
-### Docker Standalone Deployment (Alternative)
-
-```bash
-# Alternative to Docker Compose - individual containers
-./docker-standalone.sh start
-
-# View container status
-./docker-standalone.sh status
-
-# View logs for specific service
-./docker-standalone.sh logs backend
-./docker-standalone.sh logs frontend
-./docker-standalone.sh logs bot
-
-# Stop all containers
-./docker-standalone.sh stop
-
-# Restart all services
-./docker-standalone.sh restart
-
-# Clean up containers and network
-./docker-standalone.sh cleanup
-
-# Clean up everything including images
-./docker-standalone.sh cleanup --remove-images
-```
-
-# Manual production deployment
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-
-# View status
-./docker-manager.sh status
-```
-
-### Development Environment
-
-```bash
-# Development with hot reloading
-./docker-manager.sh start development
-
-# View logs
-./docker-manager.sh logs telegram-bot
-```
-
-### Management Commands
-
-```bash
-# Build all images
-./docker-manager.sh build
-
-# Update services
-./docker-manager.sh update
-
-# Backup database
-./docker-manager.sh backup
-
-# Clean up resources
-./docker-manager.sh cleanup
-
-# Show help
-./docker-manager.sh help
 ```
 
 ## 🌐 Service URLs & Access
@@ -379,10 +261,9 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 - Error handling
 
 **Infrastructure**:
-- Docker & Docker Compose
-- Nginx (frontend proxy)
-- MySQL 8.0
-- Alpine Linux (containers)
+- Node.js local runtime
+- MySQL 8.0 (external)
+- WebDAV cloud storage
 
 ### Development Setup
 
@@ -390,7 +271,6 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
    ```bash
    # Required
    Node.js 18+
-   Docker & Docker Compose
    Git
    
    # Optional
@@ -406,15 +286,15 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
    # Edit .env with your settings
    ```
 
-3. **Choose Development Method**:
-
-   **A) Docker Development (Recommended)**:
+3. **Local Development**:
    ```bash
-   ./docker-manager.sh start development
-   ```
-
-   **B) Local Development**:
-   ```bash
+   # Install all dependencies
+   make install
+   
+   # Start all services
+   make start-local
+   
+   # Or individual services:
    # Terminal 1: Backend
    cd backend && npm install && npm run dev
    
@@ -455,9 +335,6 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 ### Production Security
 - **Environment Variables** - no secrets in code
-- **Docker Secrets** - secure credential management
-- **Non-root Containers** - reduced attack surface
-- **Health Checks** - automatic service monitoring
 - **JWT Authentication** - secure API access
 - **Input Validation** - SQL injection prevention
 
@@ -472,27 +349,15 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ## 📊 Monitoring & Logs
 
 ### Viewing Logs
-```bash
-# All services
-./docker-manager.sh logs
-
-# Specific service
-./docker-manager.sh logs telegram-bot
-./docker-manager.sh logs backend
-./docker-manager.sh logs frontend
-
-# Follow logs in real-time
-docker-compose logs -f telegram-bot
+```
+# Check application logs in terminal outputs or log files
+# Backend logs: see terminal running backend
+# Frontend logs: see browser developer console
+# Bot logs: see terminal running bot
 ```
 
 ### Health Checks
 ```bash
-# Service status
-./docker-manager.sh status
-
-# Docker health
-docker-compose ps
-
 # Manual health check
 curl http://localhost:3000/api/terms
 ```
@@ -501,49 +366,23 @@ curl http://localhost:3000/api/terms
 
 ### Common Issues
 
-**🐳 Docker Issues**:
-```bash
-# Permission denied
-sudo chmod +x docker-manager.sh
-
-# Port already in use
-docker-compose down
-sudo lsof -i :3000  # Find process using port
-
-# Build failures
-docker system prune -f  # Clean up
-./docker-manager.sh build
-```
-
 **🗄️ Database Issues**:
 ```bash
-# Connection refused
-docker-compose logs database
-
-# Reset database
-docker-compose down -v
-docker-compose up database
+# Connection refused - check your .env database settings
+# Verify DB_HOST, DB_PORT, DB_USER, DB_PASSWORD
 ```
 
 **🤖 Bot Issues**:
 ```bash
-# Bot not responding
-docker-compose logs telegram-bot
-
-# Invalid token
-echo $BOT_TOKEN  # Check token
-
-# API connection
+# Bot not responding - check BOT_TOKEN in .env
+# API connection - verify backend is running on port 3000
 curl http://localhost:3000/api/terms
 ```
 
 **🌐 Frontend Issues**:
 ```bash
-# Build failures
-docker-compose logs frontend
-
-# API connection
-# Check VITE_API_URL in frontend/.env
+# Build failures - check Node.js version (18+ required)
+# API connection - verify VITE_API_URL points to backend
 ```
 
 ### Performance Optimization
@@ -552,14 +391,10 @@ docker-compose logs frontend
 - **WebDAV**: Use CDN for file delivery
 - **Frontend**: Enable gzip compression
 - **Bot**: Implement rate limiting
-- **Docker**: Adjust resource limits
 
 ## 📚 Documentation
 
 - **[Telegram Bot Guide](telegram-bot/README.md)** - Detailed bot documentation
-- **[Docker Guide](DOCKER_README.md)** - Container deployment
-- **[API Documentation](docs/API.md)** - REST API reference
-- **[Frontend Guide](frontend/README.md)** - Vue.js development
 
 ## 🤝 Contributing
 

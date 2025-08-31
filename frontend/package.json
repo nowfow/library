@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "start": "vite --mode production --logLevel info",
+    "build": "vite build --logLevel info",
+    "preview": "vite preview --logLevel info"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",

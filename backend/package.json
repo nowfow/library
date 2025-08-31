@@ -5,8 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start": "NODE_ENV=production DEBUG=* node src/index.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -18,8 +17,5 @@
     "mysql2": "^3.6.0",
     "path": "^0.12.7",
     "webdav": "^4.11.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
   }
 }

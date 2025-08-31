@@ -3,6 +3,42 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 
+// Enhanced logging middleware
+const requestLogger = (req, res, next) => {
+  const timestamp = new Date().toISOString();
+  const ip = req.ip || req.connection.remoteAddress;
+  console.log(`[${timestamp}] ${req.method} ${req.url} - IP: ${ip}`);
+  
+  // Log request body for POST/PUT requests (excluding sensitive data)
+  if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
+    const logBody = { ...req.body };
+    if (logBody.password) logBody.password = '[HIDDEN]';
+    console.log(`[${timestamp}] Request body:`, JSON.stringify(logBody));
+  }
+  
+  // Log response
+  const originalSend = res.send;
+  res.send = function(data) {
+    const endTime = new Date().toISOString();
+    console.log(`[${endTime}] Response ${res.statusCode} to ${req.method} ${req.url}`);
+    originalSend.apply(this, arguments);
+  };
+  
+  next();
+};
+
+// Error logging middleware
+const errorLogger = (err, req, res, next) => {
+  const timestamp = new Date().toISOString();
+  console.error(`[${timestamp}] ERROR in ${req.method} ${req.url}:`, {
+    message: err.message,
+    stack: err.stack,
+    ip: req.ip || req.connection.remoteAddress,
+    userAgent: req.get('User-Agent')
+  });
+  next(err);
+};
+
 import filesRouter from './routes/files.js';
 import termsRouter from './routes/terms.js';
 import worksRouter from './routes/works.js';
@@ -13,6 +49,10 @@ import pool from './db.js';
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Enable detailed logging
+app.use(requestLogger);
+app.use(errorLogger);
 
 // Test database connection with retries
 async function testDatabaseConnection(maxRetries = 5, delay = 5000) {
@@ -51,25 +91,40 @@ app.use('/api/works', worksRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/collections', collectionsRouter);
 
-// Health check endpoint
+// Enhanced health check endpoint
 app.get('/health', async (req, res) => {
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] Health check requested`);
+  
   const health = {
     status: 'ok',
-    timestamp: new Date().toISOString(),
+    timestamp,
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || 'development',
-    version: '1.0.0'
+    environment: process.env.NODE_ENV || 'production',
+    version: '1.0.0',
+    memory: process.memoryUsage(),
+    pid: process.pid
   };
   
   // Test database connection (optional)
   try {
+    const startTime = Date.now();
     await pool.query('SELECT 1');
-    health.database = 'connected';
+    const dbLatency = Date.now() - startTime;
+    health.database = {
+      status: 'connected',
+      latency: `${dbLatency}ms`
+    };
+    console.log(`[${timestamp}] Database health check: OK (${dbLatency}ms)`);
   } catch (error) {
-    health.database = 'disconnected';
-    health.database_error = error.message;
+    health.database = {
+      status: 'disconnected',
+      error: error.message
+    };
+    console.error(`[${timestamp}] Database health check: FAILED -`, error.message);
   }
   
+  console.log(`[${timestamp}] Health check response:`, health);
   res.json(health);
 });
 

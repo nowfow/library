@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import pool from '../db.js';
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret';
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_for_production_use';
 const SALT_ROUNDS = 10;
 
 // Регистрация
