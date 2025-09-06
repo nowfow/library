@@ -1,10 +1,11 @@
+#!/usr/bin/env python3
 import os
 import time
 import zipfile
 import shutil
 from pathlib import Path
 from dotenv import load_dotenv
-from webdavclient3 import Client
+from webdav3.client import Client
 
 # Загружаем переменные окружения из файла .env
 load_dotenv()
