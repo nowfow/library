@@ -1,3 +1,2 @@
-webdav3
-python-dotenv
 requests
+python-dotenv
