@@ -1,58 +1,218 @@
 import express from 'express';
-import pool from '../db.js';
+import { executeQuery } from '../db.js';
 
 const router = express.Router();
 
-// Получить все термины
+// Получение всех терминов с возможностью поиска
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT term, description FROM terms ORDER BY term');
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Ошибка получения терминов', details: err.message });
+    const { search, limit = 50, offset = 0 } = req.query;
+    
+    let query = 'SELECT * FROM terms';
+    let params = [];
+    
+    if (search) {
+      // Используем FULLTEXT поиск для лучшей производительности
+      query += ' WHERE MATCH(term, definition) AGAINST(? IN NATURAL LANGUAGE MODE)';
+      params.push(search);
+    }
+    
+    query += ' ORDER BY term ASC LIMIT ? OFFSET ?';
+    params.push(parseInt(limit), parseInt(offset));
+    
+    const terms = await executeQuery(query, params);
+    
+    // Получаем общее количество для пагинации
+    let countQuery = 'SELECT COUNT(*) as total FROM terms';
+    let countParams = [];
+    
+    if (search) {
+      countQuery = 'SELECT COUNT(*) as total FROM terms WHERE MATCH(term, definition) AGAINST(? IN NATURAL LANGUAGE MODE)';
+      countParams.push(search);
+    }
+    
+    const [countResult] = await executeQuery(countQuery, countParams);
+    const total = countResult.total;
+    
+    res.json({
+      terms,
+      pagination: {
+        total,
+        limit: parseInt(limit),
+        offset: parseInt(offset),
+        hasMore: (parseInt(offset) + parseInt(limit)) < total
+      }
+    });
+  } catch (error) {
+    console.error('Ошибка получения терминов:', error);
+    res.status(500).json({ 
+      error: 'Ошибка получения терминов',
+      details: error.message 
+    });
   }
 });
 
-// Поиск по термину
+// Поиск терминов (альтернативный эндпоинт с расширенным поиском)
 router.get('/search', async (req, res) => {
-  const { q } = req.query;
-  if (!q) return res.status(400).json({ error: 'Не указан поисковый запрос' });
   try {
-    // Универсальный поиск по первой букве для похожих букв латиницы и кириллицы
-    const similarLetters = {
-      'A': 'А', 'a': 'а',
-      'B': 'В', 'E': 'Е', 'e': 'е',
-      'K': 'К', 'M': 'М', 'H': 'Н',
-      'O': 'О', 'o': 'о',
-      'P': 'Р', 'C': 'С', 'c': 'с',
-      'T': 'Т', 'X': 'Х', 'x': 'х',
-      'Y': 'У', 'y': 'у'
-    };
-    function getLetterVariants(char) {
-      const variants = [char];
-      for (const [lat, cyr] of Object.entries(similarLetters)) {
-        if (char === lat && !variants.includes(cyr)) variants.push(cyr);
-        if (char === cyr && !variants.includes(lat)) variants.push(lat);
-      }
-      return variants;
+    const { q, exact = false } = req.query;
+    
+    if (!q) {
+      return res.status(400).json({ error: 'Параметр поиска q обязателен' });
     }
-    const firstChar = q.charAt(0);
-    const rest = q.slice(1);
-    const firstCharVariants = getLetterVariants(firstChar);
-    const likeQueries = [`%${q}%`];
-    for (const variant of firstCharVariants) {
-      if (variant !== firstChar) {
-        likeQueries.push(`%${variant + rest}%`);
+    
+    let query;
+    let params;
+    
+    if (exact === 'true') {
+      // Точный поиск
+      query = 'SELECT * FROM terms WHERE term = ? OR definition LIKE ?';
+      params = [q, `%${q}%`];
+    } else {
+      // Поиск с FULLTEXT и дополнительный LIKE поиск для коротких запросов
+      if (q.length >= 3) {
+        query = `
+          SELECT *, 
+                 MATCH(term, definition) AGAINST(? IN NATURAL LANGUAGE MODE) as relevance
+          FROM terms 
+          WHERE MATCH(term, definition) AGAINST(? IN NATURAL LANGUAGE MODE)
+             OR term LIKE ? 
+             OR definition LIKE ?
+          ORDER BY relevance DESC, term ASC
+        `;
+        params = [q, q, `%${q}%`, `%${q}%`];
+      } else {
+        // Для коротких запросов используем только LIKE
+        query = `
+          SELECT * FROM terms 
+          WHERE term LIKE ? OR definition LIKE ?
+          ORDER BY 
+            CASE WHEN term LIKE ? THEN 1 ELSE 2 END,
+            term ASC
+        `;
+        params = [`%${q}%`, `%${q}%`, `${q}%`];
       }
     }
-    const placeholders = likeQueries.map(() => 'term LIKE ? COLLATE utf8mb4_unicode_ci').join(' OR ');
-    const [rows] = await pool.query(
-      `SELECT term, description FROM terms WHERE ${placeholders}`,
-      likeQueries
+    
+    const terms = await executeQuery(query, params);
+    
+    res.json({
+      query: q,
+      exact,
+      found: terms.length,
+      terms
+    });
+  } catch (error) {
+    console.error('Ошибка поиска терминов:', error);
+    res.status(500).json({ 
+      error: 'Ошибка поиска терминов',
+      details: error.message 
+    });
+  }
+});
+
+// Получение конкретного термина по ID
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: 'Некорректный ID термина' });
+    }
+    
+    const terms = await executeQuery(
+      'SELECT * FROM terms WHERE id = ?',
+      [parseInt(id)]
     );
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Ошибка поиска по термину', details: err.message });
+    
+    if (terms.length === 0) {
+      return res.status(404).json({ error: 'Термин не найден' });
+    }
+    
+    res.json(terms[0]);
+  } catch (error) {
+    console.error('Ошибка получения термина:', error);
+    res.status(500).json({ 
+      error: 'Ошибка получения термина',
+      details: error.message 
+    });
+  }
+});
+
+// Добавление нового термина (требует аутентификации в будущем)
+router.post('/', async (req, res) => {
+  try {
+    const { term, definition } = req.body;
+    
+    if (!term || !definition) {
+      return res.status(400).json({ 
+        error: 'Поля term и definition обязательны' 
+      });
+    }
+    
+    // Проверяем, не существует ли уже такой термин
+    const existing = await executeQuery(
+      'SELECT id FROM terms WHERE term = ?',
+      [term]
+    );
+    
+    if (existing.length > 0) {
+      return res.status(409).json({ 
+        error: 'Термин с таким названием уже существует' 
+      });
+    }
+    
+    const result = await executeQuery(
+      'INSERT INTO terms (term, definition) VALUES (?, ?)',
+      [term, definition]
+    );
+    
+    // Получаем созданный термин
+    const newTerm = await executeQuery(
+      'SELECT * FROM terms WHERE id = ?',
+      [result.insertId]
+    );
+    
+    res.status(201).json({
+      message: 'Термин успешно добавлен',
+      term: newTerm[0]
+    });
+  } catch (error) {
+    console.error('Ошибка добавления термина:', error);
+    
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ 
+        error: 'Термин с таким названием уже существует' 
+      });
+    }
+    
+    res.status(500).json({ 
+      error: 'Ошибка добавления термина',
+      details: error.message 
+    });
+  }
+});
+
+// Статистика терминов
+router.get('/stats/summary', async (req, res) => {
+  try {
+    const [totalCount] = await executeQuery('SELECT COUNT(*) as total FROM terms');
+    const [avgLength] = await executeQuery('SELECT AVG(LENGTH(definition)) as avg_length FROM terms');
+    const recentTerms = await executeQuery(
+      'SELECT * FROM terms ORDER BY created_at DESC LIMIT 5'
+    );
+    
+    res.json({
+      total: totalCount.total,
+      averageDefinitionLength: Math.round(avgLength.avg_length || 0),
+      recentTerms
+    });
+  } catch (error) {
+    console.error('Ошибка получения статистики терминов:', error);
+    res.status(500).json({ 
+      error: 'Ошибка получения статистики',
+      details: error.message 
+    });
   }
 });
 

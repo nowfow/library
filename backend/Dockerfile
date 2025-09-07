@@ -1,56 +1,45 @@
-# Production-optimized Dockerfile for Music Library Backend
-FROM node:18-alpine AS builder
+# Используем официальный Node.js образ
+FROM node:18-alpine
 
+# Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Install build dependencies
-RUN apk add --no-cache python3 make g++
+# Устанавливаем необходимые системные пакеты
+RUN apk add --no-cache \
+    tini \
+    curl
 
-# Copy package files
+# Копируем файлы зависимостей
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production --no-audit --no-fund && \
+# Устанавливаем зависимости
+RUN npm ci --only=production && \
     npm cache clean --force
 
-# Production stage
-FROM node:18-alpine AS production
-
-WORKDIR /app
-
-# Install runtime dependencies for health checks and security
-RUN apk add --no-cache \
-    wget \
-    curl \
-    dumb-init \
-    && rm -rf /var/cache/apk/*
-
-# Create non-root user for security
+# Создаем пользователя для безопасности
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001 -G nodejs
+    adduser -S musiclib -u 1001
 
-# Copy dependencies from builder stage
-COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
+# Копируем исходный код
+COPY --chown=musiclib:nodejs src/ ./src/
+COPY --chown=musiclib:nodejs populate-db.js ./
 
-# Copy application code
-COPY --chown=nodejs:nodejs . .
+# Создаем директории для логов и файлов
+RUN mkdir -p logs files && \
+    chown -R musiclib:nodejs logs files
 
-# Set proper permissions
-RUN mkdir -p logs && \
-    chown -R nodejs:nodejs /app
+# Переключаемся на непривилегированного пользователя
+USER musiclib
 
-# Switch to non-root user
-USER nodejs
-
-# Expose port
+# Открываем порт
 EXPOSE 3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
+# Проверка здоровья контейнера
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
 
-# Use dumb-init for proper signal handling
-ENTRYPOINT ["dumb-init", "--"]
+# Используем tini как init процесс для правильной обработки сигналов
+ENTRYPOINT ["/sbin/tini", "--"]
 
-# Start application
+# Запускаем приложение
 CMD ["node", "src/index.js"]

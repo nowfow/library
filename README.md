@@ -1,421 +1,257 @@
-# 🎵 Music Library
+# 🎵 Музыкальная библиотека
 
-Система управления персональной коллекцией музыки с веб-интерфейсом, PWA и Telegram-ботом.
+Комплексная система для управления библиотекой нот и музыкальных терминов для валторны, включающая веб-сайт и Telegram бот.
 
-## 🏗️ System Architecture
-
-### Core Components
-
-- **🌐 Frontend**: Vue.js 3 SPA with PWA support
-- **🔧 Backend**: Node.js + Express REST API  
-- **🗄️ Database**: External MySQL server
-- **☁️ File Storage**: WebDAV integration (Yandex, cloud.mail.ru)
-- **🤖 Telegram Bot**: Search and navigation via Telegram
-- **🐳 Docker**: Full containerization with Docker Compose
-
-### Architecture Diagram
-
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Web Frontend  │    │  Telegram Bot   │    │   Mobile PWA    │
-│    (Vue.js)     │    │   (Telegraf)    │    │   (Vue + PWA)   │
-└─────────┬───────┘    └─────────┬───────┘    └─────────┬───────┘
-          │                      │                      │
-          └──────────────────────┼──────────────────────┘
-                                 │
-                    ┌─────────────▼─────────────┐
-                    │     Backend API Server    │
-                    │      (Node.js/Express)    │
-                    └─────────────┬─────────────┘
-                                  │
-                    ┌─────────────▼─────────────┐
-                    │   External MySQL Server   │
-                    │   (Composers, Works,      │
-                    │    Terms, Collections)    │
-                    └───────────────────────────┘
-                                  │
-                    ┌─────────────▼─────────────┐
-                    │      WebDAV Storage       │
-                    │    (Music Files: PDF,     │
-                    │     MP3, SIB, MUS)       │
-                    └───────────────────────────┘
-```
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-```
-# Required
-Node.js 18+
-MySQL Database (external)
-WebDAV storage account
-
-# Optional  
-Telegram account (for bot)
-```
-
-### Option 1: Local Development
-
-```bash
-# Clone repository
-git clone <repository-url>
-cd music-library
-
-# Setup environment
-cp .env.example .env
-# Edit .env with your configuration
-
-# Install dependencies
-make install
-
-# Start all services
-make start-local
-```
-
-### Option 2: Individual Services
-
-```bash
-# Start backend only
-cd backend && npm run dev
-
-# Start frontend only  
-cd frontend && npm run dev
-
-# Start bot only
-cd telegram-bot && npm run dev
-```
-
-## 📦 Project Structure
+## 📋 Структура проекта
 
 ```
 music-library/
-├── 🌐 frontend/                 # Vue.js Web Application
-│   ├── src/
-│   │   ├── components/         # Vue components
-│   │   ├── services/          # API integration
-│   │   └── App.vue           # Main app component
-│   ├── public/               # Static assets & PWA
-│   └── package.json
-│
-├── 🔧 backend/                  # Node.js API Server
-│   ├── src/
-│   │   ├── routes/           # API endpoints
-│   │   ├── middleware/       # Auth & validation
-│   │   ├── db.js            # Database connection
-│   │   └── webdav-client.js # File storage
-│   └── package.json
-│
-├── 🤖 telegram-bot/             # Telegram Bot
-│   ├── src/
-│   │   ├── commands/         # Bot commands
-│   │   ├── handlers/         # Callback handlers
-│   │   ├── services/         # API integration
-│   │   └── utils/           # Utilities & keyboards
-│   └── package.json
-│
-├── 📜 Configuration
-│   ├── .env.example            # Environment template
-│   ├── start.sh               # Local startup script
-│   ├── stop.sh                # Local stop script
-│   ├── Makefile               # Build automation
-│   └── README.md              # This file
-│
-└── 📚 Documentation
-    └── telegram-bot/README.md  # Bot documentation
+├── backend/              # Backend API (Node.js)
+├── telegram-bot/         # Telegram бот (Python + Aiogram)
+├── files/               # Библиотека нот (PDF файлы)
+├── Makefile            # Команды для управления проектом
+├── setup-telegram-bot.sh # Скрипт настройки бота
+└── docker-compose.yml   # Docker конфигурация
 ```
 
-## 🔧 Configuration
+## 🚀 Быстрый старт
 
-### Centralized Environment Configuration
+### Полная настройка
 
-Весь проект использует единый `.env` файл в корневой директории для всех сервисов:
+```bash
+# Настройка проекта
+make setup
 
-#### Main .env file (project root)
-```env
-# External Database Configuration (your remote MySQL server)
-DB_HOST=your_remote_database_host
-DB_PORT=3306
-DB_NAME=music_library
-DB_USER=your_db_username
-DB_PASSWORD=your_db_password
+# Установка зависимостей
+make install
 
-# WebDAV Configuration (required for file storage)
-WEBDAV_URL=https://webdav.yandex.ru
-WEBDAV_USER=your_webdav_username
-WEBDAV_PASSWORD=your_webdav_password
-
-# Telegram Bot Configuration (required for bot functionality)
-BOT_TOKEN=your_telegram_bot_token_from_botfather
-
-# Optional: Custom ports (uncomment to override defaults)
-# FRONTEND_PORT=80
-# BACKEND_PORT=3000
-
-# Development vs Production
-COMPOSE_PROJECT_NAME=music-library
+# Запуск всех сервисов
+make start-local
 ```
 
-### Service Configuration
+### Только Telegram бот
 
-Все сервисы автоматически получают необходимые переменные окружения через Docker Compose:
+```bash
+# Автоматическая настройка бота
+./setup-telegram-bot.sh
 
-- **Frontend**: Получает `VITE_API_URL` через Docker Compose
-- **Backend**: Получает все DB_* и WEBDAV_* переменные
-- **Telegram Bot**: Получает BOT_TOKEN, DB_*, WEBDAV_* и API_BASE_URL
-
-**Примечание**: Больше нет необходимости в отдельных `.env` файлах в папках сервисов.
-
-## 🎯 Features & Capabilities
-
-### 🌐 Web Interface
-- **Modern Vue.js 3** with Composition API
-- **Progressive Web App** - install on mobile/desktop
-- **Responsive Design** - works on all screen sizes
-- **Real-time Search** - find composers, works, terms
-- **File Management** - browse and download music files
-- **Collection Management** - organize personal collections
-
-### 🤖 Telegram Bot
-- **Smart Search Commands**:
-  - `/search_composer Bach` - find all Bach works
-  - `/search_work Sonata` - search by piece title
-  - `/search_term chord` - music theory lookup
-- **File Navigation** - browse WebDAV with inline keyboards
-- **Download Links** - direct access to music files
-- **Rich Formatting** - professional message appearance
-- **Session Management** - remembers navigation state
-
-### 🔧 Backend API
-- **RESTful Endpoints** - `/api/works`, `/api/terms`, `/api/files`
-- **Advanced Search** - partial matching, case-insensitive
-- **File Streaming** - efficient WebDAV integration
-- **Authentication** - JWT-based user sessions
-- **Database Optimization** - connection pooling, utf8mb4
-
-### 📁 File Management
-- **Multi-format Support**:
-  - 📄 **PDF** - sheet music
-  - 🎵 **Audio** - MP3, WAV, FLAC
-  - 🎼 **Notation** - Sibelius (.sib), Finale (.mus)
-  - 📦 **Archives** - ZIP, RAR
-- **Cloud Storage** - WebDAV integration
-- **Thumbnails** - automatic PDF preview generation
-- **Direct Downloads** - secure file access
-
-## 🐳 Docker Deployment
-
-### Production Deployment
-
+# Или вручную:
+make setup-telegram-bot
+make install-telegram-bot
+make dev-telegram-bot
 ```
 
-```
+## 🏗️ Компоненты системы
 
-## 🌐 Service URLs & Access
+### 🔧 Backend API (Node.js)
+- **Технологии**: Node.js, Express, MySQL
+- **Функции**: API для работы с нотами, авторизация, поиск
+- **Порт**: 3000
+- **Документация**: `backend/README.md`
 
-| Service | URL | Description |
-|---------|-----|-------------|
-| **Web Frontend** | http://localhost | Main web interface |
-| **Backend API** | http://localhost:3000 | REST API endpoints |
-| **Database** | External Server | Remote MySQL database |
-| **Telegram Bot** | @your_bot_name | Bot in Telegram |
+### 🤖 Telegram Bot (Python)
+- **Технологии**: Python 3.11+, Aiogram 3.x, SQLite
+- **Функции**: Полный доступ к библиотеке через Telegram
+- **Документация**: `telegram-bot/README.md`
 
-### API Endpoints
+### 📁 Файловая система
+- **Формат**: Иерархическая структура папок с PDF файлами
+- **Организация**: Категория → Подкатегория → Композитор → Произведение
+- **Объем**: 8,534 PDF файлов, 1,684 композитора
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/works` | GET | Search musical works |
-| `/api/works/files` | GET | Get files for work |
-| `/api/terms` | GET | All musical terms |
-| `/api/terms/search` | GET | Search terms |
-| `/api/files/cloud/list` | GET | Browse WebDAV files |
-| `/api/files/pdf` | GET | Download file |
-| `/api/auth/login` | POST | User authentication |
-| `/api/collections` | GET/POST | Manage collections |
+## 🎯 Функциональность
 
-## 🛠️ Development
+### Общие возможности
+- 🔍 **Умный поиск** с исправлением опечаток
+- 📚 **Каталогизация** по композиторам и категориям
+- 📖 **Музыкальные термины** с определениями
+- 👤 **Личные коллекции** для зарегистрированных пользователей
+- 📄 **Просмотр PDF** файлов нот
 
-### Technology Stack
+### Telegram Bot
+- 🔐 **Авторизация** через уникальные коды
+- 📤 **Отправка файлов** прямо в чат
+- 🎵 **Адаптированный UI/UX** для мобильных устройств
+- ⚡ **Быстрый доступ** к избранным произведениям
 
-**Frontend**:
-- Vue.js 3 + Composition API
-- Vite (build tool)
-- Tailwind CSS + Vuetify
-- Vue Router
-- Axios
-- PWA support
+## 📊 Статистика библиотеки
 
-**Backend**:
+- **Всего категорий**: 12
+- **Всего композиторов**: 1,684
+- **Всего PDF файлов**: 8,534
+- **Директорий**: 7,063
+
+### Основные категории
+- Jazz
+- Sonata
+- Пьесы (786 композиторов)
+- С оркестром (119 композиторов)
+- Ансамбли валторн (495 композиторов)
+- Крупная форма (149 композиторов)
+- И другие...
+
+## ⚙️ Установка и настройка
+
+### Системные требования
+
+**Backend:**
 - Node.js 18+
-- Express.js
-- MySQL2 (database)
-- WebDAV client
-- JWT authentication
-- CORS support
+- MySQL 8.0+
+- npm/yarn
 
-**Telegram Bot**:
-- Telegraf 4.16+ (modern bot framework)
-- Rich message formatting
-- Inline keyboards
-- Session management
-- Error handling
+**Telegram Bot:**
+- Python 3.11+
+- pip
+- SQLite (входит в Python)
 
-**Infrastructure**:
-- Node.js local runtime
-- MySQL 8.0 (external)
-- WebDAV cloud storage
+**Docker:**
+- Docker Engine 20.0+
+- Docker Compose 2.0+
 
-### Development Setup
+### Настройка переменных окружения
 
-1. **Prerequisites**:
-   ```bash
-   # Required
-   Node.js 18+
-   Git
-   
-   # Optional
-   MySQL client
-   Telegram account
-   ```
-
-2. **Clone & Configure**:
-   ```bash
-   git clone <repository-url>
-   cd music-library
-   cp .env.example .env
-   # Edit .env with your settings
-   ```
-
-3. **Local Development**:
-   ```bash
-   # Install all dependencies
-   make install
-   
-   # Start all services
-   make start-local
-   
-   # Or individual services:
-   # Terminal 1: Backend
-   cd backend && npm install && npm run dev
-   
-   # Terminal 2: Frontend  
-   cd frontend && npm install && npm run dev
-   
-   # Terminal 3: Bot
-   cd telegram-bot && npm install && npm run dev
-   ```
-
-### Adding New Features
-
-1. **New API Endpoint**:
-   ```javascript
-   // backend/src/routes/newRoute.js
-   router.get('/new-endpoint', async (req, res) => {
-     // Implementation
-   });
-   ```
-
-2. **New Bot Command**:
-   ```javascript
-   // telegram-bot/src/commands/newCommand.js
-   export const newCommand = async (ctx) => {
-     await ctx.reply('New command!');
-   };
-   ```
-
-3. **New Frontend Page**:
-   ```vue
-   <!-- frontend/src/components/NewPage.vue -->
-   <template>
-     <div>New page content</div>
-   </template>
-   ```
-
-## 🔐 Security
-
-### Production Security
-- **Environment Variables** - no secrets in code
-- **JWT Authentication** - secure API access
-- **Input Validation** - SQL injection prevention
-
-### Security Checklist
-- [ ] Change default passwords
-- [ ] Configure HTTPS (production)
-- [ ] Set up firewall rules
-- [ ] Regular security updates
-- [ ] Backup strategy
-- [ ] Monitor logs
-
-## 📊 Monitoring & Logs
-
-### Viewing Logs
-```
-# Check application logs in terminal outputs or log files
-# Backend logs: see terminal running backend
-# Frontend logs: see browser developer console
-# Bot logs: see terminal running bot
+**Backend (.env):**
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=music_user
+DB_PASSWORD=music_password
+DB_NAME=music_library
+JWT_SECRET=your_jwt_secret
 ```
 
-### Health Checks
+**Telegram Bot (.env):**
+```env
+TELEGRAM_BOT_TOKEN=your_bot_token_from_botfather
+BACKEND_API_URL=http://localhost:3000/api
+```
+
+## 🐳 Docker развертывание
+
 ```bash
-# Manual health check
-curl http://localhost:3000/api/terms
+# Запуск всех сервисов
+docker-compose up -d
+
+# Или по отдельности
+docker-compose up backend
+docker-compose up telegram-bot
 ```
 
-## 🔧 Troubleshooting
+## 📖 Команды Makefile
 
-### Common Issues
-
-**🗄️ Database Issues**:
+### Основные команды
 ```bash
-# Connection refused - check your .env database settings
-# Verify DB_HOST, DB_PORT, DB_USER, DB_PASSWORD
+make help                # Справка по командам
+make setup              # Первоначальная настройка
+make install            # Установка зависимостей
+make start-local        # Запуск в режиме разработки
+make stop-local         # Остановка сервисов
+make health             # Проверка состояния
 ```
 
-**🤖 Bot Issues**:
+### Backend команды
 ```bash
-# Bot not responding - check BOT_TOKEN in .env
-# API connection - verify backend is running on port 3000
-curl http://localhost:3000/api/terms
+make start-backend      # Запуск только backend
+make logs-backend       # Логи backend
+make populate-db        # Заполнение БД из файлов
 ```
 
-**🌐 Frontend Issues**:
+### Telegram Bot команды
 ```bash
-# Build failures - check Node.js version (18+ required)
-# API connection - verify VITE_API_URL points to backend
+make setup-telegram-bot     # Настройка бота
+make install-telegram-bot   # Установка зависимостей бота
+make dev-telegram-bot       # Запуск бота в dev режиме
+make logs-telegram-bot      # Логи бота
 ```
 
-### Performance Optimization
+### Утилиты
+```bash
+make clean              # Очистка временных файлов
+make test               # Запуск тестов
+make status             # Статус процессов
+make restart            # Перезапуск всех сервисов
+```
 
-- **Database**: Configure MySQL for your data size
-- **WebDAV**: Use CDN for file delivery
-- **Frontend**: Enable gzip compression
-- **Bot**: Implement rate limiting
+## 🔧 Разработка
 
-## 📚 Documentation
+### Архитектура
 
-- **[Telegram Bot Guide](telegram-bot/README.md)** - Detailed bot documentation
+**Backend API:**
+- RESTful API с OpenAPI документацией
+- Middleware для авторизации и логирования
+- Умный поиск с поддержкой опечаток
+- Файловый менеджер для PDF файлов
 
-## 🤝 Contributing
+**Telegram Bot:**
+- Модульная архитектура с разделением на слои
+- Middleware для авторизации и логирования
+- Интеграция с Backend API через HTTP
+- Локальное кеширование для производительности
 
-1. Fork the repository
-2. Create feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Open Pull Request
+### Тестирование
 
-## 📄 License
+```bash
+# Тесты Backend
+cd backend && npm test
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+# Проверка конфигурации Telegram Bot
+cd telegram-bot && python check_config.py
+```
 
-## 🎵 Support
+## 📚 Документация
 
-For support and questions:
-- 📧 Email: support@musiclibrary.com
-- 💬 Telegram: @music_library_support
-- 🐛 Issues: GitHub Issues
-- 📖 Wiki: GitHub Wiki
+- **Backend API**: `backend/README.md`
+- **Telegram Bot**: `telegram-bot/README.md`
+- **Wiki проекта**: `Wiki` (требования и спецификации)
+
+## 🤝 Получение токена для Telegram бота
+
+1. Найдите @BotFather в Telegram
+2. Отправьте команду `/newbot`
+3. Следуйте инструкциям для создания бота
+4. Получите токен и добавьте в `.env` файл
+5. Настройте команды бота через @BotFather
+
+## 🐛 Решение проблем
+
+### Общие проблемы
+
+**Backend не запускается:**
+- Проверьте настройки БД в `.env`
+- Убедитесь, что MySQL запущен
+- Проверьте порт 3000
+
+**Telegram Bot не отвечает:**
+- Проверьте токен в `.env`
+- Убедитесь, что Backend API доступен
+- Проверьте логи: `make logs-telegram-bot`
+
+**Файлы не загружаются:**
+- Проверьте права доступа к папке `files/`
+- Убедитесь в корректности путей в БД
+
+### Логи и отладка
+
+```bash
+# Проверка состояния всех сервисов
+make health
+
+# Просмотр логов
+make logs-backend
+make logs-telegram-bot
+
+# Проверка конфигурации бота
+cd telegram-bot && python check_config.py
+```
+
+## 📄 Лицензия
+
+MIT License - см. LICENSE файл для деталей.
+
+## 👥 Команда разработки
+
+Музыкальная библиотека для валторны - специализированная система для музыкантов и педагогов.
 
 ---
 
-**🎶 Happy Music Management! 🎼** 
+**🎵 Добро пожаловать в мир музыки! 🎵**
