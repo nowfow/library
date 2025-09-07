@@ -133,6 +133,15 @@ populate-db: ## Заполнение базы данных из файловой
 	@cd $(BACKEND_DIR) && node populate-db.js
 	@echo "${GREEN}✅ База данных заполнена${NC}"
 
+import-terms: ## Импорт терминов из CSV файла
+	@echo "${GREEN}📚 Импорт терминов из files/terms.csv...${NC}"
+	@cd $(BACKEND_DIR) && node import-terms.js ../files/terms.csv
+	@echo "${GREEN}✅ Термины импортированы${NC}"
+
+check-terms: ## Проверка файла terms.csv
+	@echo "${GREEN}🔍 Проверка файла terms.csv...${NC}"
+	@node check-terms.js
+
 clean: ## Очистка node_modules и временных файлов
 	@echo "${GREEN}🧹 Очистка проекта...${NC}"
 	@echo "🔧 Очистка Backend..."

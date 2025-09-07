@@ -181,10 +181,119 @@ async function parseWorkFromPath(pathParts, fullPath) {
   }
 }
 
-// Функция заполнения тестовых терминов
+// Функция заполнения терминов из CSV файла
 async function populateTerms() {
-  console.log('📚 Заполнение музыкальных терминов...');
+  console.log('📚 Заполнение музыкальных терминов из CSV файла...');
   
+  const csvPath = path.join(FILES_BASE_PATH, 'terms.csv');
+  
+  try {
+    // Проверяем существование CSV файла
+    const csvExists = await fs.access(csvPath).then(() => true).catch(() => false);
+    if (!csvExists) {
+      console.log(`⚠️ Файл terms.csv не найден по пути: ${csvPath}`);
+      console.log('📚 Используем тестовые термины...');
+      await populateTestTerms();
+      return;
+    }
+    
+    // Читаем CSV файл
+    const csvContent = await fs.readFile(csvPath, 'utf-8');
+    const lines = csvContent.split('\n').filter(line => line.trim());
+    
+    console.log(`📄 Найдено ${lines.length} строк в CSV файле`);
+    
+    // Очищаем существующие термины
+    await executeQuery('DELETE FROM terms');
+    console.log('🗑️ Очищены существующие термины');
+    
+    let successCount = 0;
+    let errorCount = 0;
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      
+      try {
+        // Парсим CSV строку (учитываем кавычки и запятые внутри)
+        const parsedLine = parseCSVLine(line);
+        
+        if (parsedLine.length >= 2) {
+          const term = parsedLine[0].trim();
+          const definition = parsedLine[1].trim();
+          
+          if (term && definition) {
+            await executeQuery(
+              'INSERT INTO terms (term, definition) VALUES (?, ?)',
+              [term, definition]
+            );
+            successCount++;
+            
+            if (successCount % 50 === 0) {
+              console.log(`✅ Обработано ${successCount} терминов...`);
+            }
+          }
+        } else {
+          console.warn(`⚠️ Неверный формат строки ${i + 1}: ${line.substring(0, 50)}...`);
+          errorCount++;
+        }
+      } catch (error) {
+        console.error(`❌ Ошибка обработки строки ${i + 1}:`, error.message);
+        errorCount++;
+      }
+    }
+    
+    console.log(`✅ Успешно добавлено: ${successCount} терминов`);
+    if (errorCount > 0) {
+      console.log(`❌ Ошибок: ${errorCount}`);
+    }
+    
+  } catch (error) {
+    console.error('❌ Ошибка чтения CSV файла:', error.message);
+    console.log('📚 Используем тестовые термины...');
+    await populateTestTerms();
+  }
+}
+
+// Функция для парсинга CSV строки с учетом кавычек
+function parseCSVLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+  let i = 0;
+  
+  while (i < line.length) {
+    const char = line[i];
+    
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        // Экранированная кавычка
+        current += '"';
+        i += 2;
+      } else {
+        // Начало или конец кавычек
+        inQuotes = !inQuotes;
+        i++;
+      }
+    } else if (char === ',' && !inQuotes) {
+      // Разделитель вне кавычек
+      result.push(current);
+      current = '';
+      i++;
+    } else {
+      current += char;
+      i++;
+    }
+  }
+  
+  // Добавляем последний элемент
+  result.push(current);
+  
+  return result;
+}
+
+// Функция заполнения тестовых терминов (fallback)
+async function populateTestTerms() {
   const terms = [
     {
       term: 'Валторна',

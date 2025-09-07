@@ -1,0 +1,397 @@
+MUSIC SCORE LIBRARY HIERARCHY ANALYSIS
+==================================================
+
+OVERVIEW:
+Total Categories: 14
+Total Composers: 1684
+Total PDF Files: 8534
+Total Directories: 7063
+
+CATEGORY STRUCTURE:
+------------------------------
+
+JAZZ:
+  Composers (19): Amazing Grace, Berlin Irving (1888 – 1989), Booth Barry, Brenner Jérémie, Desmond Paul, Dewagtere Bernard, Gershwin George, Hill Douglas, Joplin Scott (1868 — 1917), Kempster Mike ... and 9 more
+  Subcategories: Из репертуара Аркадия Шилклопера
+  Notable Works: 2000-th, A Voyage, Bachianas Americanas, Changes, Chattanooga Choo-Choo ... and 35 more
+  Structure Examples:
+    Jazz (1 PDFs)
+    Jazz/Невилько Алексей/A Voyage (1 PDFs)
+    Jazz/Gershwin George/Prelude №2 (1 PDFs)
+    Jazz/Gershwin George/Summertime (1 PDFs)
+    Jazz/Robertson Thomas/Bachianas Americanas (1 PDFs)
+
+PARTS WITHOUT PIANO:
+  Composers (34): Bach Johann Sebastian, Böhme Oskar, Chopin Fryderyk Franciszek, Damase, Jean-Michel, Davies, Peter Maxwell, Debussy Achille-Claude, Gallay Jacques-François (1795-1864), Garrigós García Rafael M, Grazioli Giuseppe, Gregson, Edward ... and 24 more
+  Notable Works: 21 Lieder Volume 1, 3rd Sonata, A little serenade, ADAGIO, ARIOSO ... and 28 more
+  Structure Examples:
+    Parts without piano/Quantz, Johann Joachim/Horn Concerto in E-flat major, QV 5Anh.14 (1 PDFs)
+    Parts without piano/Grimm Hugo/A little serenade (1 PDFs)
+    Parts without piano/Gallay Jacques-François (1795-1864)/Op.36 Concert for Horn and orchestra (1 PDFs)
+    Parts without piano/Hoss Wendell/Etude (1 PDFs)
+    Parts without piano/Kurka, Robert/Concerto for horn (1 PDFs)
+
+SOLO:
+  Composers (4): Bach Johann Sebastian, David Avram, Lacerda Osvaldo, Pérez, Sergio Aarón
+  Notable Works: 319, BWV 1013 Partita in a minor, Cello suites, Sonata Op.101, Três Peças
+  Structure Examples:
+    SOLO/Adler Samuel (1 PDFs)
+    SOLO/Burdick Richard Oscar (1 PDFs)
+    SOLO/Villalba Jesus Miquel (1 PDFs)
+    SOLO/Барышев А (1 PDFs)
+    SOLO/Merilainen Usko (1 PDFs)
+
+SONATA:
+  Composers (107): Adler Samuel, Albinoni Tomaso (1671-1750), Alexandra Liana, Ambrosius Hermann (1897—1983), Amos Keith, Ariosti Attilio Malachia (1666 – 1729), Bakki József (1940 – 1981), Baldasar Pietro, Beckman, Benjamin, Beethoven Ludwig van (1770 – 1827) ... and 97 more
+  Subcategories: Loeillet Jean-Baptiste (1680 — 1730), Pilss Karl
+  Notable Works: 2 sonatas for horn and piano, Ancient Chinadoll, Fantasie heroiqne Sonate Op. 25, Grande Sonate Op.34, Grande Sonate op. 29 ... and 69 more
+  Structure Examples:
+    Sonata/Krufft, Nikolaus von/Sonata for horn and piano (2 PDFs)
+    Sonata/Adler Samuel/Sonata (1 PDFs)
+    Sonata/Madsen Trygve/Sonate (1 PDFs)
+    Sonata/Solcovi Frant/Op.58 Sonata (1 PDFs)
+    Sonata/Turner Kerry/Sonata (1 PDFs)
+
+THUMBNAILS:
+  Composers (0): 
+  Notable Works: 
+  Structure Examples:
+
+АНСАМБЛИ ВАЛТОРН:
+  Composers (495): #Popular, $Popular$, &Colección&, &Новый год&, +Piano(Harp)(Orchestra), +Piano(Harp)(Orchestra)(Other), 2, 2 horal preludes, 3, 4 ... and 485 more
+  Subcategories: 10+, 10+/Буяновский Виталий, 2, 2/& Collection, 2/+Piano(Harp)(Orchestra), 3, 3/+Piano(Harp)(Orchestra), 4, 4/$Popular$, 4/&Colección&, 4/&Новый год&, 4/+Piano(Harp)(Orchestra)(Other), 4/Beethoven Ludwig van (1770 – 1827), 4/Brahms Johannes (1833-1897), 4/Piazzolla Astor, 4/Reger,Max, 4/Wagner Richard, 4/Wunderer Anton (1877-1955), 4/Захаров Юрий (1954 -), 5, 5/#Popular, 5/Stiegler Karl 1876-1932, 6, 7, 8, 8/+Other, 8/Tchaikovsky, Pyotr, 9
+  Notable Works: $Popular$, & Collection, 'Twilight Maple' for 8 Horns, +5+5Wind, 1 ... and 935 more
+  Structure Examples:
+    Ансамбли валторн (1 PDFs)
+    Ансамбли валторн/9/Frøhlich, Johannes Frederik/Marsch og Jagtstykke Op.40 (2 PDFs)
+    Ансамбли валторн/9/Bach  Johann Sebastian/Toccata and Fuga in d minor (BWV565) (1 PDFs)
+    Ансамбли валторн/7/Глазунов Александр/Мечты Op.24 (2 PDFs)
+    Ансамбли валторн/6/Piazolla Astor/Pajaros Perdidos (2 PDFs)
+
+КРУПНАЯ ФОРМА (HORN AND PIANO):
+  Composers (149): Abel, Carl Friedrich, Albrechtsberfer Johann Georg (1736-1809), Amram David, Aristakisean Emin, Arnold Malcolm, Atterberg Kurt Magnus (1887 – 1974), Bach  Johann Christian, Beckell, James, Bellini Vincenzo Salvatore Carmelo Francesco (1801 — 1835), Bertini Gary ... and 139 more
+  Subcategories: Arban Joseph Jean-Baptiste Laurent (1825 - 1889), Arnold, Malcom, Dukas Paul (1865 — 1935), Haydn Franz Joseph (1732 - 1809), Hindemith Paul (1895-1963), Kling Henri, Mozart Wolfgang Amadeus (1756 — 1791), Olsen, Ole, Rosetti Antonio (1750 - 1792), Saint-Saëns Camille (1835-1921), Strauss Franz (1822 — 1905), Strauss Richard (1864 — 1949)
+  Notable Works: 1 концерт, 2 концерт, 2 часть Partitura, 4 Концерт, Adagio&allegro ... and 161 more
+  Structure Examples:
+    Крупная форма (Horn and Piano)/Matys, Karl/Op.12 No1 (2 PDFs)
+    Крупная форма (Horn and Piano)/Matys, Karl/Op.44 No4 (2 PDFs)
+    Крупная форма (Horn and Piano)/Matys, Karl/Op.24 No2 (2 PDFs)
+    Крупная форма (Horn and Piano)/Matys, Karl/Op.39 No3 (3 PDFs)
+    Крупная форма (Horn and Piano)/Olsen, Ole/Horn Concerto, Op.48 (3 PDFs)
+
+НОВАЯ ПАПКА:
+  Composers (0): 
+  Notable Works: 
+  Structure Examples:
+
+ОБУЧЕНИЕ:
+  Composers (38): 12 Etudes, Alphonse Maxime, Arban, Jean-Baptiste, Boscher, A, Bourgue Daniel, Concone Giuseppe, Coscia Silvio, Cugnot, A, Dauprat  Louis François, Dauprat Louis François (1781 - 1868) ... and 28 more
+  Subcategories: Хрестоматии, Школы, Методики, Этюды, Упражнения, Этюды, Упражнения/Lewy, Josef Rudolf
+  Notable Works: 1-2, 1-2 Училищ, 1-5, 1-6, 12 Études pour Cor chromatique ... and 324 more
+  Structure Examples:
+    Обучение/Этюды, Упражнения (4 PDFs)
+    Обучение/Этюды, Упражнения/Colin Charles (1 PDFs)
+    Обучение/Этюды, Упражнения/Punto, Giovanni (1 PDFs)
+    Обучение/Этюды, Упражнения/Krol Bernard (1 PDFs)
+    Обучение/Этюды, Упражнения/Turner Kerry (1 PDFs)
+
+ОРКЕСТРОВЫЕ ТРУДНОСТИ:
+  Composers (170): 25 Norwegian Folk Songs and Dances, Op.17, A Life for the Tsar, Adam, Adolphe, Alfvén, Hugo, Anderson Leroy, Ariane et Barbe-bleue, Armide, Wq.45, Auber, Daniel François Esprit, Bach  Johann Sebastian, Barber Samuel ... and 160 more
+  Subcategories: Партии валторн(ы), Партии валторн(ы)/Beethoven, Ludwig van, Партии валторн(ы)/Bizet Georges, Партии валторн(ы)/Brahms Johannes, Партии валторн(ы)/Bruckner Anton, Партии валторн(ы)/Delibes, Léo, Партии валторн(ы)/Dukas, Paul, Партии валторн(ы)/Dvořák  Antonín, Партии валторн(ы)/Elgar, Edward, Партии валторн(ы)/Gluck, Christoph Willibald, Партии валторн(ы)/Grieg Edvard, Партии валторн(ы)/Handel, George Frideric, Партии валторн(ы)/Haydn, Joseph, Партии валторн(ы)/Janáček, Leoš, Партии валторн(ы)/Mahler Gustav, Партии валторн(ы)/Mendelssohn Felix, Партии валторн(ы)/Moniuszko, Stanisław, Партии валторн(ы)/Mozart W-A, Партии валторн(ы)/Nielsen, Carl, Партии валторн(ы)/Rossini Gioacchino, Партии валторн(ы)/Saint-Saëns, Camille, Партии валторн(ы)/Schubert Franz, Партии валторн(ы)/Schumann Robert, Партии валторн(ы)/Sibelius Jean, Партии валторн(ы)/Wagner, Richard, Партии валторн(ы)/Бородин Александр, Партии валторн(ы)/Глазунов Александр, Партии валторн(ы)/Глинка Михаил, Партии валторн(ы)/Мусоргский Модест, Партии валторн(ы)/Прокофьев Сергей, Партии валторн(ы)/Рахманинов Сергей, Партии валторн(ы)/Рубинштейн Антон, Партии валторн(ы)/Скрябин Александр, Партии валторн(ы)/Стравинский Игорь, Партии валторн(ы)/Чайковский Петр Ильич, Партии валторн(ы)/Шостакович Дмитрий, Сборники
+  Notable Works: 1.Hohe Hornstellen, 1st suite, 2 Romanian Rhapsodies, Op.11, 2.Tiefe Hornstellen, 2nd suite ... and 1145 more
+  Structure Examples:
+    Оркестровые трудности/Партии валторн(ы)/Giordano, Umberto/Andrea Chénier (2 PDFs)
+    Оркестровые трудности/Партии валторн(ы)/Giordano, Umberto/Fedora (2 PDFs)
+    Оркестровые трудности/Партии валторн(ы)/Lortzing, Albert/Yelva (1 PDFs)
+    Оркестровые трудности/Партии валторн(ы)/Bartók Béla/Op.90 Violin Rhapsody No.2 (1 PDFs)
+    Оркестровые трудности/Партии валторн(ы)/Bartók Béla/Op.116 Concerto for Orchestra (1 PDFs)
+
+ОХОТНИЧИЙ РОГ (HUNTING HORN):
+  Composers (6): De la Roche, Boursier, Deisenroth Fridrich, Freiberg Gottfried, Frohlich Johannes Frederik (1806-1860), Jagerstucklein, Stiegler Karl
+  Notable Works: 4  Jagdfanfaren, Hunting-Horn Music, Jagdfanfare, Jagdhornstucke for 4 horn, Jagtstykke ... and 2 more
+  Structure Examples:
+    Охотничий рог (Hunting horn)/Dampierre, Marc-Antoine de (1 PDFs)
+    Охотничий рог (Hunting horn)/Freiberg Gottfried/4  Jagdfanfaren (1 PDFs)
+    Охотничий рог (Hunting horn)/Tyndare-Gruyer, Charles (1 PDFs)
+    Охотничий рог (Hunting horn)/Bertin, Jean-Baptiste (1 PDFs)
+    Охотничий рог (Hunting horn)/Stiegler Karl/Jagdfanfare (1 PDFs)
+
+ПЬЕСЫ:
+  Composers (786): 2 Pièces de Salon, Op.16, 2 Salonstücke, Op.15, 2 Transcriptions sur 'Lakmé' de Delibes, 2 Vortragsstücke, Op.79, 2me Suite de 6 Mélodies, 3 Mélodies favorites, Op.48, 3 Mélodies, Op.25, 3me Suite de 6 Mélodies, 5 Tonbilder, Op.13, 6 Melodies ... and 776 more
+  Subcategories: Зарубежных композиторов, Зарубежных композиторов/Artôt, Jean-Désiré, Зарубежных композиторов/Bach Johann Sebastian, Зарубежных композиторов/Brémond, François, Зарубежных композиторов/Chabrier Alexis-Emmanuel (1841 - 1894), Зарубежных композиторов/Czerny Carl, Зарубежных композиторов/Dauprat, Louis-François, Зарубежных композиторов/Eichborn, Hermann Ludwig, Зарубежных композиторов/Eisner, Karl, Зарубежных композиторов/Gallay, Jacques François, Зарубежных композиторов/Guerra-Peixe César, Зарубежных композиторов/Humperdinck Engelbert, Зарубежных композиторов/Matys, Karl, Зарубежных композиторов/Mozart Wolfgang Amadeus, Зарубежных композиторов/Müller Bernhard Eduard, Зарубежных композиторов/Pilss Karl, Зарубежных композиторов/Raff Joseph Joachim, Зарубежных композиторов/Saint-Saëns Charles-Camille, Зарубежных композиторов/Schubert Franz, Зарубежных композиторов/Stradella Alessandro, Зарубежных композиторов/Wilm, Nicolai von, Новогодние, Merry Christmas, Русских-советских композиторов (Russian composers), Русских-советских композиторов (Russian composers)/Вустин Александр, Русских-советских композиторов (Russian composers)/Геллер Евгений, Русских-советских композиторов (Russian composers)/Глазунов Александр, Русских-советских композиторов (Russian composers)/Глиэр Рейнгольд, Русских-советских композиторов (Russian composers)/Губайдулина Софья, Русских-советских композиторов (Russian composers)/Довгань Владимир, Русских-советских композиторов (Russian composers)/Екимовский Виктор, Русских-советских композиторов (Russian composers)/Мильман Марк, Русских-советских композиторов (Russian composers)/Мусоргский Модест, Русских-советских композиторов (Russian composers)/Сальников Георгий, Русских-советских композиторов (Russian composers)/Смирнов Дмитрий, Русских-советских композиторов (Russian composers)/Тактакишвили Ш, Русских-советских композиторов (Russian composers)/Тобис Борис, Русских-советских композиторов (Russian composers)/Франкштейн Борис, Русских-советских композиторов (Russian composers)/Чайковский Пётр Ильич, Русских-советских композиторов (Russian composers)/Шостакович Дмитрий, Русских-советских композиторов (Russian composers)/Шуть Вясеслав, Сборники пьес
+  Notable Works: + Квартет, 1. Aux Étoiles, 1. Le Repos, 1. Весёлое настроение, 1. Испанский танец ... and 1368 more
+  Structure Examples:
+    Пьесы/Русских-советских композиторов (Russian composers)/Аренский А/В поле (1 PDFs)
+    Пьесы/Русских-советских композиторов (Russian composers)/Аренский А/Романс (2 PDFs)
+    Пьесы/Русских-советских композиторов (Russian composers)/Аренский А/Элегия (2 PDFs)
+    Пьесы/Русских-советских композиторов (Russian composers)/Аренский А/Колыбельная (1 PDFs)
+    Пьесы/Русских-советских композиторов (Russian composers)/Аренский А/Романс Ор.53.№5 (2 PDFs)
+
+С ДУХОВЫМ ОРКЕСТРОМ:
+  Composers (33): Andersen Mogens, Bach Johann Sebastian, Bakalian Graig, Buyanovski Vitaly, Clarke L, Concerto No. 1, Dukas Paul (1865 — 1935), Franz Oskar, Haydn Joseph (1732-1809), Hübler Heinrich ... and 23 more
+  Subcategories: Buyanovski Vitaly, Dukas Paul (1865 — 1935), Mozart W. A, Salnikov Georgy
+  Notable Works: 1st Movement, Ave Maria, Cape Horn, Chanconne, Concerto No. 1 ... and 38 more
+  Structure Examples:
+    С духовым оркестром/Salnikov Georgy/Nocturne/Юрий Захаров (2 PDFs)
+    С духовым оркестром/Salnikov Georgy/Nocturne/Иван Марый (2 PDFs)
+    С духовым оркестром/Strauss Richard/Concerto No1 Op. 11 (I) (1 PDFs)
+    С духовым оркестром/Strauss Richard/Concerto No1 Op. 11 (III) (28 PDFs)
+    С духовым оркестром/Teleman G.F/Концерт для двух валторн (3 PDFs)
+
+С ОРКЕСТРОМ:
+  Composers (119): Abel, Carl Friedrich, Anonymous, Atterberg Kurt, Álvarez Antonio, Bahr Emil, Beatty, Stephen W, Becker, John J, Bonvecchio Demetrio, C49 K III-36  Es-Dur, Chabrier Alexis-Emmanuel (1841 - 1894) ... and 109 more
+  Subcategories: Chabrier Alexis-Emmanuel (1841 - 1894), Dukas Paul (1865 — 1935), Glazunov, Aleksandr, Glière Reinhold (1875 — 1956), Hindemith Paul (1895-1963), Mozart Wolfgang Amadeus (1756 — 1791), Olsen, Ole, Rosetti Antonio (1750 - 1792), Saint-Saëns Camille (1835-1921), Saint-Saëns Camille (1835-1921)/Романс Op.36, Schubert Franz, Stradella Alessandro, Strauss Franz (1822 — 1905), Strauss Richard (1864 — 1949), Van Hoorick, Geert, Сальников Георгий
+  Notable Works: + Квартет, 2 sonatas for horn and piano, 2 часть Partitura, Adagio&allegro, Andante Cantabile (from the String Quartet No.1) ... and 150 more
+  Structure Examples:
+    С оркестром/Olsen, Ole/Horn Concerto, Op.48 (3 PDFs)
+    С оркестром/Olsen, Ole/Horn Concerto, Op.48/Orchestral Parts (21 PDFs)
+    С оркестром/Olsen, Ole/Horn Serenade (3 PDFs)
+    С оркестром/Сальников Георгий/Ноктюрн (1 PDFs)
+    С оркестром/Сальников Георгий/Ноктюрн/Horn&Orchestra (Vitali Palei) (3 PDFs)
+
+HIERARCHY STRUCTURE PATTERNS:
+-----------------------------------
+  Category/Composer/Work: 1105 instances
+  Category/Subcategory/Composer/Work: 3225 instances
+  Category/Subcategory/Subsubcategory/Composer/Work: 555 instances
+
+DEPTH DISTRIBUTION:
+-------------------------
+  1 levels deep: 2 directories
+  2 levels deep: 171 directories
+  3 levels deep: 1105 directories
+  4 levels deep: 3225 directories
+  5 levels deep: 546 directories
+  6 levels deep: 9 directories
+
+MOST COMMON WORKS ACROSS CATEGORIES:
+----------------------------------------
+  Sonata: appears in 32 locations
+  Мелодия: appears in 23 locations
+  Романс: appears in 23 locations
+  Колыбельная: appears in 22 locations
+  Элегия: appears in 18 locations
+  Ноктюрн: appears in 15 locations
+  Concerto: appears in 15 locations
+  Песня: appears in 14 locations
+  Ария: appears in 12 locations
+  Скерцо: appears in 11 locations
+
+COMPOSER DISTRIBUTION:
+-------------------------
+  Abel, Carl Friedrich: Крупная форма (Horn and Piano), С оркестром
+  Adler Samuel: Sonata, Ансамбли валторн
+  Albéniz Isaac: Ансамбли валторн, Пьесы
+  Alexandra, Liana: Ансамбли валторн, Пьесы
+  Alphonse Maxime: Ансамбли валторн, Обучение
+  Anonymous: Ансамбли валторн, С оркестром
+  Bach  Johann Sebastian: Ансамбли валторн, Оркестровые трудности
+  Bach Johann Sebastian: Parts without piano, SOLO, Ансамбли валторн, Пьесы, С духовым оркестром
+  Bachlund, Gary: Ансамбли валторн, Пьесы
+  Barber Samuel: Ансамбли валторн, Оркестровые трудности, Пьесы
+  Beatty, Stephen W: Пьесы, С оркестром
+  Beethoven Ludwig van (1770 – 1827): Sonata, Ансамбли валторн
+  Beethoven, Ludwig van: Ансамбли валторн, Оркестровые трудности
+  Bellini, Vincenzo: Ансамбли валторн, Оркестровые трудности
+  Berg Alban: Оркестровые трудности, Пьесы
+  Berlin Irving (1888 – 1989): Jazz, Пьесы
+  Bernstein Leonard: Ансамбли валторн, Пьесы
+  Bizet Georges: Ансамбли валторн, Оркестровые трудности, Пьесы
+  Blanquer Amando: Sonata, Крупная форма (Horn and Piano)
+  Booth Barry: Jazz, Пьесы
+  Böhme Oskar: Parts without piano, Пьесы
+  Brahms Johannes: Sonata, Оркестровые трудности
+  Brahms, Johannes: Ансамбли валторн, Пьесы
+  Bruckner Anton: Ансамбли валторн, Оркестровые трудности
+  Chabrier Alexis-Emmanuel (1841 - 1894): Пьесы, С оркестром
+  Cherubini Luigi (1760 - 1842): Sonata, Крупная форма (Horn and Piano), С оркестром
+  Cherubini Maria Luigi Carlo Zenobio Salvatore: Ансамбли валторн, Пьесы
+  Chopin Fryderyk Franciszek: Parts without piano, Пьесы
+  Clements, Patrick: Ансамбли валторн, Пьесы
+  Concerto No1 Op. 11: Крупная форма (Horn and Piano), С оркестром
+  Concerto No2 Es-Dur AV 132: Крупная форма (Horn and Piano), С оркестром
+  Concone Giuseppe: Обучение, Пьесы
+  Corelli Arcangelo: Sonata, Ансамбли валторн
+  Danzi Franz  (1763-1826): Sonata, Крупная форма (Horn and Piano)
+  Dauprat Louis François (1781 - 1868): Ансамбли валторн, Обучение
+  Dauprat Louis-Francois: Sonata, Ансамбли валторн
+  Dauprat, Louis-François: Ансамбли валторн, Пьесы
+  Debussy Achille-Claude: Parts without piano, Пьесы
+  Demar, Sébastien: Крупная форма (Horn and Piano), С оркестром
+  Dervaux Félix: Пьесы, С оркестром
+  Desmond Paul: Jazz, Пьесы
+  Dimler, Franz Anton: Ансамбли валторн, С оркестром
+  Domnich, Heinrich: Ансамбли валторн, С оркестром
+  Dukas Paul (1865 — 1935): Крупная форма (Horn and Piano), С духовым оркестром, С оркестром
+  Ewazen Eric: Sonata, Ансамбли валторн
+  Feld  Jindrich: Крупная форма (Horn and Piano), Пьесы
+  Ferrante Andrea: Ансамбли валторн, Пьесы
+  Förster  Christoph (1693 - 1745): Крупная форма (Horn and Piano), С оркестром
+  Franz Oskar: Ансамбли валторн, Пьесы, С духовым оркестром
+  Freiberg Gottfried: Ансамбли валторн, Охотничий рог (Hunting horn)
+  Frohlich Johannes Frederik (1806-1860): Ансамбли валторн, Охотничий рог (Hunting horn)
+  Fuchs, Heinrich: Крупная форма (Horn and Piano), С оркестром
+  Gallay Jacques-François (1795-1864): Parts without piano, Ансамбли валторн, Крупная форма (Horn and Piano), Обучение, С оркестром
+  Gershwin George: Jazz, Пьесы
+  Gipps, Ruth: Sonata, Крупная форма (Horn and Piano)
+  Glière Reinhold (1875 — 1956): Крупная форма (Horn and Piano), С оркестром
+  Goedicke Alexander (1877-1957): Крупная форма (Horn and Piano), С оркестром
+  Gounod, Charles: Оркестровые трудности, Пьесы
+  Grazioli Giuseppe: Parts without piano, Пьесы
+  Grieg Edvard: Ансамбли валторн, Оркестровые трудности
+  Hamm, Johann Valentin: Пьесы, С оркестром
+  Haydn Franz Joseph (1732 - 1809): Ансамбли валторн, Крупная форма (Horn and Piano), С оркестром
+  Haydn Johann Michael (1737 – 1806): Крупная форма (Horn and Piano), С оркестром
+  Händel Georg Friedrich: Parts without piano, Ансамбли валторн, Пьесы
+  Heiden, Bernhard: Parts without piano, Sonata
+  Heron, Edward: Ансамбли валторн, Пьесы
+  Hill Douglas: Jazz, Sonata
+  Hindemith Paul: Sonata, Ансамбли валторн
+  Hindemith Paul (1895-1963): Крупная форма (Horn and Piano), С оркестром
+  Hoffmann, Melchior: Крупная форма (Horn and Piano), С оркестром
+  Horn Concerto, Op.48: Крупная форма (Horn and Piano), С оркестром
+  Horn concerto: Крупная форма (Horn and Piano), С оркестром
+  Hübler Heinrich: Ансамбли валторн, Пьесы, С духовым оркестром, С оркестром
+  Jacob Gordon: Крупная форма (Horn and Piano), С оркестром
+  Jagerstucklein: Ансамбли валторн, Охотничий рог (Hunting horn)
+  Joplin Scott (1868 — 1917): Jazz, Пьесы
+  K 412 Hornkonzert No1: Крупная форма (Horn and Piano), С оркестром
+  K 417 Hornkonzert No2: Крупная форма (Horn and Piano), С оркестром
+  K 447 Hornkonzert No3: Крупная форма (Horn and Piano), С оркестром
+  K 495 Hornkonzert No4: Крупная форма (Horn and Piano), С оркестром
+  K.371 Rondo in E-flat major: Пьесы, С оркестром
+  KV 494-a: Крупная форма (Horn and Piano), С оркестром
+  Kaempfert Bert: Ансамбли валторн, Пьесы
+  Karaguenov Svetoslav: Sonata, Ансамбли валторн, Пьесы
+  Kempster Mike: Jazz, Пьесы
+  Koetsier Jan: Parts without piano, Ансамбли валторн, Крупная форма (Horn and Piano)
+  Kowalewski, Jakub: Ансамбли валторн, Пьесы, С оркестром
+  Krol Bernhard: Ансамбли валторн, Пьесы
+  Lacerda Osvaldo: SOLO, Пьесы
+  Larghetto: Пьесы, С оркестром
+  Larsson Lars-Erik: Крупная форма (Horn and Piano), С оркестром
+  Leggi Luca: Ансамбли валторн, С оркестром
+  Lindpaintner, Peter Joseph von: Ансамбли валторн, С оркестром
+  Lully Jean-Baptiste: Ансамбли валторн, Пьесы
+  Lübeck, Heinrich: Пьесы, С оркестром
+  Mahler Gustav: Ансамбли валторн, Оркестровые трудности
+  Manookian Jeff: Крупная форма (Horn and Piano), С оркестром
+  Manookian, Jeff: Sonata, Ансамбли валторн, Пьесы
+  Marcello Favoino: Ансамбли валторн, Крупная форма (Horn and Piano)
+  Maštalíř Jaroslav: Крупная форма (Horn and Piano), Пьесы
+  McKay George Frederick: Ансамбли валторн, Пьесы
+  Mendelssohn-Bartholdy Felix: Ансамбли валторн, Пьесы
+  Mengal, Jean-Baptiste: Пьесы, С духовым оркестром
+  Miller Glenn: Ансамбли валторн, Пьесы
+  Monti Vittorio: Ансамбли валторн, Пьесы
+  Morceau de Concert: Крупная форма (Horn and Piano), С оркестром
+  Mozart Johann Georg Leopold (1719 – 1787): Крупная форма (Horn and Piano), С оркестром
+  Mozart Leopold: Ансамбли валторн, Пьесы
+  Mozart Wolfgang Amadeus: Parts without piano, Sonata, Ансамбли валторн, Пьесы
+  Mozart Wolfgang Amadeus (1756 — 1791): Ансамбли валторн, Крупная форма (Horn and Piano), С оркестром
+  Müller Bernhard Eduard: Ансамбли валторн, Пьесы
+  Neff Lyle Kevin: Sonata, Пьесы
+  Neuling Hermann: Ансамбли валторн, Обучение, Пьесы
+  Offenbach, Jacques: Оркестровые трудности, Пьесы
+  Olsen, Ole: Крупная форма (Horn and Piano), С оркестром
+  Orch: Пьесы, С оркестром
+  Ostijn Willy: Ансамбли валторн, С оркестром
+  Pachelbel Johann: Ансамбли валторн, Пьесы
+  Pauer Jiří: Крупная форма (Horn and Piano), С духовым оркестром
+  Pergolesi Giovanni Battista: Ансамбли валторн, Пьесы
+  Piazzolla Astor: Ансамбли валторн, Оркестровые трудности, Пьесы
+  Plagge Wolfgang: Sonata, Ансамбли валторн
+  Plante, Cyril: Sonata, С оркестром
+  Pokorný, František Xaver: Ансамбли валторн, Крупная форма (Horn and Piano)
+  Pottag Max: Ансамбли валторн, Обучение
+  Puccini, Giacomo: Оркестровые трудности, Пьесы
+  Quantz Johann 1697-1773: Крупная форма (Horn and Piano), С оркестром
+  Ravel Maurice: Ансамбли валторн, Оркестровые трудности
+  Reading Steven J: Ансамбли валторн, Пьесы
+  Reger Max: Ансамбли валторн, Пьесы, С оркестром
+  Reicha Anton (1770-1836): Ансамбли валторн, Крупная форма (Horn and Piano)
+  Reverie Op.24: Пьесы, С оркестром
+  Richter, Josef: Ансамбли валторн, Пьесы, С оркестром
+  Rindt Markus: Jazz, Крупная форма (Horn and Piano)
+  Robertson Thomas: Jazz, Пьесы
+  Rosetti Antonio (1750 - 1792): Parts without piano, Крупная форма (Horn and Piano), С оркестром
+  Rossini Gioachino Antonio: Ансамбли валторн, Пьесы
+  Rousselot, J: Крупная форма (Horn and Piano), Пьесы
+  Saint-Saëns Camille (1835-1921): Ансамбли валторн, Крупная форма (Horn and Piano), С оркестром
+  Schantl Josef: Ансамбли валторн, Обучение
+  Schlösser, Louis: Крупная форма (Horn and Piano), С оркестром
+  Schmitt Florent: Пьесы, С оркестром
+  Schubert Franz: Ансамбли валторн, Оркестровые трудности, Пьесы, С духовым оркестром, С оркестром
+  Schubert, Franz: Parts without piano, Ансамбли валторн
+  Schumann Robert: Ансамбли валторн, Оркестровые трудности
+  Schumann Robert (1810 – 1856): Крупная форма (Horn and Piano), С духовым оркестром, С оркестром
+  Schumann, Robert: Ансамбли валторн, Пьесы
+  Schwarz Otto: Пьесы, С духовым оркестром
+  Serenade from Scbwanengesang #4: Пьесы, С оркестром
+  Shebalin Vissarion (1902–1963): Крупная форма (Horn and Piano), С оркестром
+  Sibelius Jean: Ансамбли валторн, Оркестровые трудности
+  Soyka Ulf-Diether: Крупная форма (Horn and Piano), С оркестром
+  Stähli Hans: Крупная форма (Horn and Piano), С оркестром
+  Stich-Punto Giovanni,Johann Wenzel (1746-1803): Крупная форма (Horn and Piano), С оркестром
+  Stiegler Karl: Ансамбли валторн, Охотничий рог (Hunting horn)
+  Stradella Alessandro: Пьесы, С оркестром
+  Strauss Franz: Ансамбли валторн, Пьесы, С духовым оркестром
+  Strauss Franz (1822 — 1905): Крупная форма (Horn and Piano), С оркестром
+  Strauss Richard: Ансамбли валторн, Оркестровые трудности, Пьесы, С духовым оркестром
+  Strauss Richard (1864 — 1949): Ансамбли валторн, Крупная форма (Horn and Piano), С оркестром
+  Strauss, Franz: Ансамбли валторн, Обучение
+  Szekely Endre: Sonata, Пьесы
+  Telemann Georg Philipp (1681 — 1767): Ансамбли валторн, Крупная форма (Horn and Piano), Пьесы
+  Thalberg, Sigismond: Крупная форма (Horn and Piano), Пьесы
+  Tomasi Henri: Крупная форма (Horn and Piano), Пьесы
+  Tre Pezzi in forma di Sonata: Sonata, Пьесы
+  Turner Kerry: Sonata, Ансамбли валторн, Крупная форма (Horn and Piano), Пьесы
+  Uhlik Tomislav: Sonata, Пьесы
+  Verdi Giuseppe: Ансамбли валторн, Пьесы
+  Vinter Gilbert: Пьесы, С оркестром
+  Volante, Ilio: Ансамбли валторн, Пьесы
+  Wagner Richard: Ансамбли валторн, Пьесы
+  Webber Andrew Lloyd: Ансамбли валторн, Оркестровые трудности, Пьесы
+  Weber Carl Maria von: Ансамбли валторн, Оркестровые трудности, Пьесы
+  Weber Carl Maria von (1786 — 1826): Крупная форма (Horn and Piano), С оркестром
+  Wilder Alec: Jazz, Sonata, Ансамбли валторн, Пьесы
+  Williams John: Ансамбли валторн, Крупная форма (Horn and Piano), Оркестровые трудности
+  Zimmer Hans: Ансамбли валторн, Оркестровые трудности
+  Анисимов Борис: Пьесы, С духовым оркестром
+  Ария: Пьесы, С оркестром
+  Бородин Александр: Оркестровые трудности, Пьесы
+  Буяновский Виталий: Sonata, Ансамбли валторн, Пьесы
+  Глазунов Александр: Ансамбли валторн, Оркестровые трудности, Пьесы
+  Глинка Михаил: Оркестровые трудности, Пьесы
+  Глиэр Рейнгольд: Ансамбли валторн, Пьесы, С духовым оркестром
+  Деревенская идилия (Vilanella): Крупная форма (Horn and Piano), С духовым оркестром, С оркестром
+  Дунаевский Исаак: Оркестровые трудности, Пьесы
+  Захаров Юрий: Ансамбли валторн, С духовым оркестром, С оркестром
+  Захаров Юрий (1954 - ): Крупная форма (Horn and Piano), Пьесы
+  Калинников Василий: Оркестровые трудности, Пьесы
+  Карадимчев Борис: Крупная форма (Horn and Piano), Пьесы
+  Колодуб Левко: Крупная форма (Horn and Piano), Пьесы
+  Мусоргский Модест: Оркестровые трудности, Пьесы
+  Ноктюрн: Пьесы, С оркестром
+  Полех Валерий: Обучение, Пьесы
+  Прокофьев Сергей: Ансамбли валторн, Оркестровые трудности, Пьесы
+  Рахманинов Сергей: Ансамбли валторн, Оркестровые трудности, Пьесы, С оркестром
+  Римский-Корсаков Николай: Ансамбли валторн, Оркестровые трудности
+  Романс Op.36: Пьесы, С оркестром
+  Рубинштейн Антон: Sonata, Ансамбли валторн, Оркестровые трудности, Пьесы
+  Русанов Е: Пьесы, С духовым оркестром, С оркестром
+  Сальников Георгий: Пьесы, С оркестром
+  Свиридов Георгий: Ансамбли валторн, Оркестровые трудности, Пьесы
+  Стравинский Игорь: Ансамбли валторн, Оркестровые трудности, Пьесы
+  Трубин Б: Крупная форма (Horn and Piano), Пьесы
+  Фалилеев Дмитрий: Пьесы, С духовым оркестром
+  Цыбульский Григорий: Ансамбли валторн, Крупная форма (Horn and Piano), Обучение
+  Чайковский Петр Ильич: Оркестровые трудности, С оркестром
+  Черепнин Николай: Ансамбли валторн, Пьесы
+  Шор Александр: Крупная форма (Horn and Piano), Пьесы
+  Шостакович Дмитрий: Ансамбли валторн, Оркестровые трудности, Пьесы
+  Штанько Вадим: Пьесы, С оркестром
+  Щедрин Родион: Оркестровые трудности, Пьесы
+  Эккерт Фердинанд: Ансамбли валторн, Пьесы
+  Якустиди И: Обучение, Пьесы
+  Янкелевич Арсений: Sonata, Крупная форма (Horn and Piano), Пьесы
