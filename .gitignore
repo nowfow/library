@@ -22,3 +22,6 @@ scripts/
 /files/Пьесы
 /files/С духовым оркестром
 /files/С оркестром 
+/files
+/telegram-bot/venv
+/venv
