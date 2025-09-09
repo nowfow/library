@@ -98,12 +98,10 @@ export async function initializeTables() {
     await executeQuery(`
       CREATE TABLE IF NOT EXISTS terms (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        term VARCHAR(255) NOT NULL UNIQUE,
+        term VARCHAR(255) NOT NULL,
         definition TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        INDEX idx_term (term),
-        FULLTEXT(term, definition)
+        INDEX idx_term (term)
       ) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
     `);
     

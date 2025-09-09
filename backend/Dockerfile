@@ -1,45 +1,43 @@
-# Используем официальный Node.js образ
-FROM node:18-alpine
+# Многоэтапная сборка для продакшена
+FROM node:20-alpine as builder
 
-# Устанавливаем рабочую директорию
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Продакшен образ
+FROM node:20-alpine
+
+# Устанавливаем необходимые пакеты
+RUN apk add --no-cache curl tini netcat-openbsd mysql-client
+
 WORKDIR /app
 
-# Устанавливаем необходимые системные пакеты
-RUN apk add --no-cache \
-    tini \
-    curl
-
-# Копируем файлы зависимостей
-COPY package*.json ./
-
-# Устанавливаем зависимости
-RUN npm ci --only=production && \
-    npm cache clean --force
-
-# Создаем пользователя для безопасности
+# Создаем пользователя
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S musiclib -u 1001
 
+# Копируем зависимости из builder
+COPY --from=builder /app/node_modules ./node_modules
+
 # Копируем исходный код
-COPY --chown=musiclib:nodejs src/ ./src/
-COPY --chown=musiclib:nodejs populate-db.js ./
+COPY --chown=musiclib:nodejs . .
 
-# Создаем директории для логов и файлов
-RUN mkdir -p logs files && \
-    chown -R musiclib:nodejs logs files
+# Копируем скрипты
+COPY --chown=musiclib:nodejs scripts/entrypoint.sh /usr/local/bin/
+COPY --chown=musiclib:nodejs scripts/import-terms.sh /app/scripts/
+RUN chmod +x /usr/local/bin/entrypoint.sh /app/scripts/import-terms.sh
 
-# Переключаемся на непривилегированного пользователя
+# Создаем необходимые директории
+RUN mkdir -p logs files uploads && \
+    chown -R musiclib:nodejs logs files uploads
+
 USER musiclib
 
-# Открываем порт
 EXPOSE 3000
 
-# Проверка здоровья контейнера
+# Проверка здоровья
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:3000/health || exit 1
 
-# Используем tini как init процесс для правильной обработки сигналов
-ENTRYPOINT ["/sbin/tini", "--"]
-
-# Запускаем приложение
-CMD ["node", "src/index.js"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

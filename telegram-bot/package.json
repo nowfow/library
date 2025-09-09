@@ -1,15 +1,11 @@
 {
   "name": "music-library-telegram-bot",
   "version": "1.0.0",
-  "description": "Telegram bot for music library with Aiogram",
+  "description": "Telegram bot for music library",
   "main": "bot.py",
   "scripts": {
-    "dev": "python bot.py",
     "start": "python bot.py",
-    "install": "pip install -r requirements.txt",
-    "test": "python -m pytest tests/ -v",
-    "lint": "python -m flake8 .",
-    "format": "python -m black ."
+    "install": "pip install -r requirements.txt"
   },
   "repository": {
     "type": "git",
@@ -25,9 +21,6 @@
   ],
   "author": "Music Library Team",
   "license": "MIT",
-  "dependencies": {
-    "python": ">=3.11"
-  },
   "engines": {
     "python": ">=3.11"
   }
