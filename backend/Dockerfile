@@ -1,9 +1,11 @@
 # Многоэтапная сборка для продакшена
-FROM node:20-alpine as builder
+FROM node:20-alpine AS builder
 
-# Устанавливаем зависимости для canvas
-RUN apk add --no-cache cairo-dev pango-dev jpeg-dev giflib-dev pixman-dev \
-    freetype-dev fontconfig-dev libpng-dev librsvg-dev
+# Устанавливаем зависимости для canvas и других нативных модулей
+RUN apk add --no-cache \
+    cairo-dev pango-dev jpeg-dev giflib-dev pixman-dev \
+    freetype-dev fontconfig-dev libpng-dev librsvg-dev \
+    python3 make g++ pkgconfig
 
 WORKDIR /app
 COPY package*.json ./
@@ -13,7 +15,8 @@ RUN npm install --only=production
 FROM node:20-alpine
 
 # Устанавливаем необходимые пакеты
-RUN apk add --no-cache curl tini netcat-openbsd mysql-client \
+RUN apk add --no-cache \
+    curl tini netcat-openbsd mysql-client \
     cairo pango jpeg giflib pixman freetype fontconfig libpng librsvg
 
 WORKDIR /app
@@ -34,8 +37,8 @@ COPY --chown=musiclib:nodejs scripts/import-terms.sh /app/scripts/
 RUN chmod +x /usr/local/bin/entrypoint.sh /app/scripts/import-terms.sh
 
 # Создаем необходимые директории
-RUN mkdir -p logs files uploads && \
-    chown -R musiclib:nodejs logs files uploads
+RUN mkdir -p logs files uploads thumbnails && \
+    chown -R musiclib:nodejs logs files uploads thumbnails
 
 USER musiclib
 
