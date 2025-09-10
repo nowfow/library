@@ -3,7 +3,7 @@ FROM node:20-alpine as builder
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install --only=production
 
 # Продакшен образ
 FROM node:20-alpine
