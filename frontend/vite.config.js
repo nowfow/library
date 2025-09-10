@@ -5,7 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
-export defineConfig({
+export default defineConfig({
   plugins: [
     vue(),
     vuetify({ 

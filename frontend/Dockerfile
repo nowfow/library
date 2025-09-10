@@ -1,5 +1,5 @@
 # Многоэтапная сборка для фронтенда
-FROM node:20-alpine as builder
+FROM node:20-alpine AS builder
 
 # Устанавливаем зависимости для сборки
 RUN apk add --no-cache python3 make g++
