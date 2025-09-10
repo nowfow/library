@@ -1,6 +1,10 @@
 # Многоэтапная сборка для продакшена
 FROM node:20-alpine as builder
 
+# Устанавливаем зависимости для canvas
+RUN apk add --no-cache cairo-dev pango-dev jpeg-dev giflib-dev pixman-dev \
+    freetype-dev fontconfig-dev libpng-dev librsvg-dev
+
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --only=production
@@ -9,7 +13,8 @@ RUN npm install --only=production
 FROM node:20-alpine
 
 # Устанавливаем необходимые пакеты
-RUN apk add --no-cache curl tini netcat-openbsd mysql-client
+RUN apk add --no-cache curl tini netcat-openbsd mysql-client \
+    cairo pango jpeg giflib pixman freetype fontconfig libpng librsvg
 
 WORKDIR /app
 

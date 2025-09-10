@@ -1,6 +1,9 @@
 # Многоэтапная сборка для фронтенда
 FROM node:20-alpine as builder
 
+# Устанавливаем зависимости для сборки
+RUN apk add --no-cache python3 make g++
+
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
