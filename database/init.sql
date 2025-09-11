@@ -48,17 +48,6 @@ CREATE TABLE IF NOT EXISTS users (
     INDEX idx_email (email)
 );
 
--- Обновление структуры таблицы пользователей (если она уже существует с другой структурой)
--- Добавляем недостающие столбцы, если они отсутствуют
-ALTER TABLE users ADD COLUMN IF NOT EXISTS name VARCHAR(255) NOT NULL DEFAULT '';
-ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
-
--- Удаляем ненужные столбцы, если они существуют
-ALTER TABLE users DROP COLUMN IF EXISTS username;
-
--- Обновляем существующие записи, чтобы заполнить столбец name
-UPDATE users SET name = SUBSTRING_INDEX(email, '@', 1) WHERE name = '';
-
 -- Таблица коллекций
 CREATE TABLE IF NOT EXISTS collections (
     id INT AUTO_INCREMENT PRIMARY KEY,
