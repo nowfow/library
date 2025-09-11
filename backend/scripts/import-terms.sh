@@ -19,8 +19,8 @@ echo "📋 Importing terms from CSV..."
 echo "DELETE FROM terms;" > "$TEMP_SQL"
 echo "LOAD DATA LOCAL INFILE '$CSV_FILE' INTO TABLE terms FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n' (term, definition);" >> "$TEMP_SQL"
 
-# Import data
-mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" < "$TEMP_SQL"
+# Import data with SSL disabled
+mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWORD" --skip-ssl "$DB_NAME" < "$TEMP_SQL"
 
 # Clean up
 rm "$TEMP_SQL"

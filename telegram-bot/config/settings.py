@@ -27,7 +27,7 @@ class Settings:
     
     # Логирование
     LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
-    LOG_FILE: str = os.getenv("LOG_FILE", "bot.log")
+    LOG_FILE: str = os.getenv("LOG_FILE", "logs/bot.log")
     
     # Файлы
     MAX_FILE_SIZE: str = os.getenv("MAX_FILE_SIZE", "50MB")
