@@ -1,5 +1,5 @@
 <template>
-  <div class="lazy-thumbnail" :class="{ loading: isLoading }">
+  <div ref="element" class="lazy-thumbnail" :class="{ loading: isLoading }">
     <!-- Загрузочный спиннер -->
     <div v-if="isLoading" class="loading-state">
       <v-progress-circular
@@ -139,12 +139,6 @@ onUnmounted(() => {
   }
 })
 </script>
-
-<template>
-  <div ref="element" class="lazy-thumbnail">
-    <!-- Контент компонента -->
-  </div>
-</template>
 
 <style scoped>
 .lazy-thumbnail {
