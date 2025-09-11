@@ -215,9 +215,10 @@ class APIClient:
         """Получение коллекции по ID"""
         return await self._make_request("GET", f"/collections/{collection_id}", jwt_token=jwt_token)
     
-    async def update_collection(self, collection_id: int, name: Optional[str] = None,
-                              description: Optional[str] = None, is_public: Optional[bool] = None,
-                              jwt_token: str) -> Optional[Dict[str, Any]]:
+    async def update_collection(self, collection_id: int, jwt_token: str,
+                              name: Optional[str] = None,
+                              description: Optional[str] = None, 
+                              is_public: Optional[bool] = None) -> Optional[Dict[str, Any]]:
         """Обновление коллекции"""
         data = {}
         if name is not None:
@@ -245,9 +246,9 @@ class APIClient:
         """Удаление произведения из коллекции"""
         return await self._make_request("DELETE", f"/collections/{collection_id}/works/{work_id}",
                                       jwt_token=jwt_token)
-    
-    async def get_collection_works(self, collection_id: int, page: int = 1, limit: int = 10,
-                                 jwt_token: str) -> Optional[Dict[str, Any]]:
+
+    async def get_collection_works(self, collection_id: int, jwt_token: str,
+                                 page: int = 1, limit: int = 10) -> Optional[Dict[str, Any]]:
         """Получение произведений из коллекции"""
         params = {
             "page": page,
