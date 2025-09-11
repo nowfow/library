@@ -39,15 +39,25 @@ CREATE TABLE IF NOT EXISTS works (
 -- Таблица пользователей
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
     is_admin BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_username (username),
     INDEX idx_email (email)
 );
+
+-- Обновление структуры таблицы пользователей (если она уже существует с другой структурой)
+-- Добавляем недостающие столбцы, если они отсутствуют
+ALTER TABLE users ADD COLUMN IF NOT EXISTS name VARCHAR(255) NOT NULL DEFAULT '';
+ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
+
+-- Удаляем ненужные столбцы, если они существуют
+ALTER TABLE users DROP COLUMN IF EXISTS username;
+
+-- Обновляем существующие записи, чтобы заполнить столбец name
+UPDATE users SET name = SUBSTRING_INDEX(email, '@', 1) WHERE name = '';
 
 -- Таблица коллекций
 CREATE TABLE IF NOT EXISTS collections (
@@ -97,8 +107,8 @@ CREATE TABLE IF NOT EXISTS files (
 
 -- Создание пользователя-администратора по умолчанию
 -- Пароль: admin123 (должен быть изменен в production)
-INSERT IGNORE INTO users (email, password_hash, name, is_active) 
-VALUES ('admin@musiclibrary.local', '$2b$10$8K1p/a0dhrxiowP.dnkgNORTWgdEDHn5L2/xjpEWuC.QQv4rKO9jO', 'admin', TRUE);
+INSERT IGNORE INTO users (email, password_hash, name, is_active, is_admin) 
+VALUES ('admin@musiclibrary.local', '$2b$10$8K1p/a0dhrxiowP.dnkgNORTWgdEDHn5L2/xjpEWuC.QQv4rKO9jO', 'admin', TRUE, TRUE);
 
 -- Создание базовых категорий
 INSERT IGNORE INTO categories (name) VALUES 
