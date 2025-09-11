@@ -16,7 +16,10 @@ const poolConfig = {
   acquireTimeout: 60000,
   timeout: 60000,
   reconnect: true,
-  timezone: '+00:00'
+  timezone: '+00:00',
+  ssl: {
+    rejectUnauthorized: false
+  }
 };
 
 // Создание пула соединений

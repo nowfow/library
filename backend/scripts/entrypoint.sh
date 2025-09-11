@@ -19,7 +19,7 @@ if [ "$INIT_DB" = "true" ]; then
     
     # Initialize database tables using the SQL file directly
     echo "🔧 Creating tables..."
-    mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" < /app/database/init.sql
+    mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWORD" --ssl-mode=DISABLED "$DB_NAME" < /app/database/init.sql
     echo "✅ Tables created"
     
     # Import terms from CSV
