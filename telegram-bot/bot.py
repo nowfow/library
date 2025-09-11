@@ -142,10 +142,7 @@ async def main() -> None:
     # Создание бота и диспетчера
     bot = Bot(
         token=settings.TELEGRAM_BOT_TOKEN,
-        default=DefaultBotProperties(
-            parse_mode=ParseMode.HTML,
-            disable_web_page_preview=True
-        )
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
     )
     
     dp = Dispatcher()
