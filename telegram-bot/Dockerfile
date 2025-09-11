@@ -25,9 +25,11 @@ ENV PATH=/home/botuser/.local/bin:$PATH
 # Копируем исходный код
 COPY --chown=botuser:botuser . .
 
-# Создаем необходимые директории
+# Создаем необходимые директории и файлы лога с правильными правами
 RUN mkdir -p logs data && \
-    chown -R botuser:botuser logs data
+    touch logs/bot.log && \
+    chown -R botuser:botuser logs data && \
+    chmod 666 logs/bot.log
 
 USER botuser
 

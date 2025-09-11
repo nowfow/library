@@ -97,8 +97,8 @@ CREATE TABLE IF NOT EXISTS files (
 
 -- Создание пользователя-администратора по умолчанию
 -- Пароль: admin123 (должен быть изменен в production)
-INSERT IGNORE INTO users (username, email, password_hash, is_active, is_admin) 
-VALUES ('admin', 'admin@musiclibrary.local', '$2b$10$8K1p/a0dhrxiowP.dnkgNORTWgdEDHn5L2/xjpEWuC.QQv4rKO9jO', TRUE, TRUE);
+INSERT IGNORE INTO users (email, password_hash, name, is_active) 
+VALUES ('admin@musiclibrary.local', '$2b$10$8K1p/a0dhrxiowP.dnkgNORTWgdEDHn5L2/xjpEWuC.QQv4rKO9jO', 'admin', TRUE);
 
 -- Создание базовых категорий
 INSERT IGNORE INTO categories (name) VALUES 
