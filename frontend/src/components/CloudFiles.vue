@@ -46,7 +46,7 @@
             >
               {{ item.title }}
             </v-breadcrumbs-item>
-          </template>
+      </template>
         </v-breadcrumbs>
       </v-card-text>
     </v-card>
@@ -197,7 +197,7 @@
           </v-card>
         </v-col>
       </v-row>
-    </div>
+  </div>
 
     <!-- Пустое состояние -->
     <v-card v-else class="pa-8 text-center">
@@ -518,4 +518,4 @@ onMounted(() => {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-</style>
+</style> 

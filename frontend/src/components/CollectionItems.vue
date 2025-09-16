@@ -118,7 +118,7 @@
               <span v-if="item.added_at" class="text-caption text-medium-emphasis">
                 {{ formatDate(item.added_at) }}
               </span>
-            </div>
+  </div>
           </v-card-text>
 
           <!-- Действия -->
@@ -364,4 +364,4 @@ onMounted(async () => {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-</style>
+</style> 

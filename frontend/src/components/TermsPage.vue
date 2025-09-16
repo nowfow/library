@@ -151,7 +151,7 @@
       >
         Загрузить ещё
       </v-btn>
-    </div>
+  </div>
   </v-container>
 </template>
 
@@ -286,7 +286,7 @@ onMounted(() => {
   loadTerms(1)
   loadStats()
 })
-</script>
+</script> 
 
 <style scoped>
 .terms-page {

@@ -129,8 +129,8 @@ app.get('/api', (req, res) => {
   });
 });
 
-// Обработка 404 ошибок
-app.use('*', (req, res) => {
+// Обработка 404 ошибок (catch-all без path, чтобы избежать проблем с path-to-regexp)
+app.use((req, res) => {
   res.status(404).json({
     error: 'Эндпоинт не найден',
     path: req.originalUrl,
@@ -169,7 +169,7 @@ async function startServer() {
     await testDatabaseConnection();
     
     // Запуск HTTP сервера
-    app.listen(PORT, () => {
+app.listen(PORT, () => {
       logger.info(`🚀 Сервер запущен на порту ${PORT}`);
       logger.info(`📊 Health check: http://localhost:${PORT}/health`);
       logger.info(`🔧 API документация: http://localhost:${PORT}/api`);
