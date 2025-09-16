@@ -18,7 +18,8 @@ export async function getFileStructure(path = '/') {
  * Получить информацию о файле
  */
 export async function getFileInfo(path) {
-  const response = await axios.get(`${API_URL}/api/files/info/${encodeURIComponent(path)}`, {
+  const response = await axios.get(`${API_URL}/api/files/info`, {
+    params: { path },
     headers: authHeader()
   })
   return response.data
@@ -52,14 +53,15 @@ export async function getFilesStats() {
  * Получить URL для скачивания файла
  */
 export function getDownloadUrl(path) {
-  return `${API_URL}/api/files/download/${encodeURIComponent(path)}`
+  return `${API_URL}/api/files/download?path=${encodeURIComponent(path)}`
 }
 
 /**
  * Скачать файл
  */
 export async function downloadFile(path, filename) {
-  const response = await axios.get(`${API_URL}/api/files/download/${encodeURIComponent(path)}`, {
+  const response = await axios.get(`${API_URL}/api/files/download`, {
+    params: { path },
     responseType: 'blob',
     headers: authHeader()
   })
@@ -81,5 +83,5 @@ export async function downloadFile(path, filename) {
  * Получить прямую ссылку на PDF файл для просмотра
  */
 export function getPdfViewUrl(path) {
-  return `${API_URL}/api/files/download/${encodeURIComponent(path)}`
+  return `${API_URL}/api/files/download?path=${encodeURIComponent(path)}`
 }
