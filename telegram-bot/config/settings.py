@@ -22,8 +22,17 @@ class Settings:
     BACKEND_API_URL: str = os.getenv("BACKEND_API_URL", "http://localhost:3000/api")
     BACKEND_API_KEY: str = os.getenv("BACKEND_API_KEY", "")
     
-    # База данных
+    # База данных (MySQL при наличии DB_HOST, иначе SQLite)
+    DB_HOST: str = os.getenv("DB_HOST", "")
+    DB_PORT: int = int(os.getenv("DB_PORT", "3306"))
+    DB_NAME: str = os.getenv("DB_NAME", "")
+    DB_USER: str = os.getenv("DB_USER", "")
+    DB_PASSWORD: str = os.getenv("DB_PASSWORD", "")
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///bot_cache.db")
+
+    @classmethod
+    def use_mysql(cls) -> bool:
+        return bool(cls.DB_HOST and cls.DB_NAME and cls.DB_USER)
     
     # Логирование
     LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
