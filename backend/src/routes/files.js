@@ -99,9 +99,9 @@ router.get('/structure', async (req, res) => {
 });
 
 // Скачивание файла
-router.get('/download/*', async (req, res) => {
+router.get('/download/:path(*)', async (req, res) => {
   try {
-    const requestedPath = req.params[0];
+    const requestedPath = req.params.path;
     const fullPath = path.join(FILES_BASE_PATH, requestedPath);
     
     // Проверяем безопасность пути
@@ -185,9 +185,9 @@ router.get('/download/*', async (req, res) => {
 });
 
 // Получение информации о файле
-router.get('/info/*', async (req, res) => {
+router.get('/info/:path(*)', async (req, res) => {
   try {
-    const requestedPath = req.params[0];
+    const requestedPath = req.params.path;
     const fullPath = path.join(FILES_BASE_PATH, requestedPath);
     
     // Проверяем безопасность пути
